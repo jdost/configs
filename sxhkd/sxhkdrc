@@ -1,0 +1,50 @@
+# Basic WM Control
+## reload
+super + q
+	pkill -USR1 -x sxhkd && bspc wm -r
+## quit
+super + shift + q
+	bspc quit
+
+# Launching
+## terminal emulator
+super + Return
+	alacritty
+## launcher
+super + @p
+	rofi -show combi
+
+# Window Control
+## close/kill
+super + {_,shift + }c
+	bspc node -{c,k}
+
+# Layout Control
+## zoom
+super + @space
+	bspc desktop -l next
+### TODO merge expand/contract to be "smarter"
+###   this means that super+alt+h "contracts" left splits
+###   and super+alt+l "expands" left splits
+## expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+## contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Layout Navigation
+## focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+## focus the next/previous window in the current desktop
+super + +{_,shift + }Tab
+	bspc node -f {next,prev}.local.!hidden.window
+## focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Floating control
+## move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}

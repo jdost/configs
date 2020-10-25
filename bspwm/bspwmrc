@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# TEMP - migrate sxhkd to supervisord
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+# define monitors
+bspc monitor -d term web
+
+# looks
+bspc config border_width         1
+bspc config window_gap          24
+bspc config bottom_padding      12
+bspc config top_padding         12
+bspc config left_padding        12
+bspc config right_padding       12
+
+# layout controls
+bspc config split_ratio          0.6
+bspc config borderless_monocle   true
+bspc config gapless_monocle      false
+
+# rules
+bspc rule -a Chromium desktop='^2'

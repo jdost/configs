@@ -1,0 +1,26 @@
+export GNUPGHOME=$HOME/.local/gpg
+
+launch_agent() {
+   if ! systemctl status pcscd.socket &>/dev/null; then
+      echo "Starting the smartcard daemon listening socket..."
+      sudo systemctl start pcscd.socket
+   fi
+   gpgconf --launch gpg-agent
+}
+
+set_ssh_socket() {
+   ln -s "$(gpgconf --list-dirs agent-ssh-socket)" "$HOME/.ssh/auth.sock"
+   export SSH_AUTH_SOCK="$HOME/.ssh/auth.sock"
+}
+
+set_tty() {
+   export GPG_TTY=$(tty)
+   gpg-connect-agent updatestartuptty /bye &>/dev/null
+}
+
+if which gpg-agent &> /dev/null; then
+   gpg-connect-agent --quiet /bye &>/dev/null || launch_agent
+   [[ -z "${SSH_AUTH_SOCK:-}" ]] && set_ssh_socket
+   [[ -z "${GPG_TTY:-}" ]] && set_tty
+fi
+# vim: ft=zsh

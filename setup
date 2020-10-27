@@ -12,6 +12,7 @@ from typing import Sequence, Set, Union
 DRY_RUN = False
 REPO_BASE = Path(__file__).resolve().parent
 XDG_CONFIG_DIR = Path.home() / '.config'
+HOME = Path.home()
 
 
 def run(
@@ -82,11 +83,15 @@ class Config:
         self.src = self._convert_loc(src)
         self.dst = self._convert_loc(dst)
 
-    def link(self, overwrite: bool = False) -> None:
+    def create(self, overwrite: bool = False) -> None:
         if not self.src.exists():
             print(f"OOPS: {self.src} doesn't exist...")
             return
         if self.dst.exists():
+            if self.dst.resolve() == self.src:
+                # already the right symlink
+                return
+
             if not overwrite:
                 print(f"OOPS: {self.dst} already exists...")
             else:
@@ -103,6 +108,27 @@ class Config:
             self.src.symlink_to(self.dst)
 
 
+class Perms:
+    target: Path
+    perms: int
+    MASK=0o777
+
+    def __init__(self, target: Path, perms: int):
+        self.target = target
+        self.perms = perms
+
+    def create(self) -> None:
+        current = self.target.stat().st_mode & Perms.MASK
+        if current == self.perms:
+            return
+
+        if DRY_RUN:
+            print(f"$ chmod {self.perms} {self.target}")
+        else:
+            self.target.chmod(self.perms)
+
+
+
 _pkgs = {}
 _pkgs["sxhkd"] =  ConfiguredPackage(
     deps={},
@@ -111,7 +137,6 @@ _pkgs["sxhkd"] =  ConfiguredPackage(
         Config("sxhkd/sxhkdrc", XDG_CONFIG_DIR / "sxhkd/sxhkdrc"),
     ],
 )
-
 _pkgs["bspwm"] = ConfiguredPackage(
     deps={_pkgs["sxhkd"]},
     system_packages={
@@ -119,6 +144,19 @@ _pkgs["bspwm"] = ConfiguredPackage(
     },
     files=[
         Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwn/bspwmrc"),
+    ],
+)
+_pkgs["gpg"] = ConfiguredPackage(
+    deps={},
+    system_packages={
+        Pacman("gnupg"), Pacman("pcsclite"), Pacman("ccid")
+    },
+    files=[
+        Config("gpg/gpg.conf", HOME / ".local/gpg/gpg.conf"),
+        Config("gpg/gpg-agent.conf", HOME / ".local/gpg/gpg-agent.conf"),
+        Config("gpg/scdaemon.conf", HOME / ".local/gpg/scdaemon.conf"),
+        Config("gpg/environment", HOME / ".local/environment/gpg"),
+        Perms(HOME / ".local/gpg", 0o700),
     ],
 )
 
@@ -151,5 +189,5 @@ if __name__ == "__main__":
     Pacman.install(*pacman_packages)
 
     for target in targets:
-        for link in target.files:
-            link.link()
+        for f in target.files:
+            f.create()

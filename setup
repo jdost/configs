@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+
+import abc
+import importlib
+import shlex
+import subprocess
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Sequence, Set, Union
+
+DRY_RUN = False
+REPO_BASE = Path(__file__).resolve().parent
+XDG_CONFIG_DIR = Path.home() / '.config'
+
+
+def run(
+    cmd: Union[str, Sequence[Union[Path, str]]]
+) -> subprocess.CompletedProcess:
+    resolved_cmd = shlex.split(cmd) if isinstance(cmd, str) else cmd
+    return subprocess.run(
+        resolved_cmd,
+        stdout=subprocess.PIPE,
+        cwd=REPO_BASE,
+    )
+
+
+class ConfiguredPackage:
+    deps: Set["ConfiguredPackage"] = {}
+    system_packages: Set["SystemPackage"] = {}
+    files: Sequence["Config"] = {}
+
+    def __init__(self, deps, system_packages, files):
+        self.deps = deps
+        self.system_packages = system_packages
+        self.files = files
+
+
+class SystemPackage(abc.ABC):
+    pass
+
+
+class Pacman(SystemPackage):
+    name: str = ""
+
+    def __init__(self, name: str):
+        self.name = name
+
+    @staticmethod
+    def install(*pkgs: "Pacman") -> None:
+        wanted = {pkg.name for pkg in pkgs}
+        installed = {
+            o.split(" ")[0] for o in run("pacman -Q").stdout.decode("utf-8").split()
+        }
+
+        to_be_installed = wanted - installed
+        if not to_be_installed:
+            # everything is already installed
+            return
+
+        if DRY_RUN:
+            print(f"WOULD INSTALL: {', '.join(to_be_installed)}")
+        else:
+            run(["pacman", "-Syu"] + list(to_be_installed))
+
+
+class Config:
+    src: Path
+    dst: Path
+
+    @staticmethod
+    def _convert_loc(a: Union[Path, str]) -> Path:
+        if not isinstance(a, Path):
+            a = Path(a)
+
+        if a.is_absolute():
+            return a
+
+        return REPO_BASE / a
+
+    def __init__(self, src: Union[Path, str], dst: Union[Path, str]):
+        self.src = self._convert_loc(src)
+        self.dst = self._convert_loc(dst)
+
+    def link(self, overwrite: bool = False) -> None:
+        if not self.src.exists():
+            print(f"OOPS: {self.src} doesn't exist...")
+            return
+        if self.dst.exists():
+            if not overwrite:
+                print(f"OOPS: {self.dst} already exists...")
+            else:
+                self.dst.unlink()
+
+        if not self.dst.parent.exists():
+            if DRY_RUN:
+                print(f"$ mkdir -p {self.dst.parent}")
+            else:
+                self.dst.parent.mkdir(parents=True)
+        if DRY_RUN:
+            print(f"$ ln -s {self.src} {self.dst}")
+        else:
+            self.src.symlink_to(self.dst)
+
+
+_pkgs = {}
+_pkgs["sxhkd"] =  ConfiguredPackage(
+    deps={},
+    system_packages={Pacman("sxhkd")},
+    files=[
+        Config("sxhkd/sxhkdrc", XDG_CONFIG_DIR / "sxhkd/sxhkdrc"),
+    ],
+)
+
+_pkgs["bspwm"] = ConfiguredPackage(
+    deps={_pkgs["sxhkd"]},
+    system_packages={
+        Pacman("bspwm"), Pacman("xorg-xinit"), Pacman("xorg-server")
+    },
+    files=[
+        Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwn/bspwmrc"),
+    ],
+)
+
+
+def get_targets(tgt: str) -> Sequence[ConfiguredPackage]:
+    targets: Sequence[ConfiguredPackage] = []
+    targets.append(_pkgs.get(tgt))
+    targets += targets[0].deps
+
+    return targets
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        print("Pass args")
+        sys.exit(1)
+
+    targets: Sequence[ConfiguredPackage] = []
+    for arg in sys.argv[1:]:
+        if arg == "--dry-run":
+            DRY_RUN = True
+        else:
+            resolved_targets = get_targets(arg)
+            targets += resolved_targets
+
+    pacman_packages = set()
+    for target in targets:
+        pacman_packages |= target.system_packages
+
+    Pacman.install(*pacman_packages)
+
+    for target in targets:
+        for link in target.files:
+            link.link()

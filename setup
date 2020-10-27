@@ -2,6 +2,7 @@
 
 import abc
 import importlib
+import os
 import shlex
 import subprocess
 import sys
@@ -16,12 +17,13 @@ HOME = Path.home()
 
 
 def run(
-    cmd: Union[str, Sequence[Union[Path, str]]]
+    cmd: Union[str, Sequence[Union[Path, str]]],
+    capture=False,
 ) -> subprocess.CompletedProcess:
     resolved_cmd = shlex.split(cmd) if isinstance(cmd, str) else cmd
     return subprocess.run(
         resolved_cmd,
-        stdout=subprocess.PIPE,
+        stdout=subprocess.PIPE if capture else None,
         cwd=REPO_BASE,
     )
 
@@ -31,10 +33,11 @@ class ConfiguredPackage:
     system_packages: Set["SystemPackage"] = {}
     files: Sequence["Config"] = {}
 
-    def __init__(self, deps, system_packages, files):
+    def __init__(self, deps, system_packages, files, after=None):
         self.deps = deps
         self.system_packages = system_packages
         self.files = files
+        self.after = after
 
 
 class SystemPackage(abc.ABC):
@@ -51,7 +54,7 @@ class Pacman(SystemPackage):
     def install(*pkgs: "Pacman") -> None:
         wanted = {pkg.name for pkg in pkgs}
         installed = {
-            o.split(" ")[0] for o in run("pacman -Q").stdout.decode("utf-8").split()
+            o.split(" ")[0] for o in run("pacman -Q", capture=True).stdout.decode("utf-8").split()
         }
 
         to_be_installed = wanted - installed
@@ -62,7 +65,7 @@ class Pacman(SystemPackage):
         if DRY_RUN:
             print(f"WOULD INSTALL: {', '.join(to_be_installed)}")
         else:
-            run(["pacman", "-Syu"] + list(to_be_installed))
+            run(["sudo", "pacman", "-Syu", "--needed", "-y"] + list(to_be_installed))
 
 
 class Config:
@@ -164,12 +167,30 @@ _pkgs["gpg"] = ConfiguredPackage(
 _pkgs["git"] = ConfiguredPackage(
     deps={},
     system_packages={
-       Pacman("openssh"), Pacman("git")
+       Pacman("openssh"), Pacman("git"), Pacman("man")
     },
     files=[
         Config("git/gitconfig", XDG_CONFIG_DIR / "git/config"),
         Config("git/gitignore", XDG_CONFIG_DIR / "git/ignore"),
     ],
+)
+
+def chsh(sh):
+    if os.environ.get("SHELL") == sh:
+        return
+    run(f"chsh -s {sh}")
+
+_pkgs["zsh"] = ConfiguredPackage(
+    deps={},
+    system_packages={
+        Pacman("zsh"), Pacman("zsh-syntax-highlighting"), Pacman("zsh-completions"),
+    },
+    files=[
+        Config("zsh/zshrc", HOME / ".zshrc"),
+        Config("zsh/settings", XDG_CONFIG_DIR / "zsh/settings"),
+        Config("zsh/environment", HOME / ".local/environment/zsh"),
+    ],
+    after=lambda: chsh("/bin/zsh"),
 )
 
 def get_targets(tgt: str) -> Sequence[ConfiguredPackage]:
@@ -202,3 +223,5 @@ if __name__ == "__main__":
     for target in targets:
         for f in target.files:
             f.create()
+        if target.after and not DRY_RUN:
+            target.after()

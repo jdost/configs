@@ -85,15 +85,16 @@ class Config:
 
     def create(self, overwrite: bool = False) -> None:
         if not self.src.exists():
-            print(f"OOPS: {self.src} doesn't exist...")
-            return
+            # This probably means a typo somewhere
+            raise FileNotFoundError(self.src)
+        
         if self.dst.exists():
             if self.dst.resolve() == self.src:
                 # already the right symlink
                 return
 
             if not overwrite:
-                print(f"OOPS: {self.dst} already exists...")
+                return
             else:
                 self.dst.unlink()
 
@@ -102,10 +103,11 @@ class Config:
                 print(f"$ mkdir -p {self.dst.parent}")
             else:
                 self.dst.parent.mkdir(parents=True)
+
         if DRY_RUN:
             print(f"$ ln -s {self.src} {self.dst}")
         else:
-            self.src.symlink_to(self.dst)
+            self.dst.symlink_to(self.src)
 
 
 class Perms:
@@ -143,7 +145,7 @@ _pkgs["bspwm"] = ConfiguredPackage(
         Pacman("bspwm"), Pacman("xorg-xinit"), Pacman("xorg-server")
     },
     files=[
-        Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwn/bspwmrc"),
+        Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwm/bspwmrc"),
     ],
 )
 _pkgs["gpg"] = ConfiguredPackage(

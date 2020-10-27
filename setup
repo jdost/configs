@@ -161,7 +161,16 @@ _pkgs["gpg"] = ConfiguredPackage(
         Perms(HOME / ".local/gpg", 0o700),
     ],
 )
-
+_pkgs["git"] = ConfiguredPackage(
+    deps={},
+    system_packages={
+       Pacman("openssh"), Pacman("git")
+    },
+    files=[
+        Config("git/gitconfig", XDG_CONFIG_DIR / "git/config"),
+        Config("git/gitignore", XDG_CONFIG_DIR / "git/ignore"),
+    ],
+)
 
 def get_targets(tgt: str) -> Sequence[ConfiguredPackage]:
     targets: Sequence[ConfiguredPackage] = []

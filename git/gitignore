@@ -1,0 +1,31 @@
+# Stage files
+*.back
+*.bak
+*.temp
+*.tmp
+*.orig
+*.swp
+*~
+*.patch
+
+# Python
+*.py[co]
+*.egg-info
+.mypy_cache
+.venv
+env
+venv
+
+# Local secrets
+.vagrant
+*.secret
+.den.ini
+.*.md
+/.local.vim
+
+# Compiled files
+*.hi
+*.o
+
+# Rust/Cargo artifacts
+target/

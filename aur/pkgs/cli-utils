@@ -1,0 +1,15 @@
+pkgname='cli-utils'
+pkgver=1
+pkgrel=0
+pkgdesc='Meta package of common command line utilites'
+arch=('any')
+depends=(
+  # alternatives to builtins/standards
+  'exa' 'ripgrep' 'bat' 'fd' 'colordiff'
+  # generally useful tools
+  'jq' 'bind-tools' 'curl' 'ack' 'tmux' 'which'
+  # bigger things that are basically required
+  'git' 'openssh' 'zsh'
+)
+optdepends=()
+# vim: ts=2 sw=2

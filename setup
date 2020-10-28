@@ -84,14 +84,16 @@ class Aur(SystemPackage):
             local_pkg = Path(pkg)
             if local_pkg.exists():
                 pkgbuild = local_pkg if local_pkg.is_file() else local_pkg / "PKGBUILD"
-                for line in pkgbuild.read_text():
+                for line in pkgbuild.read_text().split("\n"):
                     if line.startswith("pkgname="):
-                        pkgname = line[8:-1]
+                        pkgname = line[8:].strip("'\"")
                         if pkgname not in Pacman.list_installed():
                             to_be_installed.append(pkg)
                         break
             elif pkg not in Pacman.list_installed():
                 to_be_installed.append(pkg)
+            else:
+                print(pkg)
 
         if not len(to_be_installed):
             return
@@ -263,7 +265,7 @@ def chsh(sh):
 _pkgs["zsh"] = ConfiguredPackage(
     deps={},
     system_packages={
-        Pacman("zsh"), Pacman("zsh-syntax-highlighting"), Pacman("zsh-completions"),
+        Pacman("zsh"), Pacman("zsh-syntax-highlighting"), Pacman("zsh-completions"), Aur("aur/pkgs/cli-utils")
     },
     files=[
         Config("zsh/zshrc", HOME / ".zshrc"),

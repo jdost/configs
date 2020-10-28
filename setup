@@ -33,7 +33,7 @@ class ConfiguredPackage:
     system_packages: Set["SystemPackage"] = {}
     files: Sequence["Config"] = {}
 
-    def __init__(self, deps, system_packages, files, after=None):
+    def __init__(self, deps=set(), system_packages=set(), files=[], after=None):
         self.deps = deps
         self.system_packages = system_packages
         self.files = files
@@ -90,7 +90,7 @@ class Config:
         if not self.src.exists():
             # This probably means a typo somewhere
             raise FileNotFoundError(self.src)
-        
+
         if self.dst.exists():
             if self.dst.resolve() == self.src:
                 # already the right symlink
@@ -123,6 +123,12 @@ class Perms:
         self.perms = perms
 
     def create(self) -> None:
+        if not self.target.exists():
+            if DRY_RUN:
+                print(f"$ mkdir -p {self.target}")
+            else:
+                self.target.mkdir(parents=True)
+
         current = self.target.stat().st_mode & Perms.MASK
         if current == self.perms:
             return
@@ -133,10 +139,32 @@ class Perms:
             self.target.chmod(self.perms)
 
 
+def ensure_service(service):
+    if run(f"systemctl status {service}", capture=True).returncode == 0:
+        return
+
+    if DRY_RUN:
+        print(f"$ sudo systemctl enable --now {service}")
+    else:
+        run(f"sudo systemctl enable --now {service}")
+
+
+def add_group(group):
+    user = os.environ["USER"]
+    groups = run(f"groups {user}", capture=True).stdout.decode("utf-8").split()
+    if group in groups:
+        return
+
+    if DRY_RUN:
+        print(f"$ sudo usermod -aG {group} {user}")
+        print(f"$ newgrp {group}")
+    else:
+        run(f"sudo usermod -aG {group} {user}")
+        run(f"newgrp {group}")
+
 
 _pkgs = {}
 _pkgs["sxhkd"] =  ConfiguredPackage(
-    deps={},
     system_packages={Pacman("sxhkd")},
     files=[
         Config("sxhkd/sxhkdrc", XDG_CONFIG_DIR / "sxhkd/sxhkdrc"),
@@ -152,7 +180,6 @@ _pkgs["bspwm"] = ConfiguredPackage(
     ],
 )
 _pkgs["gpg"] = ConfiguredPackage(
-    deps={},
     system_packages={
         Pacman("gnupg"), Pacman("pcsclite"), Pacman("ccid")
     },
@@ -163,9 +190,9 @@ _pkgs["gpg"] = ConfiguredPackage(
         Config("gpg/environment", HOME / ".local/environment/gpg"),
         Perms(HOME / ".local/gpg", 0o700),
     ],
+    after=lambda: ensure_service("pcscd.socket"),
 )
 _pkgs["git"] = ConfiguredPackage(
-    deps={},
     system_packages={
        Pacman("openssh"), Pacman("git"), Pacman("man")
     },
@@ -174,6 +201,26 @@ _pkgs["git"] = ConfiguredPackage(
         Config("git/gitignore", XDG_CONFIG_DIR / "git/ignore"),
     ],
 )
+_pkgs["homebin"] = ConfiguredPackage(
+    files=[
+        Perms(HOME / ".local/bin", 0o755),
+        Config("homebin/environment", HOME / ".local/environment/homebin"),
+    ]
+)
+
+_pkgs["docker"] = ConfiguredPackage(
+    system_packages={Pacman("docker")},
+    after=lambda: ensure_service("docker") and add_group("docker"),
+)
+_pkgs["aur"] = ConfiguredPackage(
+    deps={_pkgs["homebin"], _pkgs["docker"]},
+    files=[
+        Config("aur/aur.py", HOME / ".local/bin/aur"),
+        Perms(HOME / ".local/bin/aur", 0o744),
+    ],
+)
+
+
 
 def chsh(sh):
     if os.environ.get("SHELL") == sh:

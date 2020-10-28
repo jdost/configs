@@ -103,6 +103,38 @@ class Aur(SystemPackage):
             run(["aur", "install"] + to_be_installed)
 
 
+class PythonVenv(SystemPackage):
+    PATH = HOME / ".local"
+
+    def __init__(self, name: str, *pkgs: str):
+        self.name = name
+        self.requirements = set(pkgs)
+
+    def install(self):
+        if not (self.PATH / self.name).exists():
+            if DRY_RUN:
+                if not self.PATH.exists():
+                    print(f"$ mkdir -p {self.PATH}")
+                print(f"$ python -m venv {self.PATH / self.name}")
+            else:
+                self.PATH.mkdir(parents=True)
+                run("python -m venv {self.PATH / self.name}")
+
+        installed_requirements = {req.split("=")[0] for req in run(
+            [self.PATH / self.name / "bin/python", "-m", "pip", "freeze"],
+            capture=True,
+        ).stdout.decode("utf-8").split()} if (self.PATH / self.name / "bin/python").exists() else set()
+        to_be_installed = self.requirements - installed_requirements
+        if to_be_installed:
+            if DRY_RUN:
+                print(f"$ {self.PATH / self.name}/bin/python -m pip install {' '.join(self.requirements)}")
+            else:
+                run(
+                    [self.PATH / self.name / "bin/python", "-m", "pip", "install"]
+                    + self.requirements
+                )
+
+
 class Config:
     src: Path
     dst: Path
@@ -227,24 +259,41 @@ _pkgs["gpg"] = ConfiguredPackage(
     ],
     after=lambda: ensure_service("pcscd.socket"),
 )
-_pkgs["git"] = ConfiguredPackage(
-    system_packages={
-       Pacman("openssh"), Pacman("git"), Pacman("man")
-    },
-    files=[
-        Config("git/gitconfig", XDG_CONFIG_DIR / "git/config"),
-        Config("git/gitignore", XDG_CONFIG_DIR / "git/ignore"),
-    ],
-)
 _pkgs["homebin"] = ConfiguredPackage(
     files=[
         Perms(HOME / ".local/bin", 0o755),
         Config("homebin/environment", HOME / ".local/environment/homebin"),
     ]
 )
+_pkgs["git"] = ConfiguredPackage(
+    deps={_pkgs["homebin"]},
+    system_packages={
+       Pacman("openssh"), Pacman("git"), Pacman("man-db")
+    },
+    files=[
+        Config("git/gitconfig", XDG_CONFIG_DIR / "git/config"),
+        Config("git/gitignore", XDG_CONFIG_DIR / "git/ignore"),
+        Config("git/wrapper.sh", HOME / ".local/bin/git"),
+    ],
+)
+_pkgs["python"] = ConfiguredPackage(
+    system_packages={Pacman("python")},
+    files=[Config("python/pip.conf", XDG_CONFIG_DIR / "pip/pip.conf")],
+)
+_pkgs["supervisord"] = ConfiguredPackage(
+    deps={_pkgs["python"], _pkgs["homebin"]},
+    system_packages={PythonVenv("supervisor", "supervisor")},
+    files=[
+        Config(PythonVenv.PATH / "supervisor/bin/supervisorctl", HOME / ".local/bin/supervisorctl"),
+        Config("supervisord/supervisord.conf", XDG_CONFIG_DIR / "supervisord/supervisord.conf"),
+        Perms(XDG_CONFIG_DIR / "supervisord/config.d", 0o755),
+    ],
+)
 
 _pkgs["docker"] = ConfiguredPackage(
+    deps={_pkgs["homebin"]},
     system_packages={Pacman("docker")},
+    files=[Config("docker/wrapper.sh", HOME / ".local/bin/docker")],
     after=lambda: (ensure_service("docker"), add_group("docker")),
 )
 _pkgs["aur"] = ConfiguredPackage(
@@ -306,14 +355,17 @@ if __name__ == "__main__":
             targets += resolved_targets
 
     pacman_packages = set()
+    other_packages = []
     for target in targets:
         for system_pkg in target.system_packages:
             if isinstance(system_pkg, Pacman):
                 pacman_packages.add(system_pkg)
             else:
-                system_pkg.install()
+                other_packages.append(system_pkg)
 
     Pacman.install(*pacman_packages)
+    for pkg in other_packages:
+        pkg.install()
 
     for target in targets:
         for f in target.files:

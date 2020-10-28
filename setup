@@ -51,11 +51,17 @@ class Pacman(SystemPackage):
         self.name = name
 
     @staticmethod
+    def list_installed() -> Set[str]:
+        if not hasattr(Pacman, "_installed"):
+            Pacman._installed = {
+                o.split(" ")[0] for o in run("pacman -Q", capture=True).stdout.decode("utf-8").split()
+            }
+        return Pacman._installed
+
+    @staticmethod
     def install(*pkgs: "Pacman") -> None:
         wanted = {pkg.name for pkg in pkgs}
-        installed = {
-            o.split(" ")[0] for o in run("pacman -Q", capture=True).stdout.decode("utf-8").split()
-        }
+        installed = Pacman.list_installed()
 
         to_be_installed = wanted - installed
         if not to_be_installed:
@@ -66,6 +72,33 @@ class Pacman(SystemPackage):
             print(f"WOULD INSTALL: {', '.join(to_be_installed)}")
         else:
             run(["sudo", "pacman", "-Syu", "--needed", "-y"] + list(to_be_installed))
+
+
+class Aur(SystemPackage):
+    def __init__(self, *definitions):
+        self.packages = definitions
+
+    def install(self):
+        to_be_installed = []
+        for pkg in self.packages:
+            local_pkg = Path(pkg)
+            if local_pkg.exists():
+                pkgbuild = local_pkg if local_pkg.is_file() else local_pkg / "PKGBUILD"
+                for line in pkgbuild.read_text():
+                    if line.startswith("pkgname="):
+                        pkgname = line[8:-1]
+                        if pkgname not in Pacman.list_installed():
+                            to_be_installed.append(pkg)
+                        break
+            elif pkg not in Pacman.list_installed():
+                to_be_installed.append(pkg)
+
+        if not len(to_be_installed):
+            return
+        elif DRY_RUN:
+            print(f"$ aur install {' '.join(to_be_installed)}")
+        else:
+            run(["aur", "install"] + to_be_installed)
 
 
 class Config:
@@ -210,7 +243,7 @@ _pkgs["homebin"] = ConfiguredPackage(
 
 _pkgs["docker"] = ConfiguredPackage(
     system_packages={Pacman("docker")},
-    after=lambda: ensure_service("docker") and add_group("docker"),
+    after=lambda: (ensure_service("docker"), add_group("docker")),
 )
 _pkgs["aur"] = ConfiguredPackage(
     deps={_pkgs["homebin"], _pkgs["docker"]},
@@ -239,6 +272,15 @@ _pkgs["zsh"] = ConfiguredPackage(
     ],
     after=lambda: chsh("/bin/zsh"),
 )
+_pkgs["alacritty"] = ConfiguredPackage(
+    deps={_pkgs["aur"]},
+    system_packages={
+        Pacman("alacritty"), Aur("aur/pkgs/ttf-anonymous-pro-ext"),
+    },
+    files=[
+        Config("alacritty/alacritty.yml", XDG_CONFIG_DIR / "alacritty/alacritty.yml"),
+    ],
+)
 
 def get_targets(tgt: str) -> Sequence[ConfiguredPackage]:
     targets: Sequence[ConfiguredPackage] = []
@@ -263,7 +305,11 @@ if __name__ == "__main__":
 
     pacman_packages = set()
     for target in targets:
-        pacman_packages |= target.system_packages
+        for system_pkg in target.system_packages:
+            if isinstance(system_pkg, Pacman):
+                pacman_packages.add(system_pkg)
+            else:
+                system_pkg.install()
 
     Pacman.install(*pacman_packages)
 

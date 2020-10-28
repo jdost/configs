@@ -1,0 +1,22 @@
+_pkgver_major=2
+_pkgver_minor=1
+_pkgver_patch=0
+
+pkgname="ttf-hack-ext"
+pkgver=${_pkgver_major}.${_pkgver_minor}.${_pkgver_patch}
+pkgrel=3
+pkgdesc='Extended version of the ttf-hack font with additional glyphs'
+arch=('any')
+license=()
+url="https://github.com/ryanoasis/nerd-fonts"
+provides=('ttf-hack')
+source=("https://github.com/ryanoasis/nerd-fonts/releases/download/v${pkgver}/Hack.zip")
+sha256sums=('70852e59fcffbe31d401f615625bcb9ebb6af72732c2f1fe9b9d5370c2565514')
+
+package() {
+   install -d "$pkgdir/usr/share/fonts/TTF/"
+   install -m644 "$srcdir/Hack Regular Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Hack Mono.ttf"
+   install -m644 "$srcdir/Hack Bold Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Hack Bold Mono.ttf"
+   install -m644 "$srcdir/Hack Italic Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Hack Italic Mono.ttf"
+   install -m644 "$srcdir/Hack Bold Italic Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Hack Italic Bold Mono.ttf"
+}

@@ -1,0 +1,12 @@
+[Unit]
+Description=supervisord - User daemon process manager
+Documentation=http://supervisord.org
+
+[Service]
+Type=forking
+ExecStart=%h/.local/supervisor/bin/supervisord -c %h/.config/supervisord/supervisord.conf
+ExecReload=%h/.local/supervisor/bin/supervisorctl reload
+ExecStop=%h/.local/supervisor/bin/supervisorctl shutdown
+
+[Install]
+WantedBy=default.target

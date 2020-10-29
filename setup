@@ -117,8 +117,9 @@ class PythonVenv(SystemPackage):
                     print(f"$ mkdir -p {self.PATH}")
                 print(f"$ python -m venv {self.PATH / self.name}")
             else:
-                self.PATH.mkdir(parents=True)
-                run("python -m venv {self.PATH / self.name}")
+                if not self.PATH.exists():
+                    self.PATH.mkdir(parents=True)
+                run(f"python -m venv {self.PATH / self.name}")
 
         installed_requirements = {req.split("=")[0] for req in run(
             [self.PATH / self.name / "bin/python", "-m", "pip", "freeze"],
@@ -131,7 +132,7 @@ class PythonVenv(SystemPackage):
             else:
                 run(
                     [self.PATH / self.name / "bin/python", "-m", "pip", "install"]
-                    + self.requirements
+                    + list(self.requirements)
                 )
 
 
@@ -206,12 +207,17 @@ class Perms:
             self.target.chmod(self.perms)
 
 
-def ensure_service(service):
-    if run(f"systemctl status {service}", capture=True).returncode == 0:
+def ensure_service(service, user=False):
+    systemctl = "systemctl --user" if user else "systemctl"
+    if run(f"{systemctl} status {service}", capture=True).returncode == 0:
         return
 
-    if DRY_RUN:
+    if DRY_RUN and user:
+        print(f"$ systemctl --user enable --now {service}")
+    elif DRY_RUN:
         print(f"$ sudo systemctl enable --now {service}")
+    elif user:
+        run(f"systemctl --user enable --now {service}")
     else:
         run(f"sudo systemctl enable --now {service}")
 
@@ -287,7 +293,10 @@ _pkgs["supervisord"] = ConfiguredPackage(
         Config(PythonVenv.PATH / "supervisor/bin/supervisorctl", HOME / ".local/bin/supervisorctl"),
         Config("supervisord/supervisord.conf", XDG_CONFIG_DIR / "supervisord/supervisord.conf"),
         Perms(XDG_CONFIG_DIR / "supervisord/config.d", 0o755),
+        Perms(PythonVenv.PATH / "supervisor/log", 0o755),
+        Config("supervisord/supervisord.service", XDG_CONFIG_DIR / "systemd/user/supervisord.service"),
     ],
+    after=lambda: ensure_service("supervisord", user=True),
 )
 
 _pkgs["docker"] = ConfiguredPackage(

@@ -13,6 +13,9 @@ super + Return
 ## launcher
 super + @p
 	rofi -show combi
+## notifications
+super + bracketleft
+        kill -s USR1 $(pidof deadd-notification-center)
 
 # Window Control
 ## close/kill

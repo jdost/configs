@@ -305,7 +305,7 @@ _pkgs["dropbox"] = ConfiguredPackage(
         Config("dropbox/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/dropbox.conf"),
         Config(PythonVenv.PATH / "maestral/bin/maestral", HOME / ".local/bin/maestral"),
     ],
-    after=lambda: run("supervisorctl reload"),
+    after=lambda: run("supervisorctl update dropbox"),
 )
 
 _pkgs["docker"] = ConfiguredPackage(
@@ -325,7 +325,7 @@ _pkgs["unclutter"] = ConfiguredPackage(
     deps={_pkgs["supervisord"]},
     system_packages={Pacman("unclutter")},
     files=[Config("unclutter/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/unclutter.conf")],
-    after=lambda: run("supervisorctl reload"),
+    after=lambda: run("supervisorctl update unclutter"),
 )
 _pkgs["picom"] = ConfiguredPackage(
     deps={_pkgs["supervisord"], _pkgs["aur"]},
@@ -334,7 +334,16 @@ _pkgs["picom"] = ConfiguredPackage(
         Config("picom/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/compositor.conf"),
         Config("picom/picom.conf", XDG_CONFIG_DIR / "picom/picom.conf"),
     ],
-    after=lambda: run("supervisorctl reload"),
+    after=lambda: run("supervisorctl update compositor"),
+)
+_pkgs["deadd"] = ConfiguredPackage(
+    deps={_pkgs["supervisord"], _pkgs["aur"]},
+    system_packages={Aur("deadd-notification-center-bin")},
+    files=[
+        Config("deadd/deadd.conf", XDG_CONFIG_DIR / "deadd/deadd.conf"),
+        Config("deadd/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/notifications.conf"),
+    ],
+    after=lambda: run("supervisorctl update notifications"),
 )
 
 

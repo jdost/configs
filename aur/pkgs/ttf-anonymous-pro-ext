@@ -1,0 +1,20 @@
+_pkgver_major=2
+_pkgver_minor=1
+_pkgver_patch=0
+
+pkgname="ttf-anonymous-pro-ext"
+pkgver=${_pkgver_major}.${_pkgver_minor}.${_pkgver_patch}
+pkgrel=2
+pkgdesc='Extended version of the ttf-anonymous-pro font with additional glyphs'
+arch=('any')
+license=()
+url="https://github.com/ryanoasis/nerd-fonts"
+provides=('ttf-anonymous-pro')
+source=("https://github.com/ryanoasis/nerd-fonts/releases/download/v${pkgver}/AnonymousPro.zip")
+sha256sums=('b51b3dd9aa5bcf061240d8dfcc203e78b085eeb97a76d91f6ad8cd9473467668')
+
+package() {
+   install -d "$pkgdir/usr/share/fonts/TTF/"
+   install -m644 "$srcdir/Anonymice Nerd Font Complete.ttf" "$pkgdir/usr/share/fonts/TTF/Anonymous Pro.ttf"
+   install -m644 "$srcdir/Anonymice Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Anonymous Pro Mono.ttf"
+}

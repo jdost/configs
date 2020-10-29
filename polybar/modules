@@ -1,0 +1,96 @@
+[module/xmonad]
+type = custom/script
+exec = tail -F /tmp/xmonad-polybar.log
+tail = true
+
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+enable-click = true
+enable-scroll = false
+
+[module/title]
+type = internal/xwindow
+label-maxlen = 60
+
+[module/memory]
+type = internal/memory
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 3
+;label = "%{B#99339999}  %{B-}%{u#99339999}%gb_used%/%gb_total%%{-u}"
+format = "<ramp-used>"
+; Ramped icons, uses colors for each stage going from green-yellow-red
+ramp-used-0 = "%{F#33CC33}%{F-}"
+ramp-used-1 = "%{F#99FF33}%{F-}"
+ramp-used-2 = "%{F#CCFF33}%{F-}"
+ramp-used-3 = "%{F#FFFF00}%{F-}"
+ramp-used-4 = "%{F#FFCC33}%{F-}"
+ramp-used-5 = "%{F#FF9900}%{F-}"
+ramp-used-6 = "%{F#FF6633}%{F-}"
+ramp-used-7 = "%{F#FF3333}%{F-}"
+
+[module/date]
+type = internal/date
+
+; Seconds to sleep between updates
+; Default: 1.0
+interval = 1.0
+
+; Optional time format
+time = %H:%M:%S
+label = "%time% "
+
+[module/network]
+type = internal/network
+interface = ${system.network-interface}
+label-connected = "%{B#99993333} ﯴ %{B-}%{u#99993333}%upspeed:6%%{-u}%{B#99993333} ﯲ %{B-}%{u#99993333}%downspeed:6%%{-u}"
+
+[module/cpu]
+type = internal/cpu
+interval = 0.5
+;label = "%{B#99333399}  %{B-}%{u#99333399}%percentage%%%{-u}"
+format = "<ramp-load>"
+
+; Ramped icons, uses colors for each stage going from green-yellow-red
+ramp-load-0 = "%{F#33CC33}%{F-}"
+ramp-load-1 = "%{F#99FF33}%{F-}"
+ramp-load-2 = "%{F#CCFF33}%{F-}"
+ramp-load-3 = "%{F#FFFF00}%{F-}"
+ramp-load-4 = "%{F#FFCC33}%{F-}"
+ramp-load-5 = "%{F#FF9900}%{F-}"
+ramp-load-6 = "%{F#FF6633}%{F-}"
+ramp-load-7 = "%{F#FF3333}%{F-}"
+
+[module/battery]
+type = internal/battery
+poll-interval = 5
+click-right = ~/.config/polybar/notifications/battery.sh
+
+full-at = 99
+battery = ${system.battery}
+adapter = ${system.adapter}
+
+format-charging = <animation-charging>
+format-discharging = <ramp-capacity>
+
+; charge ramp
+ramp-capacity-0 = "%{F#FF3333}%{F-}"
+ramp-capacity-1 = "%{F#FF9900}%{F-}"
+ramp-capacity-2 = "%{F#FFFF00}%{F-}"
+ramp-capacity-3 = "%{F#99FF33}%{F-}"
+ramp-capacity-4 = "%{F#33CC33}%{F-}"
+
+; charging animation
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+label-full = ""
+
+; vim:ft=dosini

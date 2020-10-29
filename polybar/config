@@ -1,0 +1,18 @@
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+include-file = ~/.config/polybar/modules
+include-file = ~/.config/polybar/system
+
+[settings]
+compositing-background = source
+; If true, handles transparency outside compositor
+pseudo-transparency = false
+
+[bar/main]
+font-0 = "Anonymice Nerd Font Mono:size=16;2"
+font-1 = "Symbola:size=11"
+background = #33000000
+width = 100%
+
+; vim:ft=dosini

@@ -70,7 +70,10 @@ if __name__ == "__main__":
             force = True
         elif target in {"build", "install"}:
             action = target
-        elif Path(target).exists():
+        elif Path(target).exists() and (
+            (Path(target).is_dir() and (Path(target) / "PKGBUILD").exists()) or
+            Path(target).is_file()
+        ):
             t = Path(target).resolve()
             cmd += ["-v", f"{t}:/src/{t.name}"]
             pkgs.append(t.name)

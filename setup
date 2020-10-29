@@ -84,6 +84,11 @@ class Aur(SystemPackage):
             local_pkg = Path(pkg)
             if local_pkg.exists():
                 pkgbuild = local_pkg if local_pkg.is_file() else local_pkg / "PKGBUILD"
+                if not pkgbuild.exists():
+                    if pkg not in Pacman.list_installed():
+                        to_be_installed.append(pkg)
+                    continue
+
                 for line in pkgbuild.read_text().split("\n"):
                     if line.startswith("pkgname="):
                         pkgname = line[8:].strip("'\"")
@@ -254,6 +259,7 @@ _pkgs["homebin"] = ConfiguredPackage(
     files=[
         Perms(HOME / ".local/bin", 0o755),
         Config("homebin/environment", HOME / ".local/environment/homebin"),
+        Config("homebin/settitle.sh", HOME / ".local/bin/settitle"),
     ]
 )
 _pkgs["git"] = ConfiguredPackage(
@@ -352,11 +358,21 @@ _pkgs["zsh"] = ConfiguredPackage(
 _pkgs["alacritty"] = ConfiguredPackage(
     deps={_pkgs["aur"]},
     system_packages={
-        Pacman("alacritty"), Aur("aur/pkgs/ttf-anonymous-pro-ext"),
+        Pacman("alacritty"), Aur("aur/pkgs/ttf-hack-ext")
     },
     files=[
         Config("alacritty/alacritty.yml", XDG_CONFIG_DIR / "alacritty/alacritty.yml"),
     ],
+)
+_pkgs["polybar"] = ConfiguredPackage(
+    deps={_pkgs["aur"], _pkgs["supervisord"]},
+    system_packages={Aur("polybar"), Aur("aur/pkgs/ttf-anonymous-pro-ext")},
+    files=[
+        Config("polybar/config", XDG_CONFIG_DIR / "polybar/config"),
+        Config("polybar/modules", XDG_CONFIG_DIR / "polybar/modules"),
+        Config("polybar/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/statusbar.conf"),
+    ],
+    after=lambda: run("supervisorctl update all"),
 )
 _pkgs["sxhkd"] =  ConfiguredPackage(
     system_packages={Pacman("sxhkd")},
@@ -374,6 +390,7 @@ _pkgs["bspwm"] = ConfiguredPackage(
     files=[
         Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwm/bspwmrc"),
         Config("bspwm/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/bspwm.conf"),
+        Config("bspwm/polybar", XDG_CONFIG_DIR / "polybar/system"),
     ],
     after=lambda: run("supervisorctl update all"),
 )

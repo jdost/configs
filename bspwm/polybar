@@ -1,0 +1,17 @@
+[system]
+battery =
+adapter =
+network-interface =
+
+[bar/main]
+modules-left = bspwm
+modules-center = title
+modules-right = cpu memory date
+module-margin = 1
+fixed_center = true
+; Tray
+tray-position = right
+tray-offset-x = 0
+tray-offset-y = 0
+
+; vim:ft=dosini

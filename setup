@@ -327,7 +327,15 @@ _pkgs["unclutter"] = ConfiguredPackage(
     files=[Config("unclutter/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/unclutter.conf")],
     after=lambda: run("supervisorctl reload"),
 )
-
+_pkgs["picom"] = ConfiguredPackage(
+    deps={_pkgs["supervisord"], _pkgs["aur"]},
+    system_packages={Aur("picom-tryone-git")},
+    files=[
+        Config("picom/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/compositor.conf"),
+        Config("picom/picom.conf", XDG_CONFIG_DIR / "picom/picom.conf"),
+    ],
+    after=lambda: run("supervisorctl reload"),
+)
 
 
 def chsh(sh):

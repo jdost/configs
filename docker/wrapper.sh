@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Docker wrapper to provide some additional helper functions to the CLI
 

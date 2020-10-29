@@ -14,7 +14,7 @@ if not PKG_FOLDER.is_dir():
 
 def build_image(rebuild: bool = False, force: bool = False) -> None:
     build_cmd = [
-        "docker",
+        "/usr/bin/docker",
         "build",
             "--force-rm",
             "--build-arg", f"UID={os.environ.get('UID', 1000)}",
@@ -24,7 +24,7 @@ def build_image(rebuild: bool = False, force: bool = False) -> None:
     ]
 
     images = subprocess.run(
-        ["docker", "images"],
+        ["/usr/bin/docker", "images"],
         stdout=subprocess.PIPE,
     ).stdout.decode("utf-8").split("\n")
 
@@ -51,7 +51,7 @@ def build_image(rebuild: bool = False, force: bool = False) -> None:
 
 if __name__ == "__main__":
     cmd = [
-        "docker",
+        "/usr/bin/docker",
         "run",
             "--rm",
             "-it",

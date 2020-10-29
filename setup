@@ -298,6 +298,15 @@ _pkgs["supervisord"] = ConfiguredPackage(
     ],
     after=lambda: ensure_service("supervisord", user=True),
 )
+_pkgs["dropbox"] = ConfiguredPackage(
+    deps={_pkgs["supervisord"]},
+    system_packages={Pacman("qt5-base"), PythonVenv("maestral", "maestral", "maestral-qt")},
+    files=[
+        Config("dropbox/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/dropbox.conf"),
+        Config(PythonVenv.PATH / "maestral/bin/maestral", HOME / ".local/bin/maestral"),
+    ],
+    after=lambda: run("supervisorctl reload"),
+)
 
 _pkgs["docker"] = ConfiguredPackage(
     deps={_pkgs["homebin"]},
@@ -316,6 +325,7 @@ _pkgs["unclutter"] = ConfiguredPackage(
     deps={_pkgs["supervisord"]},
     system_packages={Pacman("unclutter")},
     files=[Config("unclutter/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/unclutter.conf")],
+    after=lambda: run("supervisorctl reload"),
 )
 
 

@@ -312,6 +312,11 @@ _pkgs["aur"] = ConfiguredPackage(
         Perms(HOME / ".local/bin/aur", 0o744),
     ],
 )
+_pkgs["unclutter"] = ConfiguredPackage(
+    deps={_pkgs["supervisord"]},
+    system_packages={Pacman("unclutter")},
+    files=[Config("unclutter/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/unclutter.conf")],
+)
 
 
 

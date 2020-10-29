@@ -93,7 +93,7 @@ class Aur(SystemPackage):
             elif pkg not in Pacman.list_installed():
                 to_be_installed.append(pkg)
             else:
-                print(pkg)
+                continue
 
         if not len(to_be_installed):
             return
@@ -237,21 +237,6 @@ def add_group(group):
 
 
 _pkgs = {}
-_pkgs["sxhkd"] =  ConfiguredPackage(
-    system_packages={Pacman("sxhkd")},
-    files=[
-        Config("sxhkd/sxhkdrc", XDG_CONFIG_DIR / "sxhkd/sxhkdrc"),
-    ],
-)
-_pkgs["bspwm"] = ConfiguredPackage(
-    deps={_pkgs["sxhkd"]},
-    system_packages={
-        Pacman("bspwm"), Pacman("xorg-xinit"), Pacman("xorg-server")
-    },
-    files=[
-        Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwm/bspwmrc"),
-    ],
-)
 _pkgs["gpg"] = ConfiguredPackage(
     system_packages={
         Pacman("gnupg"), Pacman("pcsclite"), Pacman("ccid")
@@ -305,7 +290,7 @@ _pkgs["dropbox"] = ConfiguredPackage(
         Config("dropbox/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/dropbox.conf"),
         Config(PythonVenv.PATH / "maestral/bin/maestral", HOME / ".local/bin/maestral"),
     ],
-    after=lambda: run("supervisorctl update dropbox"),
+    after=lambda: run("supervisorctl update all"),
 )
 
 _pkgs["docker"] = ConfiguredPackage(
@@ -325,7 +310,7 @@ _pkgs["unclutter"] = ConfiguredPackage(
     deps={_pkgs["supervisord"]},
     system_packages={Pacman("unclutter")},
     files=[Config("unclutter/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/unclutter.conf")],
-    after=lambda: run("supervisorctl update unclutter"),
+    after=lambda: run("supervisorctl update all"),
 )
 _pkgs["picom"] = ConfiguredPackage(
     deps={_pkgs["supervisord"], _pkgs["aur"]},
@@ -334,7 +319,7 @@ _pkgs["picom"] = ConfiguredPackage(
         Config("picom/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/compositor.conf"),
         Config("picom/picom.conf", XDG_CONFIG_DIR / "picom/picom.conf"),
     ],
-    after=lambda: run("supervisorctl update compositor"),
+    after=lambda: run("supervisorctl update all"),
 )
 _pkgs["deadd"] = ConfiguredPackage(
     deps={_pkgs["supervisord"], _pkgs["aur"]},
@@ -343,7 +328,7 @@ _pkgs["deadd"] = ConfiguredPackage(
         Config("deadd/deadd.conf", XDG_CONFIG_DIR / "deadd/deadd.conf"),
         Config("deadd/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/notifications.conf"),
     ],
-    after=lambda: run("supervisorctl update notifications"),
+    after=lambda: run("supervisorctl update all"),
 )
 
 
@@ -372,6 +357,25 @@ _pkgs["alacritty"] = ConfiguredPackage(
     files=[
         Config("alacritty/alacritty.yml", XDG_CONFIG_DIR / "alacritty/alacritty.yml"),
     ],
+)
+_pkgs["sxhkd"] =  ConfiguredPackage(
+    system_packages={Pacman("sxhkd")},
+    files=[
+        Config("sxhkd/sxhkdrc", XDG_CONFIG_DIR / "sxhkd/sxhkdrc"),
+    ],
+)
+_pkgs["bspwm"] = ConfiguredPackage(
+    deps={
+        _pkgs["sxhkd"], _pkgs["supervisord"], _pkgs["deadd"], _pkgs["picom"], _pkgs["unclutter"], _pkgs["alacritty"]
+    },
+    system_packages={
+        Pacman("bspwm"), Pacman("xorg-xinit"), Pacman("xorg-server")
+    },
+    files=[
+        Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwm/bspwmrc"),
+        Config("bspwm/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/bspwm.conf"),
+    ],
+    after=lambda: run("supervisorctl update all"),
 )
 
 def get_targets(tgt: str) -> Sequence[ConfiguredPackage]:

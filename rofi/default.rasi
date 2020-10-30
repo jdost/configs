@@ -1,0 +1,87 @@
+configuration {
+   modi: "window,drun,combi,:~/.config/rofi/scripts/pass,掠:~/.config/rofi/scripts/totp";
+   combi-modi: [window,drun];
+
+   columns: 2;
+   fixed-num-lines: true;
+   lines: 15;
+
+   display-drun: "";
+   display-window: "";
+   window-format: "{c}  {t}";
+   display-combi: "";
+
+   font: "Hack Nerd Font Mono 18";
+   show-icons: false;
+   sidebar-mode: false;
+   fullscreen: false;
+}
+
+* {
+   font: "Hack Nerd Font Mono 18";
+
+   activefg: rgba(255, 175, 50, 1.0);
+   defaultfg: rgba(200, 200, 200, 1.0);
+   passivefg: rgba(100, 100, 100, 1.0);
+
+   activebg: rgba(100, 100, 100, 0.75);
+   defaultbg: rgba(50, 50, 50, 0.85);
+   passivebg: rgba(50, 50, 50, 0.45);
+   background-color: @defaultbg;
+
+   margin: 0;
+   border: 0;
+   padding: 0;
+}
+
+window {
+   children: [inputbar, mode-switcher, message, listview];
+   border-radius: 5px;
+}
+   inputbar {
+      children: [prompt, entry];
+   }
+      prompt {
+         padding: 10px 18px;
+         background-color: @activebg;
+         color: @activefg;
+         border-radius: 5px;
+      }
+      entry {
+         padding: 10px;
+         color: @defaultfg;
+      }
+   mode-switcher {
+      padding: 5px 0 0;
+   }
+      button {
+         font: "Hack Nerd Font Mono 28";
+         padding: 0;
+         text-color: @passivefg;
+         border: 0 0 5px solid;
+         border-color: @defaultbg;
+      }
+      button selected {
+         text-color: @activefg;
+         border-color: @activefg;
+      }
+   listview {
+      dynamic: true;
+      cycle: true;
+      scrollbar: false;
+      margin: 0 0 4px;
+   }
+      element {
+         padding: 5px 10px;
+         text-color: @defaultfg;
+      }
+      element active {
+         text-color: @activefg;
+      }
+      element selected {
+         background-color: @activebg;
+      }
+      element selected active {
+         background-color: @activebg;
+         text-color: @activefg;
+      }

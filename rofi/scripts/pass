@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+PASSWORD_LENGTH=24
+
+fail() {  # output failure message and fail
+   echo ${1:-'Something went wrong.'}
+   exit ${2:-1}
+}
+debug() {
+   echo ${1:-} >&2
+}
+message() {  # dump a message to the rofi message bar
+   echo -en "\0message\x1f$1\n"
+}
+
+list() {  # dump list of stored passwords with standard prefix
+   find "${PASSWORD_STORE_DIR:-$HOME/.password_store}" -name "*.gpg" -printf "%P\n" \
+      | sed "s/.gpg//"
+}
+
+create() {  # populate a new password
+   local password=${1:-}
+   [[ -z "$password" ]] && fail 'No password to generate'
+   pass generate $password $PASSWORD_LENGTH
+}
+
+get() {  # retrieve the stored password as passed in
+   local target=${1:-}
+   [ -z "$target" ] && fail 'Need a password to retrieve' 7
+   local output=${2:-xclip}
+
+   # temporarily populate the clipboard with the value
+   if [[ "$output" == "xclip" ]]; then
+      local prvs=$(xclip -selection 'clipboard' -out)
+      coproc (
+         # generates the password and redirects into the clipboard
+         pass show "$target" 2>/dev/null \
+            | head -n1 | xclip -in -selection 'clipboard'
+         # after 30 seconds, restore to the old contentsb  b
+         sleep 30
+         echo "$prvs" | xclip -in -selection 'clipboard'
+      )
+   elif [[ "$output" == "xdotool" ]]; then
+      coproc (
+         # use a 0 second sleep to background this to allow rofi to close
+         sleep 0
+         # outputs the password into the active window
+         xdotool type --clearmodifiers --window $(
+            xdotool getactivewindow
+         ) --delay 5 $(
+            pass show "$target" 2>/dev/null \
+               | head -n1
+         )
+      )
+   else
+      exit 6
+   fi
+}
+
+ACTION="${1:-}"
+if [[ -z "$ACTION" ]]; then
+   list
+elif [[ "$ACTION" =~ ^\>\> ]]; then
+   message "Got action: $ACTION"
+   # Remove the symbol prefix
+   ACTION=$(echo $ACTION | cut -d' ' -f2-)
+   # Retrieve the suffix, which is after 3 words, either "Input to window" or
+   #  "Place in clipboard", then strip off the first and last character (the [] that
+   #  wrap the target
+   TARGET="$(echo $ACTION \
+               | cut -d' ' -f4- \
+               | cut -c2- \
+               | rev | cut -c2- | rev)"
+   if ! list | grep "^$TARGET$" >/dev/null; then
+      create $TARGET
+   fi
+
+   if [[ "$ACTION" =~ ^Input ]]; then
+      handler="xdotool"
+   elif [[ "$ACTION" =~ ^Place ]]; then
+      handler="xclip"
+   fi
+
+   get $(echo $TARGET | cut -d' ' -f2-) ${handler:-}
+elif [[ "$ACTION" == "oops" ]]; then
+   exit 5
+else
+   message "Requested: $ACTION"
+   echo ">> Input to window [$ACTION]"
+   echo ">> Place in clipboard [$ACTION]"
+fi

@@ -385,6 +385,17 @@ _pkgs["wallpaper"] = ConfiguredPackage(
     ],
     after=lambda: ensure_service("wallpaper.timer", user=True),
 )
+_pkgs["rofi"] = ConfiguredPackage(
+    system_packages={
+        Pacman("rofi"), Aur("aur/pkgs/ttf-hack-ext"),
+    },
+    files=[
+        Config("rofi/default.rasi", XDG_CONFIG_DIR / "rofi/default.rasi"),
+        Config("rofi/config.rasi", XDG_CONFIG_DIR / "rofi/config.rasi"),
+        Config("rofi/scripts/totp", XDG_CONFIG_DIR / "rofi/scripts/totp"),
+        Config("rofi/scripts/pass", XDG_CONFIG_DIR / "rofi/scripts/pass"),
+    ],
+)
 _pkgs["sxhkd"] =  ConfiguredPackage(
     system_packages={Pacman("sxhkd")},
     files=[

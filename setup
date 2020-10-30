@@ -396,6 +396,16 @@ _pkgs["rofi"] = ConfiguredPackage(
         Config("rofi/scripts/pass", XDG_CONFIG_DIR / "rofi/scripts/pass"),
     ],
 )
+_pkgs["screenlock"] = ConfiguredPackage(
+    system_packages={
+        Pacman("mpv"), Pacman("xsecurelock"), Pacman("xss-lock"),
+    },
+    files=[
+        Config("screenlock/screenlock.sh", HOME / ".local/bin/screenlock"),
+        Config("screenlock/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/screenlock.conf")
+    ],
+    after=lambda: run("supervisorctl update all"),
+)
 _pkgs["sxhkd"] =  ConfiguredPackage(
     system_packages={Pacman("sxhkd")},
     files=[

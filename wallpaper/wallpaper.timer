@@ -1,0 +1,9 @@
+[Unit]
+Description=Regular rotation of wallpaper
+
+[Timer]
+OnCalendar=*-*-* *:0,20,40:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

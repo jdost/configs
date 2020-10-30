@@ -374,6 +374,17 @@ _pkgs["polybar"] = ConfiguredPackage(
     ],
     after=lambda: run("supervisorctl update all"),
 )
+_pkgs["wallpaper"] = ConfiguredPackage(
+    system_packages={
+        Pacman("feh"), Pacman("curl"), Pacman("which")
+    },
+    files=[
+        Config("wallpaper/wallpaper.sh", HOME / ".local/bin/wallpaper"),
+        Config("wallpaper/wallpaper.service", XDG_CONFIG_DIR / "systemd/user/wallpaper.service"),
+        Config("wallpaper/wallpaper.timer", XDG_CONFIG_DIR / "systemd/user/wallpaper.timer"),
+    ],
+    after=lambda: ensure_service("wallpaper.timer", user=True),
+)
 _pkgs["sxhkd"] =  ConfiguredPackage(
     system_packages={Pacman("sxhkd")},
     files=[

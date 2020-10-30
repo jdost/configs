@@ -1,0 +1,9 @@
+[Unit]
+Description=Change wallpaper to a random selection
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/wallpaper
+
+[Install]
+WantedBy=default.target

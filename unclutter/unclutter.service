@@ -1,0 +1,8 @@
+[Unit]
+Description=unclutter - Idle Cursor Hiding
+
+[Service]
+ExecStart=unclutter -idle 1
+
+[Install]
+WantedBy=xorg.target

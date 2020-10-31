@@ -1,0 +1,8 @@
+[Unit]
+Description=picom - Graphical Compositor
+
+[Service]
+ExecStart=picom --experimental-backends
+
+[Install]
+WantedBy=xorg.target

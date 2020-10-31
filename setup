@@ -277,26 +277,14 @@ _pkgs["python"] = ConfiguredPackage(
     system_packages={Pacman("python")},
     files=[Config("python/pip.conf", XDG_CONFIG_DIR / "pip/pip.conf")],
 )
-_pkgs["supervisord"] = ConfiguredPackage(
-    deps={_pkgs["python"], _pkgs["homebin"]},
-    system_packages={PythonVenv("supervisor", "supervisor")},
-    files=[
-        Config(PythonVenv.PATH / "supervisor/bin/supervisorctl", HOME / ".local/bin/supervisorctl"),
-        Config("supervisord/supervisord.conf", XDG_CONFIG_DIR / "supervisord/supervisord.conf"),
-        Perms(XDG_CONFIG_DIR / "supervisord/config.d", 0o755),
-        Perms(PythonVenv.PATH / "supervisor/log", 0o755),
-        Config("supervisord/supervisord.service", XDG_CONFIG_DIR / "systemd/user/supervisord.service"),
-    ],
-    after=lambda: ensure_service("supervisord", user=True),
-)
 _pkgs["dropbox"] = ConfiguredPackage(
-    deps={_pkgs["supervisord"]},
+    deps={},
     system_packages={Pacman("qt5-base"), PythonVenv("maestral", "maestral", "maestral-qt")},
     files=[
-        Config("dropbox/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/dropbox.conf"),
+        Config("dropbox/dropbox.service", XDG_CONFIG_DIR / "systemd/user/dropbox.service"),
         Config(PythonVenv.PATH / "maestral/bin/maestral", HOME / ".local/bin/maestral"),
     ],
-    after=lambda: run("supervisorctl update all"),
+    after=lambda: ensure_service("dropbox", user=True),
 )
 
 _pkgs["docker"] = ConfiguredPackage(
@@ -313,28 +301,38 @@ _pkgs["aur"] = ConfiguredPackage(
     ],
 )
 _pkgs["unclutter"] = ConfiguredPackage(
-    deps={_pkgs["supervisord"]},
+    deps={},
     system_packages={Pacman("unclutter")},
-    files=[Config("unclutter/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/unclutter.conf")],
-    after=lambda: run("supervisorctl update all"),
+    files=[Config("unclutter/unclutter.service", XDG_CONFIG_DIR / "systemd/user/unclutter.service")],
+    after=lambda: ensure_service("unclutter", user=True),
 )
 _pkgs["picom"] = ConfiguredPackage(
-    deps={_pkgs["supervisord"], _pkgs["aur"]},
+    deps={_pkgs["aur"]},
     system_packages={Aur("picom-tryone-git")},
     files=[
-        Config("picom/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/compositor.conf"),
+        Config("picom/compositor.service", XDG_CONFIG_DIR / "systemd/user/compositor.service"),
         Config("picom/picom.conf", XDG_CONFIG_DIR / "picom/picom.conf"),
     ],
-    after=lambda: run("supervisorctl update all"),
+    after=lambda: ensure_service("compositor", user=True),
 )
 _pkgs["deadd"] = ConfiguredPackage(
-    deps={_pkgs["supervisord"], _pkgs["aur"]},
+    deps={_pkgs["aur"]},
     system_packages={Aur("deadd-notification-center-bin")},
     files=[
         Config("deadd/deadd.conf", XDG_CONFIG_DIR / "deadd/deadd.conf"),
-        Config("deadd/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/notifications.conf"),
+        Config("deadd/notifications.service", XDG_CONFIG_DIR / "systemd/user/notifications.service"),
     ],
-    after=lambda: run("supervisorctl update all"),
+    after=lambda: ensure_service("notifications", user=True),
+)
+_pkgs["xorg"] = ConfiguredPackage(
+    system_packages={Pacman("xorg-xinit"), Pacman("xorg-server")},
+    files=[
+        Config("xorg/xorg.target", XDG_CONFIG_DIR / "systemd/user/xorg.target"),
+        Config("xorg/xinitrc", HOME / ".xinitrc"),
+        Config("xorg/xinitrc.d/01-systemd", XDG_CONFIG_DIR / "xorg/xinitrc.d/01-systemd"),
+        Config("xorg/caps-ctrl-swap.xmodmap", XDG_CONFIG_DIR / "xorg/caps-ctrl-swap.xmodmap"),
+        Config("xorg/xinitrc.d/10-xmodmap", XDG_CONFIG_DIR / "xorg/xinitrc.d/10-xmodmap"),
+    ],
 )
 
 
@@ -365,14 +363,14 @@ _pkgs["alacritty"] = ConfiguredPackage(
     ],
 )
 _pkgs["polybar"] = ConfiguredPackage(
-    deps={_pkgs["aur"], _pkgs["supervisord"]},
+    deps={_pkgs["aur"]},
     system_packages={Aur("polybar"), Aur("aur/pkgs/ttf-anonymous-pro-ext")},
     files=[
         Config("polybar/config", XDG_CONFIG_DIR / "polybar/config"),
         Config("polybar/modules", XDG_CONFIG_DIR / "polybar/modules"),
-        Config("polybar/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/statusbar.conf"),
+        Config("polybar/statusbar.service", XDG_CONFIG_DIR / "systemd/user/statusbar.service"),
     ],
-    after=lambda: run("supervisorctl update all"),
+    after=lambda: ensure_service("statusbar", user=True),
 )
 _pkgs["wallpaper"] = ConfiguredPackage(
     system_packages={
@@ -382,6 +380,7 @@ _pkgs["wallpaper"] = ConfiguredPackage(
         Config("wallpaper/wallpaper.sh", HOME / ".local/bin/wallpaper"),
         Config("wallpaper/wallpaper.service", XDG_CONFIG_DIR / "systemd/user/wallpaper.service"),
         Config("wallpaper/wallpaper.timer", XDG_CONFIG_DIR / "systemd/user/wallpaper.timer"),
+        Config("wallpaper/xinitrc", XDG_CONFIG_DIR / "xorg/xinitrc.d/10-wallpaper"),
     ],
     after=lambda: ensure_service("wallpaper.timer", user=True),
 )
@@ -402,9 +401,10 @@ _pkgs["screenlock"] = ConfiguredPackage(
     },
     files=[
         Config("screenlock/screenlock.sh", HOME / ".local/bin/screenlock"),
-        Config("screenlock/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/screenlock.conf")
+        Config("screenlock/screenlock.service", XDG_CONFIG_DIR / "systemd/user/screenlock.service"),
+        Config("screenlock/xinitrc", XDG_CONFIG_DIR / "xorg/xinitrc.d/10-screenlock"),
     ],
-    after=lambda: run("supervisorctl update all"),
+    after=lambda: ensure_service("screenlock", user=True),
 )
 _pkgs["sxhkd"] =  ConfiguredPackage(
     system_packages={Pacman("sxhkd")},
@@ -414,17 +414,14 @@ _pkgs["sxhkd"] =  ConfiguredPackage(
 )
 _pkgs["bspwm"] = ConfiguredPackage(
     deps={
-        _pkgs["sxhkd"], _pkgs["supervisord"], _pkgs["deadd"], _pkgs["picom"], _pkgs["unclutter"], _pkgs["alacritty"]
+        _pkgs["sxhkd"], _pkgs["deadd"], _pkgs["picom"], _pkgs["unclutter"], _pkgs["alacritty"], _pkgs["xorg"]
     },
-    system_packages={
-        Pacman("bspwm"), Pacman("xorg-xinit"), Pacman("xorg-server")
-    },
+    system_packages={ Pacman("bspwm") },
     files=[
         Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwm/bspwmrc"),
-        Config("bspwm/supervisord.conf", XDG_CONFIG_DIR / "supervisord/config.d/bspwm.conf"),
         Config("bspwm/polybar", XDG_CONFIG_DIR / "polybar/system"),
+        Config("bspwm/xinitrc", XDG_CONFIG_DIR / "xorg/xinitrc.d/99-bspwm"),
     ],
-    after=lambda: run("supervisorctl update all"),
 )
 
 def get_targets(tgt: str) -> Sequence[ConfiguredPackage]:

@@ -1,0 +1,6 @@
+[Unit]
+Description=polybar - Status Bar
+
+[Service]
+ExecStart=polybar main
+Restart=on-failure

@@ -1,0 +1,15 @@
+set -euo pipefail
+
+# Source each of the modules
+for rc in ${XDG_CONFIG_HOME:-$HOME/.config}/xorg/xinitrc.d/*; do
+    source $rc
+done
+
+if [[ -z "${WINDOW_MANAGER}" ]]; then
+    echo "ERROR: please have an xinitrc module that defines the desired window manager."
+    exit 1
+fi
+
+env > ~/tmp/xorg.env
+
+exec $WINDOW_MANAGER

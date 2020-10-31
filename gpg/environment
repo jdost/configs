@@ -9,6 +9,7 @@ launch_agent() {
 }
 
 set_ssh_socket() {
+   [[ -e "$HOME/.ssh/auth.sock" ]] && rm "$HOME/.ssh/auth.sock"
    ln -s "$(gpgconf --list-dirs agent-ssh-socket)" "$HOME/.ssh/auth.sock"
    export SSH_AUTH_SOCK="$HOME/.ssh/auth.sock"
 }

@@ -1,0 +1,9 @@
+systemctl --user import-environment DISPLAY XAUTHORITY
+if which dbus-update-activation-environment &>/dev/null; then
+    dbus-update-activation-environment DISPLAY XAUTHORITY
+fi
+
+coproc (
+  sleep 0
+  systemctl --user start xorg.target
+)

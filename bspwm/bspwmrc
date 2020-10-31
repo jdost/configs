@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-# TEMP - migrate sxhkd to supervisord
-pgrep -x sxhkd > /dev/null || sxhkd &
-
 # define monitors
 bspc monitor -d term web
 
@@ -23,3 +20,5 @@ bspc config gapless_monocle      false
 
 # rules
 bspc rule -a Chromium desktop='^2'
+
+systemctl --user start statusbar.service

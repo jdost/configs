@@ -1,0 +1,6 @@
+SCREENSAVER_IDLE_SECONDS=600  # Idle time before screensaver is activated
+SCREENSAVER_CYCLE_SECONDS=150  # Time before the screensaver is refreshed
+if which xset &>/dev/null; then
+  xset s on \
+    && xset s $SCREENSAVER_IDLE_SECONDS $SCREENSAVER_CYCLE_SECONDS
+fi

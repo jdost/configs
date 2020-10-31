@@ -1,0 +1,8 @@
+[Unit]
+Description=deadd - Dbus Notifications
+
+[Service]
+ExecStart=deadd-notification-center
+
+[Install]
+WantedBy=xorg.target

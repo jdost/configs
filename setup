@@ -254,6 +254,7 @@ _pkgs["gpg"] = ConfiguredPackage(
         Config("gpg/gpg-agent.conf", HOME / ".local/gpg/gpg-agent.conf"),
         Config("gpg/scdaemon.conf", HOME / ".local/gpg/scdaemon.conf"),
         Config("gpg/environment", HOME / ".local/environment/gpg"),
+        Config("gpg/xinitrc", XDG_CONFIG_DIR / "xorg/xinitrd.d/20-gpg"),
         Perms(HOME / ".local/gpg", 0o700),
     ],
     after=lambda: ensure_service("pcscd.socket"),

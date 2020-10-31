@@ -8,7 +8,7 @@ set -euo pipefail
 #  this script or a shell alias existing above the actual binary
 if [[ "$(which docker)" != "$(which -a docker)" ]]; then
    ALIASED_DOCKER_LEN=$(which docker | wc -l)
-   DOCKER_BIN=$(which -a docker | sed -e "1,$ALIASED_DOCKER_LEN"d | head -n 1)
+   DOCKER_BIN=$(which -a docker | uniq | sed -e "1,$ALIASED_DOCKER_LEN"d | head -n 1)
 else
    DOCKER_BIN=$(which docker)
 fi

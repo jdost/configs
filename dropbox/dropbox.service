@@ -5,6 +5,7 @@ Description=maestral - Dropbox Daemon
 ExecStart=%h/.local/maestral/bin/maestral gui
 ExecReload=%h/.local/maestral/bin/maestral restart
 ExecStop=%h/.local/maestral/bin/maestral stop
+Restart=on-failure
 
 [Install]
 WantedBy=xorg.target

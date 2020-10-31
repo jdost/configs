@@ -183,7 +183,10 @@ class Config:
         if DRY_RUN:
             print(f"$ ln -s {self.src} {self.dst}")
         else:
-            self.dst.symlink_to(self.src)
+            try:
+                self.dst.symlink_to(self.src)
+            except PermissionError:
+                run(f"sudo ln -s {self.src} {self.dst}")
 
 
 class Perms:
@@ -403,6 +406,7 @@ _pkgs["screenlock"] = ConfiguredPackage(
         Config("screenlock/screenlock.sh", HOME / ".local/bin/screenlock"),
         Config("screenlock/screenlock.service", XDG_CONFIG_DIR / "systemd/user/screenlock.service"),
         Config("screenlock/xinitrc", XDG_CONFIG_DIR / "xorg/xinitrc.d/10-screenlock"),
+        Config("screenlock/saver_mpv-cinemagraph", "/usr/lib/xsecurelock/saver_mpv-cinemagraph"),
     ],
     after=lambda: ensure_service("screenlock", user=True),
 )

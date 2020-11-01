@@ -131,7 +131,11 @@ case "${1:-}" in
       switch latest
       ;;
    "reset")
-      reset_current
+      if [[ ! -e "$ACTIVE_WALLPAPER" ]]; then
+        switch
+      else
+        reset_current
+      fi
       ;;
    *)
       switch

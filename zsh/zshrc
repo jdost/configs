@@ -8,10 +8,6 @@ autoload -U vcs_info && vcs_info
 zmodload zsh/complist
 zmodload zsh/terminfo
 
-# Environment Vars {{{
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
-
 DEBUG=${DEBUG:-0}
 
 for r in $HOME/.local/environment/*; do
@@ -20,9 +16,9 @@ for r in $HOME/.local/environment/*; do
 done # }}}
 
 # Plugin/Settings configs
-PLUGIN_DIR=$XDG_CONFIG_HOME/zsh/plugins
+PLUGIN_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plugins
 [[ ! -d "$PLUGIN_DIR" ]] && mkdir -p "$PLUGIN_DIR"
-ZSH_SETTINGS_DIR=$XDG_CONFIG_HOME/zsh/settings
+ZSH_SETTINGS_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh/settings
 ZSHRC=$HOME/.zshrc
 
 # Shell options
@@ -36,8 +32,8 @@ for r in $ZSH_SETTINGS_DIR/*.zsh; do
    source $r
 done # }}}
 # set shell colors {{{
-if [ -f $XDG_CONFIG_HOME/zsh/colors ]; then
-   . $XDG_CONFIG_HOME/zsh/colors
+if [ -f ${XDG_CONFIG_HOME:-$HOME/.config}/zsh/colors ]; then
+   . ${XDG_CONFIG_HOME:-$HOME/.config}/zsh/colors
 fi # }}}
 
 # set initial title using TTY, only if interactive

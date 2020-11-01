@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-TOTP_CACHE=$XDG_CACHE_HOME/ykman_totp
+TOTP_CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/ykman_totp
 REFRESH="Refresh list"
 
 fail() {  # output failure message and fail

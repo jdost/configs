@@ -1,0 +1,4 @@
+export EDITOR="vim"
+export VIMINIT='let $MYVIMRC="$HOME/.config/vim/vimrc" | source $MYVIMRC'
+
+# vim: ft=zsh foldmethod=marker

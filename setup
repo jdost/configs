@@ -383,6 +383,16 @@ _pkgs["polybar"] = ConfiguredPackage(
     ],
     after=lambda: ensure_service("statusbar", user=True),
 )
+_pkgs["vim"] = ConfiguredPackage(
+    system_packages={Pacman("vim")},
+    files=[
+        Config("vim/vimrc", XDG_CONFIG_DIR / "vim/vimrc"),
+        Config("vim/ftplugin", XDG_CONFIG_DIR / "vim/ftplugin"),
+        Config("vim/plugin", XDG_CONFIG_DIR / "vim/plugin"),
+        Config("vim/plugins.vim", XDG_CONFIG_DIR / "vim/plugins.vim"),
+        Config("vim/environment", HOME / ".local/environment/vim"),
+    ]
+)
 _pkgs["wallpaper"] = ConfiguredPackage(
     system_packages={
         Pacman("feh"), Pacman("curl"), Pacman("which")

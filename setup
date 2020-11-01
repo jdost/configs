@@ -244,6 +244,26 @@ def add_group(group):
         run(f"newgrp {group}")
 
 
+def hide_desktop_entry(*entries):
+    for entry in entries:
+        global_entry = Path(f"/usr/share/applications/{entry}.desktop")
+        hidden_entry = HOME / ".local/share/applications" / f"{entry}.desktop"
+        if hidden_entry.exists():
+            continue
+
+        if not hidden_entry.parent.exists():
+            if DRY_RUN:
+                print(f"$ mkdir {hidden_entry.parent}")
+            else:
+                hidden_entry.parent.mkdir(parents=True)
+
+        if DRY_RUN:
+            print(f"$ cp {global_entry} {hidden_entry}")
+        else:
+            hidden_entry.touch()
+            hidden_entry.write_text(global_entry.read_text() + "\nNoDisplay=true")
+
+
 _pkgs = {}
 _pkgs["gpg"] = ConfiguredPackage(
     system_packages={
@@ -317,7 +337,11 @@ _pkgs["picom"] = ConfiguredPackage(
         Config("picom/compositor.service", XDG_CONFIG_DIR / "systemd/user/compositor.service"),
         Config("picom/picom.conf", XDG_CONFIG_DIR / "picom/picom.conf"),
     ],
-    after=lambda: ensure_service("compositor", user=True),
+    after=lambda: (
+        ensure_service("compositor", user=True),
+        hide_desktop_entry("compton", "picom"),
+    ),
+
 )
 _pkgs["deadd"] = ConfiguredPackage(
     deps={_pkgs["aur"]},
@@ -326,7 +350,10 @@ _pkgs["deadd"] = ConfiguredPackage(
         Config("deadd/deadd.conf", XDG_CONFIG_DIR / "deadd/deadd.conf"),
         Config("deadd/notifications.service", XDG_CONFIG_DIR / "systemd/user/notifications.service"),
     ],
-    after=lambda: ensure_service("notifications", user=True),
+    after=lambda: (
+        ensure_service("notifications", user=True),
+        hide_desktop_entry("avahi-discover", "bvnc", "bssh"),
+    ),
 )
 _pkgs["xorg"] = ConfiguredPackage(
     system_packages={Pacman("xorg-xinit"), Pacman("xorg-server")},
@@ -426,7 +453,10 @@ _pkgs["screenlock"] = ConfiguredPackage(
         Config("screenlock/xinitrc", XDG_CONFIG_DIR / "xorg/xinitrc.d/10-screenlock"),
         Config("screenlock/saver_mpv-cinemagraph", "/usr/lib/xsecurelock/saver_mpv-cinemagraph"),
     ],
-    after=lambda: ensure_service("screenlock", user=True),
+    after=lambda: (
+        ensure_service("screenlock", user=True),
+        hide_desktop_entry("lstopo", "qvidcap", "qv4l2"),
+    ),
 )
 _pkgs["sxhkd"] =  ConfiguredPackage(
     system_packages={Pacman("sxhkd")},

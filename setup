@@ -366,6 +366,13 @@ _pkgs["alacritty"] = ConfiguredPackage(
         Config("alacritty/alacritty.yml", XDG_CONFIG_DIR / "alacritty/alacritty.yml"),
     ],
 )
+_pkgs["user-dirs"] = ConfiguredPackage(
+    system_packages={Pacman("xdg-user-dirs")},
+    files=[
+        Config("user-dirs/dirs", XDG_CONFIG_DIR / "user-dirs.dirs")
+    ],
+    after=lambda: ensure_service("xdg-user-dirs-update", user=True),
+)
 _pkgs["polybar"] = ConfiguredPackage(
     deps={_pkgs["aur"]},
     system_packages={Aur("polybar"), Aur("aur/pkgs/ttf-anonymous-pro-ext")},

@@ -3,10 +3,10 @@ set nocompatible
 " change default locations {{{
 " Ensure the XDG_ vars are set
 if empty($XDG_CACHE_HOME)
-   let XDG_CACHE_HOME=$HOME/.cache
+   let $XDG_CACHE_HOME=$HOME . "/.cache"
 endif
 if empty($XDG_CONFIG_HOME)
-   let XDG_CONFIG_HOME=$HOME/.config
+   let $XDG_CONFIG_HOME=$HOME . "/.config"
 endif
 
 set directory=$XDG_CACHE_HOME/vim,~,/tmp

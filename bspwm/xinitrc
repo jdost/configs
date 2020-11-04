@@ -1,3 +1,4 @@
 export WINDOW_MANAGER="bspwm"
 
 pgrep -x sxhkd > /dev/null || sxhkd &
+xsetroot -cursor_name left_ptr

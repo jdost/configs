@@ -406,6 +406,7 @@ _pkgs["polybar"] = ConfiguredPackage(
     files=[
         Config("polybar/config", XDG_CONFIG_DIR / "polybar/config"),
         Config("polybar/modules", XDG_CONFIG_DIR / "polybar/modules"),
+        Config("polybar/scripts/cpu", XDG_CONFIG_DIR / "polybar/scripts/cpu"),
         Config("polybar/statusbar.service", XDG_CONFIG_DIR / "systemd/user/statusbar.service"),
     ],
     after=lambda: ensure_service("statusbar", user=True),
@@ -468,7 +469,7 @@ _pkgs["bspwm"] = ConfiguredPackage(
     deps={
         _pkgs["sxhkd"], _pkgs["deadd"], _pkgs["picom"], _pkgs["unclutter"], _pkgs["alacritty"], _pkgs["xorg"]
     },
-    system_packages={ Pacman("bspwm") },
+    system_packages={ Pacman("bspwm"), Pacman("xorg-xsetroot") },
     files=[
         Config("bspwm/bspwmrc", XDG_CONFIG_DIR / "bspwm/bspwmrc"),
         Config("bspwm/polybar", XDG_CONFIG_DIR / "polybar/system"),

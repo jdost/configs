@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+
+import signal
+import subprocess
+
+from dataclasses import dataclass
+from os import cpu_count
+from time import sleep
+from typing import Sequence
+from sys import stdout
+
+PERIOD = 1
+PROC_STAT = '/proc/stat'
+GRADIENT = [
+    "00CC00", "1CD200", "39D700", "55DD00", # 0- 5-10-15-20
+    "71E300", "8EE800", "AAEE00", "C6F400", #20-25-30-35-40
+    "E3F900", "FFFF00", "FFE600", "FFCC00", #40-45-50-55-60
+    "FFB300", "FF9900", "FF8000", "FF6600", #60-65-70-75-80
+    "FF4C00", "FF3300", "FF1A00", "FF0000"  #80-85-90-95-100
+]
+ICON = ""
+CPU_CHECKPOINT = None
+NOTIFICATION_ROWS = ["usage", "user", "system"]
+TOP_PROC_COUNT = 5
+
+
+@dataclass
+class CPU:
+    user: int
+    nice: int
+    system: int
+    idle: int
+    iowait: int
+    irq: int
+    softirq: int
+    steal: int
+    guest: int
+    guest_nice: int
+
+    @classmethod
+    def get(cls, cpu_num=-1) -> 'CPU':
+        target_line_no = cpu_num + 1
+        with open(PROC_STAT, "r") as proc_stat:
+            line_no = 0
+            for line in proc_stat:
+                if line_no == target_line_no:
+                    raw_line = line
+                    break
+
+                line_no += 1
+
+        return cls(*map(int, raw_line.split()[1:]))
+
+    @classmethod
+    def get_all(cls) -> Sequence['CPU']:
+        return [cls.get(n) for n in range(-1, cpu_count())]
+
+    @property
+    def total(self) -> int:
+        return sum(
+            [self.user, self.nice, self.system, self.idle, self.iowait,
+             self.irq, self.softirq, self.steal, self.guest, self.guest_nice]
+        )
+
+    @property
+    def usage(self) -> int:
+        return sum([self.user, self.system])
+
+
+class CPUDiff:
+    def __init__(self, st: CPU, ed:CPU):
+        self.usage = ed.usage - st.usage
+        self.user = ed.user - st.user
+        self.system = ed.system - st.system
+        self.total = ed.total - st.total
+
+    @property
+    def usage_percent(self) -> float:
+        if self.total == 0:
+            return 0.0
+
+        return self.usage / self.total
+
+    def __str__(self) -> str:
+        return "{:06.2%}".format(self.usage_percent)
+
+    def as_icon(self) -> str:
+        color = GRADIENT[int(self.usage_percent*len(GRADIENT))]
+        return f"%{{F#{color}}}{ICON}%{{F-}}"
+
+
+def monitor_loop() -> None:
+    global CPU_CHECKPOINT
+    CPU_CHECKPOINT = CPU.get_all()
+    while True:
+        curr = CPU.get_all()
+        print(f"{CPUDiff(CPU_CHECKPOINT[0], curr[0]).as_icon()}")
+        stdout.flush()
+        CPU_CHECKPOINT = curr
+        sleep(PERIOD)
+
+
+def colored_number(n: int) -> str:
+    color = GRADIENT[int((n/100)*len(GRADIENT))]
+    return "<span foreground='#{}'>{:02.0f}</span>".format(color, n)
+
+
+def summary_notification(*_) -> None:
+    output = "<b><big>Usage Per Core:</big></b>\n"
+    output += "<span font_desc='Anonymice Nerd Font Mono'>"
+
+    global CPU_CHECKPOINT, NOTIFICATION_ROWS
+    curr = CPU.get_all()
+    cpus = []
+    for core in range(1, len(curr)):
+        cpus.append(CPUDiff(CPU_CHECKPOINT[core], curr[core]))
+
+    col_1_fmt = f"{{:>{max([len(c) for c in (['cpu'] + NOTIFICATION_ROWS)])}}}"
+    output += (" ".join(
+        [col_1_fmt] + ["{:>2}"] * len(cpus)
+    )).format(*['cpu'] + [str(c) for c in range(1, len(cpus) + 1)])
+    output += "\n"
+
+    for row_prop in NOTIFICATION_ROWS:
+        output += col_1_fmt.format(row_prop)
+        for cpu in cpus:
+            output += f" {colored_number(getattr(cpu, row_prop) / cpu.total)}"
+        output += "\n"
+
+    output += "</span>"
+
+    output += "\n<b><big>Top {} Processes:</big></b>\n".format(TOP_PROC_COUNT)
+    output += "<span font_desc='Anonymice Nerd Font Mono'>"
+
+    by_process_raw = subprocess.run(
+        ["ps", "-o", "%cpu,comm,cmd,pid", "ax", "--no-headers"],
+        stdout=subprocess.PIPE,
+    ).stdout.decode("utf-8").split("\n")
+    by_process = []
+    for line_raw in by_process_raw:
+        if not line_raw:
+            continue
+
+        perc, name, r = line_raw.split(maxsplit=2)
+        cmd, pid = r.rsplit(maxsplit=1)
+        by_process.append((float(perc), name, cmd, pid))
+
+    for proc in sorted(by_process, reverse=True)[:TOP_PROC_COUNT]:
+        output += ("{}% <u>{}</u> ({})\n".format(proc[0], proc[2] if len(proc[2]) < 20 else proc[1], proc[3]))
+
+    output += "</span>"
+    subprocess.run(["notify-send", "--app-name=polybar", "CPU USAGE", output])
+
+
+if __name__ == "__main__":
+    signal.signal(signal.SIGUSR1, summary_notification)
+    monitor_loop()

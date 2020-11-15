@@ -11,7 +11,7 @@ from typing import Any, Dict, Sequence, Set
 
 IMAGE_NAME="aur_builder"
 PKG_FOLDER=os.environ.get("AURHOME", Path.home() / ".local/aur")
-DROPBOX_REPO=Path.home() / ".local/dropbox/aur_repo"
+DROPBOX_REPO=Path.home() / ".local/dropbox/aur"
 
 if not PKG_FOLDER.is_dir():
     PKG_FOLDER.mkdir(parents=True)
@@ -20,8 +20,9 @@ if not PKG_FOLDER.is_dir():
 class Package:
     AUR_QUERY_URL = "https://aur.archlinux.org/rpc/?v=5&type=info&arg[]={}"
 
-    def __init__(self, name: str, rebuild: bool = False):
+    def __init__(self, name: str, rebuild: bool = False, latest: bool = False):
         self.name = name
+        self.latest = latest
         self.is_local = Path(self.name).is_file()
         self.rebuild = rebuild
         self._aur_data = None
@@ -29,10 +30,22 @@ class Package:
 
     @classmethod
     def parse_arg(cls, arg: str) -> 'Package':
-        if arg.endswith('!'):
-            return cls(arg[:-1], rebuild=True)
+        """ parse the package argument name into the package flags:
+        normal: `foo`
+        use latest package: `foo!`
+        build regardless of cache: `foo!!`
+        """
+        kwargs={}
+        name=arg
 
-        return cls(arg)
+        if name.endswith('!'):
+            name = name[:-1]
+            kwargs['latest'] = True
+        if name.endswith('!'):
+            name = name[:-1]
+            kwargs['rebuild'] = True
+
+        return cls(name, **kwargs)
 
     @property
     def pkg_regex(self):
@@ -78,7 +91,10 @@ class Package:
 
         available_cache = self.local_cache + self.shared_cache
         if self.is_git and available_cache:
-            return False
+            return self.latest
+
+        if not self.latest:
+            return not available_cache
 
         if not self.is_local:
             target = self.latest_remote_version
@@ -111,9 +127,14 @@ class Package:
         return sorted(available_cache)[0]
 
 
-def build_image(rebuild: bool = False, force: bool = False) -> None:
-    build_cmd = [
-        "/usr/bin/docker",
+def build_image(
+    rebuild: bool = False, force: bool = False, as_root: bool = False
+) -> None:
+    """The `as_root` is a kind of bootstrapping hack that allows this to run
+    if the user is not yet with the docker group.
+    """
+    docker_cmd = ["sudo", "/usr/bin/docker"] if as_root else ["/usr/bin/docker"]
+    build_cmd = docker_cmd + [
         "build",
             "--force-rm",
             "--build-arg", f"UID={os.environ.get('UID', 1000)}",
@@ -123,7 +144,7 @@ def build_image(rebuild: bool = False, force: bool = False) -> None:
     ]
 
     images = subprocess.run(
-        ["/usr/bin/docker", "images"],
+        docker_cmd + ["images"],
         stdout=subprocess.PIPE,
     ).stdout.decode("utf-8").split("\n")
 
@@ -185,7 +206,30 @@ if __name__ == "__main__":
 
     to_be_built = [pkg.name for pkg in pkgs if pkg.needs_build]
     if to_be_built:
-        build_image(rebuild, force)
+        # checks if docker is running and attempts to start it if it isn't
+        if subprocess.run(
+            ["systemctl", "status", "docker"], stdout=subprocess.PIPE
+        ).returncode != 0:
+            if subprocess.run(
+                ["sudo", "systemctl", "start", "docker"]
+            ).returncode != 0:
+                print(
+                    "ERROR: You are attempting to run a docker command without a "
+                    "running docker daemon.  Please ensure that is running..."
+                )
+                sys.exit(1)
+
+        # checks if the user can talk to docker (due to the guid limitation),
+        #   if not, then runs all the docker commands are root
+        my_groups = subprocess.run(
+            ["groups"], stdout=subprocess.PIPE
+        ).stdout.decode("utf-8").split(" ")
+        if "docker" not in my_groups:
+            cmd = ["sudo"] + cmd
+            build_image(rebuild, force, as_root=True)
+        else:
+            build_image(rebuild, force)
+
         cmds = cmd + [f"{IMAGE_NAME}:latest"] + to_be_built
         print(f"$ {' '.join(cmds)}")
         subprocess.run(cmds, check=True)

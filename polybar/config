@@ -11,7 +11,8 @@ pseudo-transparency = false
 
 [bar/main]
 font-0 = "Anonymice Nerd Font Mono:size=16;2"
-font-1 = "Symbola:size=11"
+font-1 = "Noto Sans Symbols2:style=Regular:size=12;2"
+font-2 = "Anonymice Nerd Font Mono:size=20;4"
 background = #33000000
 width = 100%
 

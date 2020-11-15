@@ -1,17 +1,29 @@
-[system]
-battery =
-adapter =
-network-interface =
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+enable-click = true
+enable-scroll = false
 
-[bar/main]
-modules-left = bspwm
-modules-center = title
-modules-right = cpu memory date
-module-margin = 1
-fixed_center = true
-; Tray
-tray-position = right
-tray-offset-x = 0
-tray-offset-y = 0
+ws-icon-0 = term;
+ws-icon-1 = web;
+ws-icon-2 = code;
+ws-icon-3 = games;
+ws-icon-4 = chat;ﭮ
+
+label-focused-font = 3
+label-focused = %icon%
+label-focused-foreground = #33EE33
+
+label-empty-font = 3
+label-empty = %icon%
+label-empty-foreground = #999999
+
+label-occupied = %icon%
+label-occupied-font = 3
+label-urgent = %icon%
+label-urgent-font = 3
+label-urgent-background = #FF9900
+
+label-separator = " "
 
 ; vim:ft=dosini

@@ -3,13 +3,13 @@
 set -euo pipefail
 
 # define monitors
-bspc monitor -d term web
+bspc monitor -d term web code chat
 
 # looks
 bspc config border_width         1
 bspc config window_gap          24
 bspc config bottom_padding      12
-bspc config top_padding         12
+bspc config top_padding         32
 bspc config left_padding        12
 bspc config right_padding       12
 

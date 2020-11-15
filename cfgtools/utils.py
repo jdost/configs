@@ -1,4 +1,3 @@
-import os
 import shlex
 import subprocess
 
@@ -19,7 +18,9 @@ def cmd_output(cmd: str) -> Sequence[str]:
 
 
 def add_group(group: str) -> None:
-    groups = os.getgroups()
+    groups = subprocess.run(
+        ["groups"], stdout=subprocess.PIPE
+    ).stdout.decode("utf-8").strip().split(" ")
     if group in groups:
         return
 

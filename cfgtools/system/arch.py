@@ -95,7 +95,7 @@ class AUR(SystemPackage):
 
         resolved_targets = []
         for pkg in pkgs:
-            if pkgs.name not in to_be_installed:
+            if pkg.name not in to_be_installed:
                 continue
 
             resolved_targets.append(

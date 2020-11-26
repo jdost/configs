@@ -15,14 +15,12 @@ class VirtualEnv(SystemPackage):
         self.system_packages = system_packages
         super().__init__()
 
+    def __repr__(self):
+        return f"{self.__class__} {self.name}: {' '.join(self.requirements)}"
+
     @property
     def location(self) -> Path:
         return VirtualEnv.BASE_LOCATION / self.name
-
-    @classmethod
-    def dry_run(cls, *pkgs: 'VirtualEnv') -> None:
-        for pkg in pkgs:
-            pkg.dry_run()
 
     @property
     def installed_requirements(self) -> Set[str]:
@@ -47,6 +45,11 @@ class VirtualEnv(SystemPackage):
 
         return cmd
 
+    @classmethod
+    def dry_run(cls, *pkgs: 'VirtualEnv') -> None:
+        for pkg in pkgs:
+            pkg.dry_run()
+
     def dry_run(self) -> None:
         if not self.location.exists():
             print(f"$ {' '.join(self.venv_cmd)}")
@@ -65,9 +68,9 @@ class VirtualEnv(SystemPackage):
     @classmethod
     def apply(cls, *pkgs: 'VirtualEnv') -> None:
         for pkg in pkgs:
-            pkg.apply()
+            pkg._apply()
 
-    def apply(self) -> None:
+    def _apply(self) -> None:
         if not self.location.exists():
             if not self.location.parent.exists():
                 self.location.parent.mkdir(parents=True)

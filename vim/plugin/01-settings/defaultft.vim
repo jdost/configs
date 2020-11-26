@@ -16,8 +16,8 @@ if has("autocmd")
 endif " }}}
 " tab handling
 set expandtab
-set shiftwidth=3
-set tabstop=3
+set shiftwidth=4
+set tabstop=4
 set smarttab
 " indentation handling
 set autoindent

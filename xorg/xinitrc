@@ -10,6 +10,4 @@ if [[ -z "${WINDOW_MANAGER}" ]]; then
     exit 1
 fi
 
-env > ~/tmp/xorg.env
-
 exec $WINDOW_MANAGER

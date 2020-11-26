@@ -1,5 +1,5 @@
 import os
-import shutil
+import subprocess
 
 from cfgtools.files import EnvironmentFile, File, HOME, XDGConfigFile
 from cfgtools.system.arch import AUR, Pacman
@@ -18,7 +18,8 @@ files = [
 
 @after
 def change_user_shell() -> None:
-    if os.environ.get("SHELL") == "zsh":
+    zsh_bin = "/bin/zsh"
+    if os.environ.get("SHELL") == zsh_bin:
         return
 
-    subprocess.run(["chsh", "-s", shutil.which("zsh")])
+    subprocess.run(["chsh", "-s", zsh_bin])

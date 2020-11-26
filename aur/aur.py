@@ -21,9 +21,10 @@ class Package:
     AUR_QUERY_URL = "https://aur.archlinux.org/rpc/?v=5&type=info&arg[]={}"
 
     def __init__(self, name: str, rebuild: bool = False, latest: bool = False):
-        self.name = name
         self.latest = latest
-        self.is_local = Path(self.name).is_file()
+        self.is_local = Path(name).is_file()
+        self.name = Path(name).resolve().name if self.is_local else name
+        self.path = Path(name).resolve() if self.is_local else None
         self.rebuild = rebuild
         self._aur_data = None
         self.is_git = self.name.endswith('-git')
@@ -46,6 +47,10 @@ class Package:
             kwargs['rebuild'] = True
 
         return cls(name, **kwargs)
+
+    @property
+    def docker_volume_mount(self) -> str:
+        return f"{self.path}:/src/{self.path.name}"
 
     @property
     def pkg_regex(self):
@@ -191,7 +196,10 @@ if __name__ == "__main__":
         elif target in {"build", "install", "sync"}:
             action = target
         else:
-            pkgs.append(Package.parse_arg(target))
+            pkg = Package.parse_arg(target)
+            pkgs.append(pkg)
+            if pkg.is_local:
+                cmd += ["-v", pkg.docker_volume_mount]
 
     if action == "sync":
         if not DROPBOX_REPO.exists():

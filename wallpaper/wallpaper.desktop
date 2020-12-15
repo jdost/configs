@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Change Wallpaper
+GenericName=Change active wallpaper
+Comment=Randomly chooses a new wallpaper
+Exec=wallpaper
+Icon=preferences-desktop-wallpaper
+Terminal=false

@@ -9,7 +9,7 @@ files = [
     UserBin(f"{__name__}/wallpaper.sh", "wallpaper"),
     UserService(f"{__name__}/wallpaper.service"),
     UserService(f"{__name__}/wallpaper.timer"),
-    XinitRC(__name__, priority=10),
+    XinitRC(__name__, priority=90),
 ]
 
 

@@ -1,4 +1,4 @@
 configuration {
-   theme: "default";
+   theme: "icons_launcher";
    terminal: "alacritty";
 }

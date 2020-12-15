@@ -1,0 +1,11 @@
+if which xrdb &>/dev/null; then
+    if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/xorg/Xresource" ]]; then
+        xrdb -merge "${XDG_CONFIG_HOME:-$HOME/.config}/xorg/Xresources"
+    fi
+    # if there is a system specific definition, load that as well
+    if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/xorg/Xresource.system" ]]; then
+        xrdb -merge "${XDG_CONFIG_HOME:-$HOME/.config}/xorg/Xresources.system"
+    fi
+fi
+
+# vim: ft=bash

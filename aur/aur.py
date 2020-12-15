@@ -129,7 +129,7 @@ class Package:
     @property
     def package_path(self) -> Path:
         available_cache = self.local_cache + self.shared_cache
-        return sorted(available_cache)[0]
+        return sorted(available_cache)[-1]
 
 
 def build_image(

@@ -1,4 +1,4 @@
-from cfgtools.files import File, UserBin, XinitRC
+from cfgtools.files import File, UserBin, XinitRC, DesktopEntry
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import ensure_service, UserService
@@ -13,6 +13,7 @@ files=[
         f"{__name__}/saver_mpv-cinemagraph",
         "/usr/lib/xsecurelock/saver_mpv-cinemagraph",
     ),
+    DesktopEntry(f"{__name__}/screenlock.desktop"),
 ]
 
 

@@ -20,6 +20,7 @@ if which xsecurelock &>/dev/null; then
       export XSECURELOCK_SAVER=saver_blank
    fi
 
+   export XSECURELOCK_AUTH_TIMEOUT=15
    export XSECURELOCK_PAM_SERVICE=system-local-login
    export XSECURELOCK_DISCARD_FIRST_KEYPRESS=0
    export XSECURELOCK_SHOW_DATETIME=1

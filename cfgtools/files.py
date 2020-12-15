@@ -107,8 +107,9 @@ class EnvironmentFile(File):
 
 
 class UserBin(File):
+    DIR = HOME / ".local/bin"
     def __init__(self, src: Union[str, Path], name: str):
-        super().__init__(src=src, dst=(HOME / ".local/bin" / name))
+        super().__init__(src=src, dst=(UserBin.DIR / name))
 
 
 class XDGConfigFile(File):
@@ -125,6 +126,13 @@ class XinitRC(File):
             src=(BASE / name / "xinitrc"),
             dst=(self.DIR / f"{priority}-{name}"),
         )
+
+
+class DesktopEntry(File):
+    DIR = HOME / ".local/share/applications"
+    def __init__(self, src: str):
+        filename = Path(src).name
+        super().__init__(src=src, dst=(DesktopEntry.DIR / filename))
 
 
 class Folder(RegisteredFileAction):

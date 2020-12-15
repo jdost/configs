@@ -16,8 +16,20 @@ super + @p
 super + shift + @p
     rofi -theme auth -show combi
 ## notifications
-super + bracketleft
+super + bracketright
     kill -s USR1 $(pidof deadd-notification-center)
+## music
+XF86AudioPlay
+    playerctl play-pause
+## audio
+{_,shift} + XF86AudioLowerVolume
+    pulsemixer --change-volume -{10,1} && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+{_,shift} + XF86AudioRaiseVolume
+    pulsemixer --change-volume +{10,1} && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+XF86AudioMute
+    pulsemixer --toggle-mute && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+{XF86MonBrightnessDown,XF86MonBrightnessUp}
+    ~/.local/systemhud/bin/screen-brightness {-5,+5}
 
 # Window Control
 ## close/kill

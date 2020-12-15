@@ -2,3 +2,5 @@ if which xmodmap &>/dev/null; then
   [[ -e "$HOME/.config/xorg/caps-ctrl-swap.xmodmap" ]] && \
     xmodmap $HOME/.config/xorg/caps-ctrl-swap.xmodmap
 fi
+
+# vim: ft=bash

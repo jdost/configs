@@ -2,6 +2,7 @@ set -euo pipefail
 
 # Source each of the modules
 for rc in ${XDG_CONFIG_HOME:-$HOME/.config}/xorg/xinitrc.d/*; do
+    echo "source $rc..."
     source $rc
 done
 
@@ -11,3 +12,5 @@ if [[ -z "${WINDOW_MANAGER}" ]]; then
 fi
 
 exec $WINDOW_MANAGER
+
+# vim: ft=bash

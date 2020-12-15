@@ -4,3 +4,5 @@ if which xset &>/dev/null; then
   xset s on \
     && xset s $SCREENSAVER_IDLE_SECONDS $SCREENSAVER_CYCLE_SECONDS
 fi
+
+# vim: ft=bash

@@ -2,3 +2,5 @@ if which gpg-agent&>/dev/null && gpg-connect-agent --quiet /bye &>/dev/null; the
   export GPG_TTY=$(tty)
   gpg-connect-agent updatestartuptty /bye &>/dev/null
 fi
+
+# vim: ft=bash

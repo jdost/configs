@@ -7,3 +7,5 @@ coproc (
   sleep 0
   systemctl --user start xorg.target
 )
+
+# vim: ft=bash

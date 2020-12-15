@@ -7,7 +7,7 @@ which rg &>/dev/null && \
     alias grep="grep --color=auto"
 ## 'ls'
 which exa &>/dev/null && \
-    alias ls=" exa -l" || \
+    alias ls=" exa -l --git" || \
     alias ls="ls -lFh --color=auto"
 ## 'diff'
 which colordiff &>/dev/null && \

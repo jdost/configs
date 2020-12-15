@@ -2,16 +2,24 @@
 
 set -euo pipefail
 
-# define monitors
-bspc monitor -d term web code chat
+SYSTEM_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/system"
+if [[ -e $SYSTEM_FILE ]]; then
+    source $SYSTEM_FILE
+else
+    # Sane defaults that *should* be defined per system, but we still want to set if
+    #  there is no system specific definitions...
+    bspc monitor -d term web code chat
+fi
 
 # looks
+POLYBAR_HEIGHT=24
+PADDING=24
 bspc config border_width         1
-bspc config window_gap          24
-bspc config bottom_padding      12
-bspc config top_padding         32
-bspc config left_padding        12
-bspc config right_padding       12
+bspc config window_gap          48
+bspc config bottom_padding      $PADDING
+bspc config top_padding         $(($PADDING + $POLYBAR_HEIGHT))
+bspc config left_padding        $PADDING
+bspc config right_padding       $PADDING
 
 # layout controls
 bspc config split_ratio          0.52
@@ -19,6 +27,31 @@ bspc config borderless_monocle   true
 bspc config gapless_monocle      false
 
 # rules
-bspc rule -a Chromium desktop='^2'
+set_rules() {
+    if bspc query --desktops --names | grep $1 &>/dev/null; then
+        echo "No desktop defined for $1, skipping..."
+        return
+    fi
+
+    desktop=$1
+    shift
+    while (( $# )); do
+        bspc rule -a "$1" desktop=$desktop focus=on follow=on
+        shift
+    done
+}
+
+set_rules 'web' \
+    'Chromium' 'Google-chrome' 'Firefix'
+set_rules 'games' \
+    'Lutris' 'MultiMC5' 'Steam'
+set_rules 'video' \
+    'mpv' 'streamlink-twitch-gui'
+set_rules 'chat' \
+    'Discord' 'Android Messages' 'TelegramDesktop'
+
+for c in 'Peek' 'NoiseTorch'; do
+    bspc rule -a '$c' state=floating focus=on
+done
 
 systemctl --user start statusbar.service

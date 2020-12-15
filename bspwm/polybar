@@ -1,6 +1,6 @@
 [module/bspwm]
 type = internal/bspwm
-pin-workspaces = true
+pin-workspaces = false
 enable-click = true
 enable-scroll = false
 
@@ -9,21 +9,29 @@ ws-icon-1 = web;
 ws-icon-2 = code;
 ws-icon-3 = games;
 ws-icon-4 = chat;ﭮ
+ws-icon-5 = music;ﱘ
+ws-icon-6 = scratch;ﴬ
+ws-icon-7 = video;
+ws-icon-default = 
+
+format = <label-monitor> <label-state>
+label-monitor = "%{O-8}%{B-} "
 
 label-focused-font = 3
-label-focused = %icon%
-label-focused-foreground = #33EE33
+label-focused = "  %{O-22}%icon%%{O11}"
+label-focused-background = #3333EE33
 
 label-empty-font = 3
-label-empty = %icon%
+label-empty = "  %{O-22}%icon%%{O11}"
 label-empty-foreground = #999999
 
-label-occupied = %icon%
+label-occupied = "  %{O-22}%icon%%{O11}"
 label-occupied-font = 3
-label-urgent = %icon%
-label-urgent-font = 3
-label-urgent-background = #FF9900
 
-label-separator = " "
+label-urgent = "  %{O-22}%icon%%{O11}"
+label-urgent-font = 3
+label-urgent-background = #33FF9900
+
+label-separator = "%{O0}%{B-}"
 
 ; vim:ft=dosini

@@ -1,4 +1,16 @@
 export WINDOW_MANAGER="bspwm"
 
-pgrep -x sxhkd > /dev/null || sxhkd &
+if ! pgrep -x sxhkd > /dev/null; then
+    SXHKD_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/sxhkd"
+    sxhkd_cmd="sxhkd"
+    # if there is a "system" config as well, include that
+    if [[ -e "$SXHKD_DIR/system" ]]; then
+        sxhkd_cmd="$sxhkd_cmd $SXHKD_DIR/system"
+    fi
+    echo "sxhkd_cmd: $sxhkd_cmd" >> ~/tmp/xorg.log
+    $sxhkd_cmd &
+fi
+
 xsetroot -cursor_name left_ptr
+
+# vim:ft=bash

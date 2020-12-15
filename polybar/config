@@ -4,6 +4,7 @@ margin-bottom = 0
 include-file = ~/.config/polybar/modules
 include-file = ~/.config/polybar/systemhud_modules
 include-file = ~/.config/polybar/system
+line-size = 2
 
 [settings]
 compositing-background = source

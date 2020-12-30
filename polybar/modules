@@ -2,24 +2,6 @@
 type = internal/xwindow
 label-maxlen = 60
 
-[module/memory]
-type = internal/memory
-
-; Seconds to sleep between updates
-; Default: 1
-interval = 3
-;label = "%{B#99339999}  %{B-}%{u#99339999}%gb_used%/%gb_total%%{-u}"
-format = "<ramp-used>"
-; Ramped icons, uses colors for each stage going from green-yellow-red
-ramp-used-0 = "%{F#33CC33}%{F-}"
-ramp-used-1 = "%{F#99FF33}%{F-}"
-ramp-used-2 = "%{F#CCFF33}%{F-}"
-ramp-used-3 = "%{F#FFFF00}%{F-}"
-ramp-used-4 = "%{F#FFCC33}%{F-}"
-ramp-used-5 = "%{F#FF9900}%{F-}"
-ramp-used-6 = "%{F#FF6633}%{F-}"
-ramp-used-7 = "%{F#FF3333}%{F-}"
-
 [module/date]
 type = internal/date
 

@@ -2,4 +2,8 @@
 
 set -euo pipefail
 
-python3 -m cfgtools "$@"
+if [[ -z "$@" ]]; then
+    exec python3 -m cfgtools "systems.$(hostname | awk '{print tolower($0)}')"
+else
+    exec python3 -m cfgtools "$@"
+fi

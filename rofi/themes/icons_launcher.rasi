@@ -19,6 +19,8 @@ configuration {
     bar-background: rgba(242, 242, 242, 0.1);
     foreground: rgba(242, 242, 242, 0.9);
     highlight: rgba(123, 123, 123, 0.3);
+    active: rgba(160, 150, 90, 0.3);
+    urgent: rgba(250, 190, 90, 0.3);
 
     margin: 0;
     border: 0;
@@ -111,4 +113,11 @@ mainbox {
                 margin: 0.5% 0.5% -0.5% 0.5%;
                 expand: true;
                 font: "Hack Nerd Font Mono 12";
+            }
+
+            element active {
+                background-color: @active;
+            }
+            element urgent {
+                background-color: @urgent;
             }

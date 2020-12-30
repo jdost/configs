@@ -56,6 +56,23 @@ clean() {
    fi
 }
 
+ncurses() {
+    local lazydocker_path="$HOME/.local/bin/lazydocker"
+    if [[ ! -x "$lazydocker_path" ]]; then
+        # prepare the download URL
+        local version=$(curl -L -s -H 'Accept: application/json' https://github.com/jesseduffield/lazydocker/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+        local github_file="lazydocker_${version//v/}_$(uname -s)_x86.tar.gz"
+        local url="https://github.com/jesseduffield/lazydocker/releases/download/${version}/${github_file}"
+
+        # install/update the local binary
+        curl -L -o lazydocker.tar.gz $url
+        tar xzvf lazydocker.tar.gz lazydocker
+        mv -f lazydocker ${lazydocker_path}
+        rm lazydocker.tar.gz
+    fi
+    exec $lazydocker_path
+}
+
 
 case "${1:-}" in
    "clean")
@@ -75,6 +92,9 @@ case "${1:-}" in
       shift
       exec $DOCKER_BIN "$@"
       ;;
+   "") # without any arguments, use the ncurses client
+       ncurses
+       ;;
    *)
       exec $DOCKER_BIN "$@"
       ;;

@@ -9,9 +9,27 @@ else
    GIT_BIN=$(which git)
 fi
 
+ncurses() {
+    local lazygit_path="$HOME/.local/bin/lazygit"
+    if [[ ! -x "$lazygit_path" ]]; then
+        # prepare the download URL
+        local version=$(curl -L -s -H 'Accept: application/json' https://github.com/jesseduffield/lazygit/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+        local github_file="lazygit_${version//v/}_$(uname -s)_x86_64.tar.gz"
+        local url="https://github.com/jesseduffield/lazygit/releases/download/${version}/${github_file}"
+
+        # install/update the local binary
+        curl -L -o lazygit.tar.gz $url
+        tar xzvf lazygit.tar.gz lazygit
+        mv -f lazygit ${lazygit_path}
+        rm lazygit.tar.gz
+    fi
+    exec $lazygit_path
+}
+
 case "${1:-}" in
    "")
-      exec $GIT_BIN
+      #exec $GIT_BIN
+      ncurses
       ;;
    "grep")
       if which rg &>/dev/null; then

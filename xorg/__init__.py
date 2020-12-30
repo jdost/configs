@@ -12,4 +12,5 @@ files=[
     XDGConfigFile(f"{__name__}/xinitrc.d/10-xmodmap"),
     XDGConfigFile(f"{__name__}/xinitrc.d/10-xresources"),
     XDGConfigFile(f"{__name__}/caps-ctrl-swap.xmodmap"),
+    XDGConfigFile(f"{__name__}/Xresources"),
 ]

@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 from pathlib import Path
-from typing import Any, Dict, Sequence, Set
+from typing import Any, Dict, Optional, Sequence, Set
 
 IMAGE_NAME="aur_builder"
 PKG_FOLDER=os.environ.get("AURHOME", Path.home() / ".local/aur")
@@ -15,6 +15,19 @@ DROPBOX_REPO=Path.home() / ".local/dropbox/aur"
 
 if not PKG_FOLDER.is_dir():
     PKG_FOLDER.mkdir(parents=True)
+
+
+def get_version_from_path(prefix: str, src: Path) -> str:
+    match = re.compile(f"{prefix}-(.+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$").match(src.name)
+    if not match:
+        return ""
+
+    return match.groups()[0]
+
+
+def parse_version(version_str: str) -> Sequence[int]:
+    version, patch = version_str.split("-", 1)
+    return [int(n) for n in version.split(".") + [patch]]
 
 
 class Package:
@@ -120,16 +133,22 @@ class Package:
             target = "{pkgver}-{pkgrel}".format(**info)
 
         for cached_file in available_cache:
-            match = self.pkg_regex.match(cached_file.name)
-            if match and match.groups()[0] == target:
+            if get_version_from_path(self.name, cached_file) == target:
                 return False
 
         return True
 
     @property
     def package_path(self) -> Path:
+        return self.available_versions[-1]
+
+    @property
+    def available_versions(self) -> Sequence[str]:
         available_cache = self.local_cache + self.shared_cache
-        return sorted(available_cache)[-1]
+        return [get_version_from_path(self.name, p) for p in sorted(
+            available_cache,
+            key=lambda p: parse_version(get_version_from_path(self.name, p)),
+        )]
 
 
 def build_image(
@@ -174,6 +193,30 @@ def build_image(
     )
 
 
+def print_help() -> None:
+    print(f"{sys.argv[0]} [--rebuild] [--force] <COMMAND> [packages...]")
+    print("""
+Docker based AUR package builder script.  This attempts to manage building AUR
+packages and caching them locally and in my dropbox folder.
+
+Commands:
+\tinstall\tInstall the "best" version of each package from the AUR
+\tbuild\tBuild (but don't install) the "best" version of each package from the AUR
+\tsync\tSynchronize locally built AUR packages to the shared dropbox cache
+\tlist\tList versions for the packages available that are already built
+
+Flags:
+\t--rebuild\tBuild a new docker building image if needed
+\t--force\tBuild a new docker building image regardless of state
+
+Package Syntax:
+  By default, will just install the most recent package in the available cache,
+  with a single '!' suffix, will determine if the available cache has the most
+  recent version from the AUR built.  With a '!!' suffix, will rebuild
+  regardless of what is in the cache.
+""")
+
+
 if __name__ == "__main__":
     cmd = [
         "/usr/bin/docker",
@@ -193,13 +236,23 @@ if __name__ == "__main__":
             rebuild = True
         elif target  == "--force":
             force = True
-        elif target in {"build", "install", "sync"}:
+        elif target in {"build", "install", "sync", "list"}:
             action = target
+        elif target in {"help", "--help", "-h"}:
+            print_help()
+            sys.exit(0)
         else:
             pkg = Package.parse_arg(target)
             pkgs.append(pkg)
             if pkg.is_local:
                 cmd += ["-v", pkg.docker_volume_mount]
+
+    if action == "list":
+        for pkg in pkgs:
+            print(f"{pkg.name} Versions:")
+            print("    " + '\t'.join(pkg.available_versions))
+
+        sys.exit(0)
 
     if action == "sync":
         if not DROPBOX_REPO.exists():

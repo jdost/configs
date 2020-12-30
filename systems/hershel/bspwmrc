@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+bspc monitor DP-4 -n left
+bspc monitor left -d scratch video
+
+bspc monitor HDMI-0 -n right
+bspc monitor right -d term web code games chat

@@ -1,0 +1,3 @@
+xrandr --output HDMI-0 --right-of DP-4 --primary
+
+# vim: ft=bash

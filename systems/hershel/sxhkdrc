@@ -1,0 +1,13 @@
+# use super+e/r to switch between monitors
+super + {_,shift + }{e,r}
+    bspc {desktop -f,node -d} '^{1,2}:focused'
+# KVM Media Keys
+super + {Left,Down,Right}
+    playerctl {previous,play-pause,next}
+# KVM Volume Keys
+super + shift + Left
+    pulsemixer --change-volume -10 && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+super + shift + Right
+    pulsemixer --change-volume +10 && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+super + shift + Down
+    pulsemixer --toggle-mute && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)

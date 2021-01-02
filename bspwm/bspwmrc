@@ -51,7 +51,7 @@ set_rules 'chat' \
     'Discord' 'Android Messages' 'TelegramDesktop'
 
 for c in 'Peek' 'NoiseTorch'; do
-    bspc rule -a '$c' state=floating focus=on
+    bspc rule -a "$c" state=floating focus=on
 done
 
 EXTERNAL_RULES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/external_rules"

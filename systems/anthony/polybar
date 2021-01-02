@@ -1,0 +1,22 @@
+[global/wm]
+include-file = ~/.config/polybar/bspwm
+
+[system]
+battery =
+adapter =
+network-interface =
+
+[bar/main]
+modules-left = bspwm
+modules-center = title
+modules-right = audio bluetooth cpu memory acpi date
+module-margin = 1
+fixed_center = true
+; Tray
+tray-position = right
+tray-offset-x = 0
+tray-offset-y = 0
+padding-left = 1
+padding-right = 0
+
+; vim:ft=dosini

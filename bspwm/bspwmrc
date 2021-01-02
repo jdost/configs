@@ -54,4 +54,9 @@ for c in 'Peek' 'NoiseTorch'; do
     bspc rule -a '$c' state=floating focus=on
 done
 
+EXTERNAL_RULES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/external_rules"
+if [[ -x $EXTERNAL_RULES_FILE ]]; then
+    bspc config external_rules_command $EXTERNAL_RULES_FILE
+fi
+
 systemctl --user start statusbar.service

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Music Player
+GenericName=Launch/Show music player sidebar
+Exec=music-tmux
+Icon=multimedia-audio-player
+Terminal=false

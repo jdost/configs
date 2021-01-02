@@ -19,6 +19,8 @@ super + shift + @p
 super + bracketright
     kill -s USR1 $(pidof deadd-notification-center)
 ## music
+super + shift + bracketright
+    music-tmux
 XF86AudioPlay
     playerctl play-pause
 ## audio

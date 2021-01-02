@@ -140,7 +140,11 @@ class Package:
 
     @property
     def package_path(self) -> Path:
-        return self.available_versions[-1]
+        available_cache = self.local_cache + self.shared_cache
+        return [p for p in sorted(
+            available_cache,
+            key=lambda p: parse_version(get_version_from_path(self.name, p)),
+        )][-1]
 
     @property
     def available_versions(self) -> Sequence[str]:
@@ -259,7 +263,11 @@ if __name__ == "__main__":
             raise FileNotFoundError(DROPBOX_REPO)
 
         for pkg in pkgs:
-            for local_pkg in (self.local_cache - self.shared_cache):
+            unsynced_pkgs = (
+                set(p.name for p in pkg.local_cache) - \
+                set(p.name for p in pkg.shared_cache)
+            )
+            for local_pkg in [p for p in pkg.local_cache if p.name in unsynced_pkgs]:
                 print(f"Syncing {local_pkg.name} to shared cache...")
                 (DROPBOX_REPO / local_pkg.name).write_bytes(local_pkg.read_bytes())
 

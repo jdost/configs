@@ -6,7 +6,8 @@ from cfgtools.utils import hide_xdg_entry
 
 packages={Pacman("mpv"), Pacman("xsecurelock"), Pacman("xss-lock")}
 files=[
-    UserBin(f"{__name__}/screenlock.sh", "screenlock"),
+    UserBin(f"{__name__}/screenlock.sh", "_screenlock"),
+    UserBin(f"{__name__}/screenlock_wrapper.sh", "screenlock"),
     UserService(f"{__name__}/screenlock.service"),
     XinitRC(__name__, priority=10),
     File(

@@ -1,2 +1,38 @@
 notify = false
 use_nerdfont = true
+
+[keybindings]
+# Navigation
+"q" = "focus queue"
+"1" = "focus queue"
+"2" = "focus search"
+"3" = "focus library"
+# Control
+#   mimic the WM keybindings without the mod
+"," = "voldown 5"
+"<" = "voldown 1"
+"." = "volup 5"
+">" = "volup 1"
+"z" = "previous"
+"x" = "playpause"
+"c" = "next"
+# General
+"Q" = "quit"
+
+[theme]
+background = "default"
+primary = "#22CCDD"
+secondary = "#444444"
+title = "#1ED760"
+playing = "#FFFFFF"
+playing_selected = "#FFFFFF"
+playing_bg = "#444444"
+highlight = "#FF9B00"
+highlight_bg = "#888888"
+error = "#FFE4E4"
+error_bg = "#E01B1B"
+statusbar = "#222222"
+statusbar_progress = "#B1D7EE"
+statusbar_bg = "#7C9AA6"
+cmdline = "#4FADBF"
+cmdline_bg = "#444444"

@@ -8,8 +8,8 @@ set -euo pipefail
 #   command and it will resolve to a desired state, but also this is in charge of
 #   setting up that state if it doesn't exist.
 
-PIDFILE="/var/run/user/$UID/music-tmux.pid"
-CLASS="music-tmux"
+CLASS="music-sidebar"
+PIDFILE="/var/run/user/$UID/$CLASS.pid"
 WIDTH=600
 VOFFSET=22  # Roughly the heigth of the statusbar
 
@@ -36,7 +36,7 @@ bspwm_setup_window() {
     # Skip this if already set
     bspc rule -l | grep "^$CLASS:" &>/dev/null && return 0
     # Sets the bspc rules for the new window to have it be a right-side bar
-    local height=$(bspc query -m $(bspc query -M) -T | jq ".rectangle.height")
+    local height=$(bspc query -m "primary" -T | jq ".rectangle.height")
     bspc rule -a $CLASS sticky=on state=floating hidden=off rectangle=${WIDTH}x$(( $height - $VOFFSET ))+2000+${VOFFSET}
 }
 
@@ -47,7 +47,9 @@ bspwm_setup_window() {
 if [[ -e $PIDFILE ]]; then
     if which bspc &>/dev/null; then
         # if there is an already running process, lets try and show it
-        bspc query --nodes | grep "^$(cat $PIDFILE)$" &>/dev/null && bspwm_show_window && exit 0 || exit 1
+        if bspc query --nodes | grep "^$(cat $PIDFILE)$" &>/dev/null; then
+            bspwm_show_window && exit 0
+        fi
     else
         # TODO add support for other window managers...
         echo "Don't know how to raise a pid in this window manager..."
@@ -71,8 +73,8 @@ fi
 echo 0x$(printf '%08x\n' $WINDOWID) > $PIDFILE
 # create the tmux session if it doesn't exist, this will run the above setup logic
 #   within the session
-if ! tmux list-sessions | grep "music"; then
-    tmux new-session -d -s music "$0"
+if ! tmux list-sessions | grep $CLASS; then
+    tmux new-session -d -s $CLASS "$0"
 fi
 # Then attach to it
-exec tmux attach-session -t music
+exec tmux attach-session -t $CLASS

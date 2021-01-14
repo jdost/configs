@@ -1,0 +1,61 @@
+configuration {
+    modi: "combi,:~/.config/rofi/scripts/pass,:~/.config/rofi/scripts/totp";
+    combi-modi: ",";
+
+    kb-accept-alt: "Alt+Return";
+    kb-custom-1: "Shift+Return";
+
+    show-icons: false;
+}
+
+* {
+    font: "Hack Nerd Font Mono 16";
+    background: rgba( 10, 10, 10, 0.5);
+    foreground: rgba(200,200,200, 0.9);
+
+    background-color: inherit;
+    text-color: inherit;
+}
+
+window {
+    transparency: "real";
+    anchor: south;
+    location: south;
+    width: 100%;
+    padding: 0 4px;
+
+    background-color: @background;
+    text-color: @foreground;
+}
+
+mainbox {
+    children: [ horibox ];
+    background-color: #00000000;
+}
+
+    horibox {
+        orientation: horizontal;
+        children: [ entry, listview ];
+    }
+
+        entry {
+            padding: 0 0 0 20px;
+            expand: false;
+            width: 6em;
+            placeholder: "Secret";
+        }
+
+        listview {
+            layout: horizontal;
+            spacing: 15px;
+            lines: 100;
+        }
+
+            element {
+                padding: 0px 2px;
+            }
+
+            element selected {
+                border-color: @foreground;
+                border: 0 0 3px 0;
+            }

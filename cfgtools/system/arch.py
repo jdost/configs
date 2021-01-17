@@ -34,6 +34,7 @@ class Pacman(SystemPackage):
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
+            print(f"Installing (pacman): {', '.join(list(to_be_installed))}")
             subprocess.run(
                 ["sudo", "pacman", "-Syu", "--needed", "-y"] +
                 list(to_be_installed)
@@ -114,6 +115,7 @@ class AUR(SystemPackage):
     def apply(cls, *pkgs: 'AUR') -> None:
         needed = cls.filter(pkgs)
         if needed:
+            print(f"Installing (AUR): {', '.join(needed)}")
             if shutil.which("aur"):
                 subprocess.run(["aur", "install"] + needed)
             else:

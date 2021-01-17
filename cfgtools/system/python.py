@@ -75,10 +75,12 @@ class VirtualEnv(SystemPackage):
             if not self.location.parent.exists():
                 self.location.parent.mkdir(parents=True)
 
+            print(f"Creating VirtualEnv: {self.location}")
             subprocess.run(self.venv_cmd)
 
         uninstalled = self.requirements - self.installed_requirements
         if uninstalled:
+            print(f"Installing (virtualenv): {', '.join(list(uninstalled))}")
             subprocess.run(
                 [self.location / "bin/python", "-m", "pip", "install"] \
                 + list(uninstalled)

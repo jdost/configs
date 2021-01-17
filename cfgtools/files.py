@@ -84,14 +84,18 @@ class File(RegisteredFileAction):
             #   so this branch of the conditional is if it is a symlink but it
             #   does not have a valid target, so we want to remove the bad ref
             #   and create a new one
+            print(f"Removing bad symlink: {self.dst}")
             self.dst.unlink()
 
         if not self.dst.parent.exists():
+            print(f"Creating parent directory: {self.dst.parent}")
             self.dst.parent.mkdir(parents=True)
 
         try:
             self.dst.symlink_to(self.src)
+            print(f"Symlink: {self.src} -> {self.dst}")
         except PermissionError:
+            print(f"Symlink (as root): {self.src} -> {self.dst}")
             shell.run(f"sudo ln -s {self.src} {self.dst}")
 
     def __repr__(self) -> str:

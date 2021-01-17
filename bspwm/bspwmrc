@@ -48,7 +48,7 @@ set_rules 'games' \
 set_rules 'video' \
     'mpv' 'streamlink-twitch-gui'
 set_rules 'chat' \
-    'Discord' 'Android Messages' 'TelegramDesktop'
+    'Discord' 'discord' 'Android Messages' 'TelegramDesktop'
 
 for c in 'Peek' 'NoiseTorch'; do
     bspc rule -a "$c" state=floating focus=on

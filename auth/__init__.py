@@ -14,7 +14,7 @@ packages = {
     Pacman("xdotool"),
     GitRepository(
         Path.home() / ".local/dropbox/pass.git",
-        Path.home() / ".local/password_store1",
+        Path.home() / ".local/password_store",
     ),
 }
 files = [

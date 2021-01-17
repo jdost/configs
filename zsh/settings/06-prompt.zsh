@@ -15,10 +15,24 @@ else
    local FANCY_PATH_CMD="echo"
 fi
 
+function fancy_path() {
+    printf "%%F{7}"
+    local n=0
+    local parts=( "${(s:/:)$(dirs)}" )
+    for d in $parts[@]; do
+        if [[ $n > 0 ]];then
+            printf " %%F{$n}»%%F{7} "
+        fi
+        n=$(( $n + 1 ))
+        printf $d
+    done
+    printf "%%f"
+}
+
 setprompt() {
    local USER="%(#.%F{1}.%F{3})%n%f"
    local HOST="%F{2}%U%M%u%f"
-   local PWD="%F{7}$($FANCY_PATH_CMD "$(dirs)")%f"
+   local PWD=$(fancy_path)
    local TTY="%F{4}%y%f"
    local EXIT="%(?..%F{0}%K{202}%?%k%f )"
    local JOBS="%(1j.%F{8}(%j%) .)"

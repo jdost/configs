@@ -1,5 +1,6 @@
 [Unit]
 Description=deadd - Dbus Notifications
+PartOf=xorg.target
 
 [Service]
 ExecStart=deadd-notification-center

@@ -1,5 +1,6 @@
 [Unit]
 Description=xss-lock - session lock
+PartOf=xorg.target
 
 [Service]
 Environment="XSECURELOCK_DIM_TIME_MS=150000"

@@ -4,7 +4,7 @@ super + q
     pkill -USR1 -x sxhkd && bspc wm -r
 ## quit
 super + shift + q
-    bspc quit
+    systemctl --user stop xorg.target && bspc quit
 
 # Launching
 ## terminal emulator
@@ -22,14 +22,14 @@ super + bracketright
 super + shift + bracketright
     music-tmux
 XF86AudioPlay
-    playerctl play-pause
+    playerctl --current play-pause
 ## audio
 {_,shift} + XF86AudioLowerVolume
-    pulsemixer --change-volume -{10,1} && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+    pulsemixer --change-volume -{10,1}
 {_,shift} + XF86AudioRaiseVolume
-    pulsemixer --change-volume +{10,1} && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+    pulsemixer --change-volume +{10,1}
 XF86AudioMute
-    pulsemixer --toggle-mute && kill -USR1 $(cat /run/user/$UID/pulseaudio.pid)
+    pulsemixer --toggle-mute
 {XF86MonBrightnessDown,XF86MonBrightnessUp}
     ~/.local/systemhud/bin/screen-brightness {-5,+5}
 

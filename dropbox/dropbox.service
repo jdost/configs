@@ -1,5 +1,6 @@
 [Unit]
 Description=maestral - Dropbox Daemon
+PartOf=xorg.target
 
 [Service]
 ExecStart=%h/.local/maestral/bin/maestral gui

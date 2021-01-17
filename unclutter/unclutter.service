@@ -1,5 +1,6 @@
 [Unit]
 Description=unclutter - Idle Cursor Hiding
+PartOf=xorg.target
 
 [Service]
 ExecStart=unclutter -idle 1

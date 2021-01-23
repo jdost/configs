@@ -10,7 +10,12 @@ else
     _BIN=$(which $TGT_BIN)
 fi
 
-export VIMINIT='let $MYVIMRC="$HOME/.config/vim/vimrc" | source $MYVIMRC'
+VIMRC=$HOME/.config/vim/vimrc
+# Need to guard this in case `vim` is run with `sudo`
+if [[ -e "$VIMRC" ]]; then
+    export VIMINIT="let \$MYVIMRC=\"$VIMRC\" | source \$MYVIMRC"
+fi
+
 # Unsure why, but having alacritty as the terminal messes up ctrlp's arrow keys
 if [[ "$TERM" == "alacritty" ]]; then
     export TERM="screen-256color"

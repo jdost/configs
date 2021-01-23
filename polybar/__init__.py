@@ -1,6 +1,6 @@
 import subprocess
 
-from cfgtools.files import XDGConfigFile, XDG_CONFIG_HOME
+from cfgtools.files import XDGConfigFile, XDG_CONFIG_HOME, UserBin
 from cfgtools.hooks import after
 from cfgtools.system import GitRepository
 from cfgtools.system.arch import AUR, Pacman
@@ -38,3 +38,15 @@ def setup_systemhud_repo() -> None:
     modules_dst = XDG_CONFIG_HOME / "polybar/systemhud_modules"
     if not modules_dst.exists():
         modules_dst.symlink_to(systemhud_repo.local_path / "etc/polybar")
+    global_bins = ["notify-send", "screen-brightness"]
+    for global_bin in global_bins:
+        src = systemhud_venv.location / "bin" / global_bin
+        dst = UserBin.DIR / global_bin
+        if dst.exists():
+            continue
+        if not src.exists():
+            raise FileNotFoundError(
+                f"Cannot link {src} into path, does not exist."
+            )
+
+        dst.symlink_to(src)

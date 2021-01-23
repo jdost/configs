@@ -31,7 +31,7 @@ XF86AudioPlay
 XF86AudioMute
     pulsemixer --toggle-mute
 {XF86MonBrightnessDown,XF86MonBrightnessUp}
-    ~/.local/systemhud/bin/screen-brightness {-5,+5}
+    screen-brightness {-5,+5}
 
 # Window Control
 ## close/kill

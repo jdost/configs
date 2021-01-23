@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from pathlib import Path
 from typing import Optional, Union
@@ -96,7 +97,7 @@ class File(RegisteredFileAction):
             print(f"Symlink: {self.src} -> {self.dst}")
         except PermissionError:
             print(f"Symlink (as root): {self.src} -> {self.dst}")
-            shell.run(f"sudo ln -s {self.src} {self.dst}")
+            subprocess.run(["sudo", "ln", "-s", str(self.src), str(self.dst)])
 
     def __repr__(self) -> str:
         return f"{self.__class__} {self.src} -> {self.dst}"

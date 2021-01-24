@@ -1,8 +1,13 @@
-SCREENSAVER_IDLE_SECONDS=600  # Idle time before screensaver is activated
-SCREENSAVER_CYCLE_SECONDS=150  # Time before the screensaver is refreshed
+# All in seconds
+SECONDS_TO_SCREENLOCK=480  # Idle time until the screen locks
+SECONDS_TO_DIMMER=360  # Idle time until dimmer starts
+## NOTE: the value XSECURELOCK_DIM_TIME_MS should be equal to
+#   SECONDS_TO_SCREENLOCK - SECONDS_TO_DIMMER * 100
 if which xset &>/dev/null; then
-  xset s on \
-    && xset s $SCREENSAVER_IDLE_SECONDS $SCREENSAVER_CYCLE_SECONDS
+    xset s on \
+     && xset s \
+        $SECONDS_TO_DIMMER \
+        $(( $SECONDS_TO_SCREENLOCK - $SECONDS_TO_DIMMER ))
 fi
 
 # vim: ft=bash

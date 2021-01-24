@@ -3,7 +3,7 @@ Description=xss-lock - session lock
 PartOf=xorg.target
 
 [Service]
-Environment="XSECURELOCK_DIM_TIME_MS=150000"
+Environment="XSECURELOCK_DIM_TIME_MS=120000"
 ExecStart=xss-lock -n /usr/lib/xsecurelock/dimmer -l -- %h/.local/bin/_screenlock
 
 [Install]

@@ -21,8 +21,10 @@ if which xsecurelock &>/dev/null; then
    fi
 
    export XSECURELOCK_AUTH_TIMEOUT=15
-   export XSECURELOCK_PAM_SERVICE=system-local-login
+   export XSECURELOCK_BLANK_DPMS_TIMEOUT=120
+   export XSECURELOCK_BLANK_DPMS_STATE=standby
    export XSECURELOCK_DISCARD_FIRST_KEYPRESS=0
+   export XSECURELOCK_PAM_SERVICE=system-local-login
    export XSECURELOCK_SHOW_DATETIME=1
    exec xsecurelock
 fi

@@ -7,6 +7,8 @@ from typing import Set, Sequence
 from cfgtools.system import SystemPackage
 from cfgtools.utils import cmd_output
 
+IS_ARCH = shutil.which('pacman') != None
+
 
 def installed_pkgs() -> Set[str]:
     return {
@@ -17,7 +19,8 @@ def installed_pkgs() -> Set[str]:
 class Pacman(SystemPackage):
     def __init__(self, name: str):
         self.name = name
-        super().__init__()
+        if IS_ARCH:
+            super().__init__()
 
     def __repr__(self):
         return f"{self.__class__} {self.name}"
@@ -62,7 +65,8 @@ class AUR(SystemPackage):
         else:
             self.name = name
 
-        super().__init__()
+        if IS_ARCH:
+            super().__init__()
 
     def __repr__(self):
         return f"{self.__class__} {self.name}"

@@ -5,9 +5,9 @@ set -euo pipefail
 TGT_BIN="vim"
 if [[ "$(which $TGT_BIN)" != "$(which -a $TGT_BIN | uniq)" ]]; then
     ALIASED_LEN=$(which $TGT_BIN | wc -l)
-    _BIN=$(which -a $TGT_BIN | uniq | sed -e "1,$ALIASED_LEN"d | head -n 1)
+    BIN=$(which -a $TGT_BIN | uniq | sed -e "1,$ALIASED_LEN"d | head -n 1)
 else
-    _BIN=$(which $TGT_BIN)
+    BIN=$(which $TGT_BIN)
 fi
 
 VIMRC=$HOME/.config/vim/vimrc
@@ -20,4 +20,4 @@ fi
 if [[ "$TERM" == "alacritty" ]]; then
     export TERM="screen-256color"
 fi
-exec $_BIN "$@"
+exec $BIN "$@"

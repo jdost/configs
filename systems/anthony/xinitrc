@@ -1,0 +1,8 @@
+export GDK_DPI_SCALE=0.7
+systemctl --user import-environment GDK_DPI_SCALE
+if which dbus-update-activation-environment &>/dev/null; then
+    dbus-update-activation-environment GDK_DPI_SCALE
+fi
+unset GDK_DPI_SCALE
+
+# vim: ft=bash

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Android Messages
+GenericName=Containerized SMS Messaging
+Comment=Containerized SMS Messaging
+Exec=android-messages-desktop
+Icon=android-messages-desktop
+Terminal=false
+Categories=Network;InstantMessaging;Chat;
+Keywords=Messaging SMS Chat Text

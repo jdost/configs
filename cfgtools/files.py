@@ -135,8 +135,10 @@ class XinitRC(File):
 
 class DesktopEntry(File):
     DIR = HOME / ".local/share/applications"
-    def __init__(self, src: str):
-        filename = Path(src).name
+    def __init__(self, src: str, name: Optional[str] = None):
+        filename = name if name else Path(src).name
+        if not filename.endswith(".desktop"):
+            filename=f"{filename}.desktop"
         super().__init__(src=src, dst=(DesktopEntry.DIR / filename))
 
 

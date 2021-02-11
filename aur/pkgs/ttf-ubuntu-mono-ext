@@ -1,0 +1,20 @@
+_pkgver_major=2
+_pkgver_minor=1
+_pkgver_patch=0
+
+pkgname="ttf-ubuntu-mono-ext"
+pkgver=${_pkgver_major}.${_pkgver_minor}.${_pkgver_patch}
+pkgrel=3
+pkgdesc='Extended version of the ttf-ubuntu-mono font with additional glyphs'
+arch=('any')
+license=()
+url="https://github.com/ryanoasis/nerd-fonts"
+provides=('ttf-ubuntu-mono')
+source=("${pkgname}-${pkgver}.zip::https://github.com/ryanoasis/nerd-fonts/releases/download/v${pkgver}/UbuntuMono.zip")
+sha256sums=('1034658826a4561a1ff460aa4261b5f47e8b201601619242e31bbde14ecc4871')
+
+package() {
+   cd "$srcdir"
+   install -d "$pkgdir"/usr/share/fonts/TTF
+   install -m644 "Ubuntu Mono Nerd Font Complete Mono.ttf" "$pkgdir"/usr/share/fonts/TTF/Ubuntu\ Mono.ttf
+}

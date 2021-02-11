@@ -141,9 +141,10 @@ class Package:
     @property
     def package_path(self) -> Path:
         available_cache = self.local_cache + self.shared_cache
+        parser = lambda x: x if self.is_git else parse_version
         return [p for p in sorted(
             available_cache,
-            key=lambda p: parse_version(get_version_from_path(self.name, p)),
+            key=lambda p: parser(get_version_from_path(self.name, p)),
         )][-1]
 
     @property

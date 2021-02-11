@@ -21,7 +21,10 @@ fill_tmux() {
     tmux select-window -t 1
     settitle ncspot
     # Enable mouse mode, kind of convenient
-    tmux set -g mouse on
+    tmux set mouse on
+    # Hide the status, it is clutter
+    tmux set status-left '#[fg=colour39] ﱘ '
+    tmux set status-right ''
     exec ncspot
 }
 

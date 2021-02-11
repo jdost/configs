@@ -7,6 +7,16 @@ from typing import Sequence
 from cfgtools.files import BASE
 
 
+def run(cmd: str) -> bool:
+    resolved_cmd = shlex.split(cmd)
+
+    return subprocess.run(
+        resolved_cmd,
+        stdout=subprocess.DEVNULL,
+        cwd=BASE,
+    ).returncode == 0
+
+
 def cmd_output(cmd: str) -> Sequence[str]:
     resolved_cmd = shlex.split(cmd)
 

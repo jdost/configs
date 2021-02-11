@@ -9,7 +9,7 @@ from cfgtools.system import SystemPackage
 class VirtualEnv(SystemPackage):
     BASE_LOCATION = Path.home() / ".local"
 
-    def __init__(self, name: str, *requirements: str, system_packages: bool = False):
+    def __init__(self, name: str, system_packages: bool = False, *requirements: str):
         self.name = name
         self.requirements = set(requirements)
         self.system_packages = system_packages

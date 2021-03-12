@@ -6,7 +6,7 @@ from cfgtools.utils import hide_xdg_entry
 
 import aur
 
-system_packages={AUR("picom-tryone-git")}
+system_packages={AUR("picom-git")}
 files=[
     XDGConfigFile(f"{__name__}/picom.conf"),
     UserService(f"{__name__}/compositor.service"),

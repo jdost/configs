@@ -1,0 +1,2 @@
+export PYTHONSTARTUP=$HOME/.config/python/startup.py
+# vim: ft=zsh

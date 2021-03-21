@@ -16,7 +16,10 @@ fi
 TMUX_TMPDIR=/tmp/tmux-$UID
 DEFAULT_TMUX=default
 
-[[ ! -d "$TMUX_TMPDIR" ]] && mkdir -p "$TMUX_TMPDIR"
+if [[ ! -d "$TMUX_TMPDIR" ]]; then
+    mkdir -p "$TMUX_TMPDIR"
+    chmod 700 "$TMUX_TMPDIR"
+fi
 
 _debug() {
     [[ -z "${DEBUG:-}" ]] && return
@@ -70,6 +73,5 @@ case "${1:-}" in
         exec $BIN "$@"
         ;;
     *)
-        echo $1
         exec $BIN "$@" ;;
 esac

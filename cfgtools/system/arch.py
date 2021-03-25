@@ -30,7 +30,10 @@ class Pacman(SystemPackage):
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
-            print(f"# pacman -Syu --needed -y {' '.join(to_be_installed)}")
+            print(
+                "# pacman -Syu --needed -y "
+                f"{' '.join(list(to_be_installed))}"
+            )
 
     @classmethod
     def apply(cls, *pkgs: 'Pacman') -> None:
@@ -47,6 +50,9 @@ class Pacman(SystemPackage):
 class AUR(SystemPackage):
     def __init__(self, name: str):
         self.is_local = False
+
+        if not IS_ARCH:
+            return
 
         if name.startswith("./"):
             # if the name is defined as a relative path, we need to do some
@@ -65,8 +71,7 @@ class AUR(SystemPackage):
         else:
             self.name = name
 
-        if IS_ARCH:
-            super().__init__()
+        super().__init__()
 
     def __repr__(self):
         return f"{self.__class__} {self.name}"

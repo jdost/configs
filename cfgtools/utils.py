@@ -24,7 +24,7 @@ def cmd_output(cmd: str) -> Sequence[str]:
         resolved_cmd,
         stdout=subprocess.PIPE,
         cwd=BASE,
-    ).stdout.decode("utf-8").split()
+    ).stdout.decode("utf-8").split("\n")
 
 
 def add_group(group: str) -> None:

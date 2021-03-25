@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Remmina
+GenericName=Containerized Remote Graphical Machine Access
+Comment=Containerized remote machine access
+Exec=remmina
+Icon=remmina
+Terminal=false
+Categories=Network;RemoteAccess
+Keywords=Messaging Chat Text

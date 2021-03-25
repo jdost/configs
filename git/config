@@ -6,6 +6,9 @@
    name = Jeff
    email = jdost@users.noreply.github.com
 
+[init]
+    defaultBranch = main
+
 [push]
    default = current
 

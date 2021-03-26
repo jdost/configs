@@ -7,4 +7,5 @@ files = [
     Folder(HOME / ".local/bin", permissions=0o755),
     EnvironmentFile(__name__),
     UserBin(FOLDER / "settitle.sh", "settitle"),
+    UserBin(FOLDER / "term_info.sh", "term-info"),
 ]

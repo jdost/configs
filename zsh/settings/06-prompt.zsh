@@ -30,30 +30,37 @@ function fancy_path() {
 }
 
 setprompt() {
-   local USER="%(#.%F{1}.%F{3})%n%f"
-   local HOST="%F{2}%U%M%u%f"
-   local PWD=$(fancy_path)
-   local TTY="%F{4}%y%f"
-   local EXIT="%(?..%F{0}%K{202}%?%k%f )"
-   local JOBS="%(1j.%F{8}(%j%) .)"
+    local USER="%(#.%F{1}.%F{3})%n%f"
+    local HOST="%F{2}%U%M%u%f"
+    local PWD=$(fancy_path)
+    local TTY="%F{4}%y%f"
+    local EXIT="%(?..%F{0}%K{202}%?%k%f )"
+    local JOBS="%(1j.%F{8}(%j%) .)"
 
-   if [[ "${VIRTUAL_ENV:-}" != "" ]]; then
-      local VENV="%F{100}($(basename ${VIRTUAL_ENV})) "
-   else
-      local VENV=""
-   fi
+    if [[ "${VIRTUAL_ENV:-}" != "" ]]; then
+        # if the basename is "env" or "venv" try the name of the parent dir, don't
+        #   try and be too clever, if that is also "env" or "venv", just live with
+        #   it
+        local env_name=$(basename ${VIRTUAL_ENV})
+        if [[ "$env_name" == "env" || "$env_name" == "venv" ]]; then
+            env_name=$(basename $(dirname ${VIRTUAL_ENV}))
+        fi
+        local VENV="%F{100}($(basename ${env_name})) "
+    else
+        local VENV=""
+    fi
 
-   local PRMPT="${USER}@$HOST:${TTY}: ${PWD}
+    local PRMPT="${USER}@$HOST:${TTY}: ${PWD}
 ${VENV}${JOBS}${EXIT}%(1l.. )%F{202}»%f "
-   PROMPT="$PRMPT"
+    PROMPT="$PRMPT"
 
-   vi-mode
-   local RPRMPT=$VI_STATUS
-   if [[ "${vcs_info_msg_0_}" != "" ]]; then
-      RPROMPT="${vcs_info_msg_0_} $RPRMPT"
-   else
-      RPROMPT="$RPRMPT"
-   fi
+    vi-mode
+    local RPRMPT=$VI_STATUS
+    if [[ "${vcs_info_msg_0_}" != "" ]]; then
+        RPROMPT="${vcs_info_msg_0_} $RPRMPT"
+    else
+        RPROMPT="$RPRMPT"
+    fi
 }
 
 function vi-mode() {

@@ -8,12 +8,12 @@ setlocal foldmarker={{{,}}}
 let g:TrimOnSave = 0
 
 silent! if has_key(g:plugs, 'neocomplcache')
-   "let g:neocomplcache_enable_at_startup = 0
-   if !exists('g:neocomplcache_disabled_sources_list')
-      let g:neocomplcache_disabled_sources_list = {}
-   endif
-   let g:neocomplcache_disabled_sources_list.markdown =
-      \ ['buffer_complete', 'member_complete']
+  "let g:neocomplcache_enable_at_startup = 0
+  if !exists('g:neocomplcache_disabled_sources_list')
+    let g:neocomplcache_disabled_sources_list = {}
+  endif
+  let g:neocomplcache_disabled_sources_list.markdown =
+    \ ['buffer_complete', 'member_complete']
 endif
 
 " spell check
@@ -23,11 +23,11 @@ set spellfile=~/.local/custom-dictionary.utf-8.add
 
 " codeblocks
 let g:markdown_fenced_languages = ['python', 'javascript', 'js=javascript',
-         \ 'json=javascript', 'ruby', 'css', 'less', 'sass', 'xml', 'html',
-         \ 'hs=haskell', 'haskell', 'zsh', 'sh', 'bash=sh', 'vim' ]
+    \ 'json=javascript', 'ruby', 'css', 'less', 'sass', 'xml', 'html',
+    \ 'hs=haskell', 'haskell', 'zsh', 'sh', 'bash=sh', 'vim' ]
 let g:vim_markdown_fenced_languages = ['python', 'javascript', 'js=javascript',
-         \ 'json=javascript', 'ruby', 'css', 'less', 'sass', 'xml', 'html',
-         \ 'hs=haskell', 'haskell', 'zsh', 'sh', 'bash=sh', 'vim' ]
+    \ 'json=javascript', 'ruby', 'css', 'less', 'sass', 'xml', 'html',
+    \ 'hs=haskell', 'haskell', 'zsh', 'sh', 'bash=sh', 'vim' ]
 
 " vim-markdown
 let g:vim_markdown_no_default_key_mappings = 1
@@ -38,10 +38,10 @@ let g:vim_markdown_folding_disabled = 1
 
 " display stuff
 silent! if has_key(g:plugs, 'goyo.vim')
-   :Goyo
+  :Goyo
 endif
 
 silent! if has_key(g:plugs, 'vim-pencil')
-   :HardPencil
-   let g:pencil#autoformat = 0
+  :HardPencil
+  let g:pencil#autoformat = 0
 endif

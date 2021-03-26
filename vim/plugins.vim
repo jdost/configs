@@ -1,7 +1,7 @@
 if empty(glob('$XDG_CONFIG_HOME/vim/autoload/plug.vim'))
-   silent !curl -fLo "$XDG_CONFIG_HOME/vim/autoload/plug.vim" --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  silent !curl -fLo "$XDG_CONFIG_HOME/vim/autoload/plug.vim" --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('$XDG_CONFIG_HOME/vim/bundle')
@@ -9,11 +9,11 @@ call plug#begin('$XDG_CONFIG_HOME/vim/bundle')
 " Navigation/Movement {{{
 Plug 'rhysd/clever-f.vim'
 if !empty(glob('/usr/bin/fzf.disabled'))  " Disabled until it feels closer to ctrlp
-   " Use fzf if it is installed
-   Plug '/usr/share/vim/vimfiles'
-   Plug 'junegunn/fzf.vim'
+  " Use fzf if it is installed
+  Plug '/usr/share/vim/vimfiles'
+  Plug 'junegunn/fzf.vim'
 else
-   Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'ctrlpvim/ctrlp.vim'
 endif
 "Plug 'mileszs/ack.vim'
 " }}}
@@ -89,14 +89,14 @@ Plug 'CharlesGueunet/quickmenu.vim'
 Plug 'itchyny/lightline.vim'
 " Instantiating this now so it can be populated via plugin detections
 let g:lightline = {
-   \  'active': {},
-   \  'component': {},
-   \  'component_visible_condition': {},
-   \  'component_function': {},
-   \  'component_function_visible_condition': {},
-   \  'component_expand': {},
-   \  'component_type': {},
-   \ }
+  \  'active': {},
+  \  'component': {},
+  \  'component_visible_condition': {},
+  \  'component_function': {},
+  \  'component_function_visible_condition': {},
+  \  'component_expand': {},
+  \  'component_type': {},
+  \ }
 " }}}
 
 " Tmux {{{

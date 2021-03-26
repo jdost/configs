@@ -6,7 +6,7 @@ set showmatch
 set incsearch
 " only set highlighting in colored terminals
 if &t_Co > 2
-   set hlsearch
+  set hlsearch
 endif
 
 nnoremap / /\v
@@ -21,5 +21,5 @@ nnoremap N Nzzzv
 
 " Use `ripgrep` for grep if installed
 if executable('rg')
-   set grepprg=rg\ --color=never
+  set grepprg=rg\ --color=never
 endif

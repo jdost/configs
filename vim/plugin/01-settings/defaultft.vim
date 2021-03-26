@@ -1,18 +1,18 @@
 " if autocmd exists, setup auto settings {{{
 if has("autocmd")
-   " set default width for text documents
-   autocmd FileType text setlocal textwidth=80
-   " return to last known *valid* cursor position
-   autocmd BufReadPost *
-     \ if line("'\"") > 1 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
-   "if exists("+omnifunc")
-   "   autocmd FileType *
-   "     \ if &omnifunc == "" |
-   "     \   setlocal omnifunc = syntanxcomplete#Complete |
-   "     \ endif
-   "endif
+  " set default width for text documents
+  autocmd FileType text setlocal textwidth=80
+  " return to last known *valid* cursor position
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+  "if exists("+omnifunc")
+  "  autocmd FileType *
+  "    \ if &omnifunc == "" |
+  "    \   setlocal omnifunc = syntanxcomplete#Complete |
+  "    \ endif
+  "endif
 endif " }}}
 " tab handling
 set expandtab
@@ -32,7 +32,7 @@ au BufNewFile,BufRead *.go set filetype=go
 au BufNewFile,BufRead *.graphql,*.graphqls,*.gql set filetype=graphql
 
 if !has('conceal')
-   finish
+  finish
 endif
 " Conceals (change long names into shorthand symbols)
 "syntax keyword concealKeyword function conceal cchar=ϝ

@@ -39,7 +39,7 @@ fi # }}}
 # set initial title using TTY, only if interactive
 if [[ -o interactive ]]; then
    which settitle &>/dev/null && settitle || /bin/true
-   which term_info &>/dev/null && term_info || /bin/true
+   which term-info &>/dev/null && term-info || /bin/true
 fi
 
 # vim: ft=zsh foldmethod=marker

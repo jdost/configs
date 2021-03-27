@@ -1,0 +1,8 @@
+Host *
+    ForwardAgent yes
+    ServerAliveInterval 20
+    ServerAliveCountMax 6
+    StrictHostKeyChecking ask
+    UserKnownHostsFile ~/.ssh/known_hosts
+
+# vim: ft=sshconfig

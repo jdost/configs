@@ -1,0 +1,59 @@
+# General
+set sandbox normal  # strict hangs
+set selection-clipboard clipboard
+set adjust-open best-fit  # options: best-fit width
+set dbus-service false  # enable for stuff like `SyncTeX`
+set filemonitor noop  # options: glib signal noop
+set incremental-search true
+set font "Hack Nerd Font Mono normal 11"
+set guioptions ""  # options: s-statusbar, c-commandline, v/h-scrollbars
+
+# Window Title
+set window-title-basename false
+set window-title-home-tilde true
+
+# Status Bar
+set statusbar-basename true
+set statusbar-home-tilde true
+set statusbar-v-padding 5
+set statusbar-h-padding 10
+
+# Colors
+set recolor true
+set recolor-keephue true
+set recolor-darkcolor   "#eeeeee"  # Foreground
+set recolor-lightcolor  "#111111"  # Background
+
+set notification-error-bg   "#ee3333"
+set notification-error-fg   "#111111"
+set notification-warning-bg "#eeee33"
+set notification-warning-fg "#111111"
+set notification-bg         "#111111"
+set notification-fg         "#eeeeee"
+
+set completion-bg           "#111111"
+set completion-fg           "#11ccee"
+set completion-group-bg     "#111111"
+set completion-group-fg     "#11ccee"
+set completion-highlight-bg "#333333"
+set completion-highlight-fg "#eeeeee"
+
+set index-bg                "#111111"
+set index-fg                "#eeeeee"
+set index-active-bg         "#333333"
+set index-active-fg         "#eeeeee"
+
+set inputbar-bg             "#111111"
+set inputbar-fg             "#666666"
+set statusbar-bg            "#111111"
+set statusbar-fg            "#eeeeee"
+
+set highlight-color         "#ffcc88"
+set highlight-active-color  "#ff9900"
+
+set default-bg              "#111111"
+set default-fg              "#eeeeee"
+
+set render-loading          true
+set render-loading-bg       "#111111"
+set render-loading-fg       "#eeeeee"

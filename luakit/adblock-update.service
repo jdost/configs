@@ -1,0 +1,9 @@
+[Unit]
+Description=Update adblock filters
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/_adblock-update
+
+[Install]
+WantedBy=default.target

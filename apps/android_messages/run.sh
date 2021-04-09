@@ -28,13 +28,14 @@ DOCKER_FLAGS_DBUS=(
     --volume /var/run/user/$UID:/var/run/user/$UID
 )
 
+
 msg() {
-    if [ -t 1 ]; then
+    if [[ ! -z "${TERM:-}" ]]; then
         echo "$*"
     else
         notify-send \
             --app-name=$NAME \
-            --expire-time=1500 \
+            --expire-time=4000 \
             "Docker App: $NAME" \
             "$*"
     fi
@@ -62,7 +63,6 @@ fi
 exec docker run \
     --rm \
     --interactive \
-    --tty \
     --name $NAME \
     --volume $CONFIG_DIR:/config \
     "${DOCKER_FLAGS_X[@]}" \

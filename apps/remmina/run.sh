@@ -29,7 +29,7 @@ DOCKER_FLAGS_DBUS=(
 )
 
 msg() {
-    if [ -t 1 ]; then
+    if [[ ! -z "${TERM:-}" ]]; then
         echo "$*"
     else
         notify-send \
@@ -63,6 +63,7 @@ fi
 
 exec docker run \
     --rm \
+    --interactive \
     --name $NAME \
     --volume $CONFIG_DIR:/config \
     "${DOCKER_FLAGS_X[@]}" \

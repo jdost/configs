@@ -2,6 +2,7 @@
 if [[ ! -z "${TMUX:-}" ]]; then
     _tmux_ssh_auth_sock="$HOME/.ssh/tmux-$(echo $TMUX | cut -d',' -f1 | rev | cut -d'/' -f1 | rev).sock"
     if [[ "$SSH_AUTH_SOCK" != "$_tmux_ssh_auth_sock" ]]; then
+        [[ -e "$_tmux_ssh_auth_sock" ]] && rm $_tmux_ssh_auth_sock
         ln -s $SSH_AUTH_SOCK $_tmux_ssh_auth_sock
     fi
     export SSH_AUTH_SOCK=$_tmux_ssh_auth_sock
@@ -13,6 +14,7 @@ if [[ ! -z "${TMUX:-}" ]]; then
         if gpg-connect-agent --quiet /bye &>/dev/null; then
             SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
             if ssh-add -l &>/dev/null; then
+                [[ -e "$_tmux_ssh_auth_sock" ]] && rm $_tmux_ssh_auth_sock
                 ln -s $SSH_AUTH_SOCK $_tmux_ssh_auth_sock
                 export SSH_AUTH_SOCK=$_tmux_ssh_auth_sock
                 return
@@ -22,6 +24,7 @@ if [[ ! -z "${TMUX:-}" ]]; then
         for agent in /tmp/ssh-*/agent.*; do
             SSH_AUTH_SOCK=$agent
             if ssh-add -l &>/dev/null; then
+                [[ -e "$_tmux_ssh_auth_sock" ]] && rm $_tmux_ssh_auth_sock
                 ln -s $SSH_AUTH_SOCK $_tmux_ssh_auth_sock
                 export SSH_AUTH_SOCK=$_tmux_ssh_auth_sock
                 return

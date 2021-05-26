@@ -1,4 +1,4 @@
-from cfgtools.files import File, HOME, XinitRC
+from cfgtools.files import File, XDG_CONFIG_HOME, XinitRC
 
 import aur
 import bat
@@ -18,8 +18,8 @@ import vim
 import wallpaper
 import zsh
 
-File("systems/anthony/polybar", HOME / ".config/polybar/system")
-File("systems/anthony/Xresources", HOME / ".config/xorg/Xresources.system")
-File("systems/anthony/bspwm_external_rules.sh", HOME / ".config/bspwm/external_rules")
-File("systems/anthony/chromium-flags.conf", HOME / ".config/chromium-flags.conf")
+File("systems/anthony/polybar", XDG_CONFIG_HOME / "polybar/system")
+File("systems/anthony/Xresources", XDG_CONFIG_HOME / "xorg/Xresources.system")
+File("systems/anthony/bspwm_external_rules.sh", XDG_CONFIG_HOME / "bspwm/external_rules")
+File("systems/anthony/chromium-flags.conf", XDG_CONFIG_HOME / "chromium-flags.conf")
 XinitRC("systems/anthony", priority=40)

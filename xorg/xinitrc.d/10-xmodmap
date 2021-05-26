@@ -1,6 +1,6 @@
 if which xmodmap &>/dev/null; then
-  [[ -e "$HOME/.config/xorg/caps-ctrl-swap.xmodmap" ]] && \
-    xmodmap $HOME/.config/xorg/caps-ctrl-swap.xmodmap
+  [[ -e "${XDG_CONFIG_HOME:-$HOME/.config}/xorg/caps-ctrl-swap.xmodmap" ]] && \
+    xmodmap "${XDG_CONFIG_HOME:-$HOME/.config}/xorg/caps-ctrl-swap.xmodmap"
 fi
 
 # vim: ft=bash

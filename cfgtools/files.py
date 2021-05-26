@@ -125,7 +125,7 @@ class XDGConfigFile(File):
 
 
 class XinitRC(File):
-    DIR = HOME / ".config/xorg/xinitrc.d"
+    DIR = XDG_CONFIG_HOME / "xorg/xinitrc.d"
     def __init__(self, name: str, priority: int = 99):
         super().__init__(
             src=(BASE / name / "xinitrc"),

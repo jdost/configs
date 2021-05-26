@@ -10,7 +10,7 @@ else
     BIN=$(which $TGT_BIN)
 fi
 
-VIMRC=$HOME/.config/vim/vimrc
+VIMRC=${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc
 # Need to guard this in case `vim` is run with `sudo`
 if [[ -e "$VIMRC" ]]; then
     export VIMINIT="let \$MYVIMRC=\"$VIMRC\" | source \$MYVIMRC"

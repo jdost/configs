@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Notion
+GenericName=Containerized Cloud Document Editor
+Comment=Containerized cloud-based document editor
+Exec=notion
+Icon=notion
+Terminal=false
+Categories=Network;WordProcessor;TextEditor;
+Keywords=Notes

@@ -36,7 +36,7 @@ class EncryptedFile(RegisteredFileAction):
         elif not self.dst.parent.exists():
             print(f"$ mkdir {self.dst.parent}")
 
-        print(f"$ gpg --output {self.dst} --decrypt {self.src}")
+        print(f"$ gpg --quiet --output {self.dst} --decrypt {self.src}")
 
     def apply(self) -> None:
         if not self.src.exists():
@@ -51,7 +51,7 @@ class EncryptedFile(RegisteredFileAction):
             self.dst.parent.mkdir(parents=True)
 
         print(f"Decrypting: {self.src} -> {self.dst}")
-        subprocess.run(["gpg", "--output", str(self.dst), "--decrypt", str(self.src)])
+        subprocess.run(["gpg", "--quiet", "--output", str(self.dst), "--decrypt", str(self.src)])
         self.dst.chmod(self.U_RO)
 
 

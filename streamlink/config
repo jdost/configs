@@ -1,0 +1,8 @@
+player=mpv --cache 2048
+player-continuous-http
+default-stream=best
+hls-segment-threads=3
+
+twitch-disable-ads
+twitch-disable-hosting
+twitch-disable-reruns

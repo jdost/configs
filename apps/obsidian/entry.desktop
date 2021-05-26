@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Obsidian
+GenericName=Containerized Note Taking
+Comment=Containerized Note Taking
+Exec=obsidian
+Icon=obsidian
+Terminal=false
+Categories=Office;
+Keywords=Notes Text Documents

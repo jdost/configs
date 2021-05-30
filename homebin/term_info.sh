@@ -52,9 +52,9 @@ echo ''
 
 # Language/tool runtimes
 if which python &>/dev/null; then
-    echo -en "   $(pink 'Python:') $(light_grey $(python --version 2>&1 | cut -d' ' -f2-))"
+    echo -en "  $(pink 'Python:') $(light_grey $(python --version 2>&1 | cut -d' ' -f2-))"
 else
-    echo -en "   $(pink 'Python:') $(light_grey 'uninstalled')"
+    echo -en "  $(pink 'Python:') $(light_grey 'uninstalled')"
 fi
 if which docker &>/dev/null; then
     echo -en "\t\t$(pink 'Docker:') $(light_grey $(docker --version | cut -d' ' -f3 | cut -d',' -f1))"

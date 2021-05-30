@@ -16,6 +16,7 @@ import unclutter
 import user_dirs
 import vim
 import wallpaper
+import zathura
 import zsh
 
 File("systems/anthony/polybar", XDG_CONFIG_HOME / "polybar/system")

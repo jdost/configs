@@ -15,6 +15,7 @@ pseudo-transparency = false
 font-0 = "Anonymice Nerd Font Mono:size=16;2"
 font-1 = "Noto Sans Symbols2:style=Regular:size=12;2"
 font-2 = "Anonymice Nerd Font Mono:size=20;4"
+font-3 = Material Design Icons:style=Regular:size=12;2
 background = #44000000
 width = 100%
 

@@ -9,6 +9,7 @@ from cfgtools.system.systemd import ensure_service, UserService
 
 packages={
     AUR("polybar"), AUR("./aur/pkgs/ttf-anonymous-pro-ext"),
+    AUR("ttf-material-design-icons-git"),
     Pacman("python-gobject"), Pacman("noto-fonts"), Pacman("noto-fonts-emoji"),
 }
 systemhud_repo = GitRepository("git@github.com:jdost/systemhud.git")

@@ -21,5 +21,6 @@ endif
 
 if has_key(g:plugs, 'ale')
   " Ale specific settings for python
-  let b:ale_fixers = ['black', 'isort']
+  let b:ale_fixers = ['black', 'isort', 'autoimport']
+  let b:ale_linters = ['vim-lsp', 'mypy']
 endif

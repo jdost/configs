@@ -20,9 +20,11 @@ if has_key(g:plugs, 'asyncomplete.vim')
   let g:asyncomplete_auto_popup = 1
   let g:asyncomplete_remove_duplicates = 1
 
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  inoremap <expr> <CR>    <SID>smart_cr()
+  if ! has_key(g:plugs, 'supertab')
+    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    inoremap <expr> <CR>    <SID>smart_cr()
+  endif
 
   autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
@@ -41,7 +43,7 @@ if has_key(g:plugs, 'asyncomplete-buffer.vim') && has_key(g:plugs, 'asyncomplete
     autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
       \ 'name': 'buffer',
       \ 'whitelist': ['*'],
-      \ 'blacklist': ['go', 'markdown', 'md'],
+      \ 'blacklist': ['python', 'go', 'markdown', 'md'],
       \ 'completor': function('asyncomplete#sources#buffer#completor'),
       \ 'config': {
       \    'max_buffer_size': 50000,

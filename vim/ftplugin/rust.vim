@@ -8,5 +8,7 @@ if executable('rls') && has_key(g:plugs, 'vim-lsp')
       \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
       \ 'whitelist': ['rust'],
       \ })
+
+    let g:ale_linters.rust = ['vim-lsp']
   augroup END
 endif

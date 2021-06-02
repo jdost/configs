@@ -6,11 +6,14 @@ endif
 
 call plug#begin('$XDG_CONFIG_HOME/vim/bundle')
 
+"Load itself, ensures it stays up to date
+Plug 'junegunn/vim-plug'
+
 " Navigation/Movement {{{
 Plug 'rhysd/clever-f.vim'
-if !empty(glob('/usr/bin/fzf.disabled'))  " Disabled until it feels closer to ctrlp
+if !empty(glob('/usr/bin/fzf'))
   " Use fzf if it is installed
-  Plug '/usr/share/vim/vimfiles'
+  Plug '/usr/share/vim/vimfiles' " Since we install via pacman, source the installed helpers
   Plug 'junegunn/fzf.vim'
 else
   Plug 'ctrlpvim/ctrlp.vim'
@@ -35,29 +38,31 @@ Plug 'tweekmonster/startuptime.vim', { 'on': 'StartupTime' }
 " }}}
 
 " Editting {{{
-" asyncomplete+friends {{{
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
+Plug 'ervandew/supertab'
 Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-buffer.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
-Plug 'Shougo/neco-syntax'
-Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
+if ! has('nvim')
+" asyncomplete+friends {{{
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/async.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  Plug 'prabirshrestha/asyncomplete-buffer.vim'
+  Plug 'prabirshrestha/asyncomplete-file.vim'
+  Plug 'Shougo/neco-syntax'
+  Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
 " }}}
-" coc {{{
-"Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-"Plug 'tjdevries/coc-zsh'
-" }}}
+else
 " ncm2 {{{
-"Plug 'roxma/nvim-yarp' | Plug 'ncm2/ncm2'
-"Plug 'ncm2/ncm2-syntax'
-"Plug 'ncm2/ncm2-vim-lsp'
+  Plug 'roxma/nvim-yarp' | Plug 'ncm2/ncm2'
+  Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
+  Plug 'ncm2/ncm2-vim-lsp'
 " }}}
+end
 
 "Plug 'jiangmiao/auto-pairs'
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'w0rp/ale'
+Plug 'rhysd/vim-lsp-ale'
+Plug 'liuchengxu/vista.vim'
 "Plug 'scrooloose/syntastic'
 "Plug 'Shougo/neosnippet'
 Plug 'tpope/vim-commentary'
@@ -82,8 +87,9 @@ Plug 'rhysd/git-messenger.vim', { 'on': 'GitMessenger' }
 
 " Appearance/UI {{{
 Plug 'sjl/badwolf'
+" `vim-indent-guides` doesn't work in neovim :(
+Plug has('nvim') ? 'Yggdroot/indentLine' : 'nathanaelkane/vim-indent-guides'
 "Plug 'junegunn/seoul256.vim'
-Plug 'nathanaelkane/vim-indent-guides'
 "Plug 'bagrat/vim-buffet'
 Plug 'CharlesGueunet/quickmenu.vim'
 Plug 'itchyny/lightline.vim'
@@ -121,6 +127,7 @@ Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 Plug 'godlygeek/tabular', { 'for': 'markdown' }
 Plug 'reedes/vim-pencil', { 'for': 'markdown' }
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'dkarter/bullets.vim', { 'for': ['markdown', 'gitcommit'] }
 " --- Web Frontend stuff
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }

@@ -21,7 +21,7 @@ set numberwidth=5
 " Special characters in a file
 set list
 set listchars=tab:>\ ,trail:-,eol:¬
-set fillchars=vert:┃ "║
+set fillchars=vert:┃,fold:\ "║
 
 set ttyfast
 set lazyredraw

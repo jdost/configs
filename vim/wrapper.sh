@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+
+# If neovim is installed, use that
+if [[ -z "${USE_VIM:-}" ]]; then
+    which "nvim" &>/dev/null && \
+        exec nvim "$@"
+fi
+
 # Resolve the underlying binary
 TGT_BIN="vim"
 if [[ "$(which $TGT_BIN)" != "$(which -a $TGT_BIN | uniq)" ]]; then

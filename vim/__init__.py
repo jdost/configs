@@ -11,5 +11,6 @@ packages={Pacman("vim"), Apt("vim")}
 files=[
     EnvironmentFile(__name__),
     UserBin(FOLDER / "wrapper.sh", "vim"),
+    XDGConfigFile(f"{__name__}/neovim.vim", "nvim/init.vim")
 ] + [XDGConfigFile(f"{__name__}/{f}") for f in CONFIG_FILES]
 

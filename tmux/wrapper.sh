@@ -30,10 +30,7 @@ start() {
     local name=${1:-$DEFAULT_TMUX}
     _debug "Starting $name..."
     if [[ -S "$TMUX_TMPDIR/$name" ]]; then
-        if ! $BIN has-session -t $name &>/dev/null; then
-            _debug "Removing unused session $name..."
-            rm "$TMUX_TMPDIR/$name"
-        fi
+        ! _check $name && rm "$TMUX_TMPDIR/$name"
     fi
     if [[ ! -S "$TMUX_TMPDIR/$name" ]]; then
         _debug "Creating new session: $name..."
@@ -50,9 +47,10 @@ attach() {
 }
 
 _check() {
-    if [[ -z "${TMUX:-}" ]]; then
-        echo "!!! Not currently in a tmux session"
-        exit 1
+    local name=${1:-$DEFAULT_TMUX}
+    [[ ! -S "$TMUX_TMPDIR/$name" ]] && return 1
+    if ! $BIN -L $name has-session -t $name &>/dev/null; then
+        return 1
     fi
 }
 
@@ -61,13 +59,24 @@ case "${1:-}" in
     "") start "$DEFAULT_TMUX" ;;
     start|new|s)
         shift
-        start "${1:-$DEFAULT_TMUX}"
+        SESSION=${1:-$DEFAULT_TMUX}
+        start "$SESSION"
         ;;
     attach|a)
         shift
-        attach "${1:-$DEFAULT_TMUX}"
+        SESSION=${1:-$DEFAULT_TMUX}
+        if ! _check "$SESSION"; then
+            echo "$SESSION is not a valid session."
+            exit 1
+        fi
+        attach "$SESSION"
         ;;
-    ls) exec ls $TMUX_TMPDIR ;;
+    ls)
+        for sock in $TMUX_TMPDIR/*; do
+            ! _check $(basename $sock) && rm -rf $sock
+        done
+        exec ls $TMUX_TMPDIR
+        ;;
     "--raw")
         shift
         exec $BIN "$@"

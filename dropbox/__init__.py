@@ -15,9 +15,11 @@ files = [
     UserService(f"{__name__}/dropbox.service"),
 ]
 
+DROPBOX_DIR = Path.home() / ".local/dropbox"
+
 
 class EncryptedFile(RegisteredFileAction):
-    DROPBOX_BASE = Path.home() / ".local/dropbox"
+    DROPBOX_BASE = DROPBOX_DIR
     U_RO=0o400
 
     def __init__(self, src: str, dst: str):

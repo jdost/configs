@@ -31,7 +31,7 @@ DOCKER_FLAGS_DBUS=(
 
 
 msg() {
-    if [[ ! -z "${TERM:-}" ]]; then
+    if [[ "${TERM:-}" != "linux" ]]; then
         echo "$*"
     else
         notify-send \
@@ -46,11 +46,14 @@ build() {
     msg "Building a new container image..."
     GID=$(id -g)
     cd $APP_DIR
-    docker build \
+    if ! docker build \
         --force-rm \
         --build-arg UID=$UID \
         --build-arg GID=$GID \
-        --tag "$IMAGE" .
+        --tag "$IMAGE" . ; then
+        msg "Image build failed"
+        exit 1
+    fi
     cd $RUN_DIR
 }
 

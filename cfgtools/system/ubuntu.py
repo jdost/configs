@@ -12,7 +12,7 @@ IS_UBUNTU = shutil.which("lsb_release") != None and \
 
 def installed_pkgs() -> Set[str]:
     return {
-        pkg for pkg in cmd_output("dpkg-query -W --showformat=${Package}\n")
+        pkg for pkg in cmd_output("dpkg-query -W --showformat='${Package}'\n")
     }
 
 

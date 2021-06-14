@@ -48,6 +48,7 @@ class Pacman(SystemPackage):
 
 
 class AUR(SystemPackage):
+    PRIORITY=2
     def __init__(self, name: str):
         self.is_local = False
 

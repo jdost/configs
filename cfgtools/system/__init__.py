@@ -8,6 +8,7 @@ registered_packages = defaultdict(set)
 
 
 class SystemPackage:
+    PRIORITY=1
     def __init__(self):
         registered_packages[self.__class__].add(self)
 
@@ -18,7 +19,8 @@ class SystemPackage:
 def setup(dry_run: bool = False) -> None:
     global registered_packages
 
-    for pkg_class, pkgs in registered_packages.items():
+    for pkg_class in sorted(registered_packages, key=lambda p: p.PRIORITY):
+        pkgs = registered_packages[pkg_class]
         if dry_run:
             pkg_class.dry_run(*pkgs)
         else:
@@ -26,6 +28,7 @@ def setup(dry_run: bool = False) -> None:
 
 
 class GitRepository(SystemPackage):
+    PRIORITY=10
     BASE_DIR = Path.home() / "src"
 
     def __init__(self, remote: str, name: Optional[str] = None):

@@ -24,3 +24,8 @@ if has_key(g:plugs, 'ale')
   let b:ale_fixers = ['black', 'isort', 'autoimport']
   let b:ale_linters = ['vim-lsp', 'mypy']
 endif
+
+if has_key(g:plugs, 'indentLine')
+  " The indentLine plugin messes with the conceal plugin for python
+  let b:indentLine_enabled = 0
+endif

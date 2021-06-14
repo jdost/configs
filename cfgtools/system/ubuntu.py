@@ -1,6 +1,8 @@
 import shutil
 import subprocess
+import urllib.request as urllib
 
+from tempfile import NamedTemporaryFile
 from typing import Set
 
 from cfgtools.system import SystemPackage
@@ -44,4 +46,46 @@ class Apt(SystemPackage):
             subprocess.run(
                 ["sudo", "apt-get", "install", "-y", "--no-install-recommends"] +
                 list(to_be_installed)
+            )
+
+
+class Deb(SystemPackage):
+    PRIORITY=2
+    def __init__(self, name: str, url: str):
+        self.name = name
+        self.url = url
+        if IS_UBUNTU:
+            super().__init__()
+
+    def __repr__(self):
+        return f"{self.__class__} {self.name} ({self.url})"
+
+    @classmethod
+    def dry_run(cls, *pkgs: 'Deb') -> None:
+        wanted = {pkg.name: pkg for pkg in pkgs}
+        to_be_installed = set(wanted.keys()) - installed_packages()
+        if to_be_installed:
+            for pkg_name in to_be_installed:
+                wanted[pkg_name].dry_run()
+
+    def dry_run(self) -> None:
+        print(
+            f"# curl -o {self.name}.deb {self.url}"
+            f" && sudo dpkg -i {self.name}.deb"
+        )
+
+    @classmethod
+    def apply(cls, *pkgs: 'Deb') -> None:
+        wanted = {pkg.name: pkg for pkg in pkgs}
+        to_be_installed = set(wanted.keys()) - installed_packages()
+        if to_be_installed:
+            for pkg_name in to_be_installed:
+                wanted[pkg_name].apply()
+
+    def apply(self) -> None:
+        with NamedTemporaryFile(suffix='.deb') as deb, ]
+                urllib.urlopen(self.url) as src_file:
+            shutil.copyfileobj(src_file, deb)
+            subprocess.run(
+                ["sudo", "dpkg", "-i", deb.name]
             )

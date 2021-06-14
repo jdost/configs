@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Toggle Notification Popups
+GenericName=Switch displaying notification popups
+Comment=Toggle the display of notification popups
+Exec=notifications-toggle
+Icon=preferences-system-notifications
+Terminal=false

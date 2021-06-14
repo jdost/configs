@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Watch Video Stream
+GenericName=Watch Streamed Video
+Comment=Watch web video in clipboard
+Exec=_streamlink-clipboard
+Icon=mpv
+Terminal=false

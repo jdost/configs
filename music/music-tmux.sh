@@ -43,6 +43,11 @@ bspwm_setup_window() {
     bspc rule -a $CLASS sticky=on state=floating hidden=off rectangle=${WIDTH}x$(( $height - $VOFFSET ))+2000+${VOFFSET}
 }
 
+record_windowid() {
+    local converted_windowid=$(printf '%08x\n' $WINDOWID)
+    echo 0x${converted_windowid^^} > $PIDFILE
+}
+
 # If this is in a tmux, it means we are using it to set up the session
 [[ ! -z "${TMUX:-}" ]] && fill_tmux
 
@@ -73,7 +78,8 @@ if [[ -z "${WINDOWID:-}" ]]; then
     echo "Not triggered in a WM..."
     exit 1
 fi
-echo 0x$(printf '%08x\n' $WINDOWID) > $PIDFILE
+
+record_windowid
 # create the tmux session if it doesn't exist, this will run the above setup logic
 #   within the session
 if ! tmux list-sessions | grep $CLASS; then

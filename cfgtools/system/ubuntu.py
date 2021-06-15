@@ -83,7 +83,7 @@ class Deb(SystemPackage):
                 wanted[pkg_name].apply()
 
     def apply(self) -> None:
-        with NamedTemporaryFile(suffix='.deb') as deb, ]
+        with NamedTemporaryFile(suffix='.deb') as deb, \
                 urllib.urlopen(self.url) as src_file:
             shutil.copyfileobj(src_file, deb)
             subprocess.run(

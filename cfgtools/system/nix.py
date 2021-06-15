@@ -1,4 +1,5 @@
 import shutil
+import subprocess
 
 from pathlib import Path
 from typing import Optional, Set
@@ -40,10 +41,10 @@ class NixPkgBin(SystemPackage):
 
     @classmethod
     def apply(cls, *pkgs: 'NixPkgBin') -> None:
-        wanted = {pkg.name for pkg in pkgs}
-        to_be_installed = wanted - installed_pkgs() - bins()
+        wanted = {pkg.name: pkg for pkg in pkgs}
+        to_be_installed = set(wanted) - installed_pkgs() - bins()
         if to_be_installed:
-            print(f"Installed (nix-env): {', '.join(list(to_be_installed))}")
+            print(f"Installing (nix-env): {', '.join(list(to_be_installed))}")
             cmd = ["nix-env"]
             for pkg in to_be_installed:
                 cmd.extend(["--install", pkg])
@@ -53,7 +54,7 @@ class NixPkgBin(SystemPackage):
         # We want to preserve the bins outside the profile in case that gets
         # manipulated
         for pkg_name in to_be_installed:
-            bin_name = pkgs[pkg_name]
-            (UserBin.DIR / bin_name).symlink_to(
-                (NIX_PROFILE / "bin" / bin_name).resolve()
-            )
+            bin_name = wanted[pkg_name].bin_name
+            tgt = UserBin.DIR / bin_name
+            if not tgt.exists():
+                tgt.symlink_to((NIX_PROFILE / f"bin/{bin_name}").resolve())

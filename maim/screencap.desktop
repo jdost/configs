@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Capture Screenshot
+GenericName=Capture Screenshot
+Comment=Select type and capture screenshot
+Exec=rofi-screencap
+Icon=screengrab
+Terminal=false

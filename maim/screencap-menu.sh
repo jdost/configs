@@ -7,9 +7,9 @@ msg() {
         echo "$*"
     else
         notify-send \
-            --app-name=streamlink \
+            --app-name=maim \
             --expire-time=4000 \
-            "Streamlink Helper" \
+            "Screenshot Helper" \
             "$*"
     fi
 }
@@ -46,10 +46,18 @@ Copied to clipboard"
 selection=$(echo -e $OPTS | rofi -no-config -dmenu -theme screencap -columns $NOPTS -width $(( $NOPTS*4 + 2 )))
 case $selection in
     "select") take_screenshot --select ;;
-    "window") take_screenshot --window=$(xdotool getactivewindow) ;;
+    "window")
+        window=$(xdotool getactivewindow || echo "")
+        if [[ -z "$window" ]]; then
+            msg "No window currently active to capture..."
+            exit 1
+        fi
+        take_screenshot --window=$window
+        ;;
     "screen") take_screenshot ;;
     "") ;;
     *)
+        # This shouldn't happen, but handle in case...
         msg "$selection is not a valid option"
         exit 1
         ;;

@@ -1,0 +1,50 @@
+configuration {
+    show-icons: true;
+    icon-theme: "Papirus";
+    fullscreen: false;
+    hide-scrollbar: true;
+
+    me-select-entry: "MouseDPrimary";
+    me-accept-entry: "MousePrimary";
+}
+
+* {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+window {
+    transparency: "real";
+    location: north;
+    border-radius: 12px;
+    y-offset: 30px;
+}
+
+mainbox {
+    children: [ listview ];
+    background-color: rgba(155, 155, 155, 0.4);
+}
+    listview {
+        layout: vertical;
+        lines: 1;
+        cycle: false;
+        padding: 20px;
+        spacing: 10px;
+    }
+        element {
+            orientation: vertical;
+            background-color: rgba(250, 250, 250, 0.4);
+            border-radius: 5px;
+            padding: 0 5;
+        }
+            element-icon {
+                padding: 5px;
+                size: 64px;
+                height: 64px;
+            }
+            element-text {
+                enabled: false;
+                vertical-align: 1.0;
+                horizontal-align: 0.5;
+            }

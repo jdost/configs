@@ -1,9 +1,11 @@
+import os
 import shlex
 import subprocess
 
 from getpass import getuser
 from pathlib import Path
-from typing import Sequence
+from typing import Sequence, Set
+
 from cfgtools.files import BASE
 
 
@@ -50,3 +52,11 @@ def hide_xdg_entry(entry: str) -> None:
 
     hidden_entry.touch()
     hidden_entry.write_text(src_entry.read_text() + "\nNoDisplay=true")
+
+
+def bins() -> Set[str]:
+    bins = set()
+    for p in os.environ["PATH"].split(":"):
+        bins |= {f.name for f in Path(p).iterdir()}
+
+    return bins

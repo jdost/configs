@@ -49,8 +49,9 @@ class Pacman(SystemPackage):
 
 class AUR(SystemPackage):
     PRIORITY=2
-    def __init__(self, name: str):
+    def __init__(self, name: str, pkgs: Optional[List[str]] = None):
         self.is_local = False
+        self.pkgs = pkgs if pkgs else []
 
         if not IS_ARCH:
             return
@@ -104,22 +105,33 @@ class AUR(SystemPackage):
         if not to_be_installed:
             return []
 
-        resolved_targets = []
+        resolved_targets: Sequence['AUR'] = []
         for pkg in pkgs:
             if pkg.name not in to_be_installed:
                 continue
 
-            resolved_targets.append(
-                pkg.local_path if pkg.is_local else pkg.name
-            )
+            resolved_targets.append(pkg)
 
         return resolved_targets
+
+    @classmethod
+    def convert_to_args(cls, pkgs: Sequence['AUR']) -> Sequence[str]:
+        deps: Set[str] = set()
+        names: Set[str] = set()
+
+        for pkg in pkgs:
+            [deps.add(o) for o in pkg.pkgs]
+            names.add(pkg.local_path if pkg.is_local else pkg.name)
+
+        if deps:
+            return ["--opts", ",".join(list(deps)), *list(names)]
+        return list(names)
 
     @classmethod
     def dry_run(cls, *pkgs: 'AUR') -> None:
         needed = cls.filter(pkgs)
         if needed:
-            print(f"$ aur install {' '.join(needed)}")
+            print(f"$ aur install {cls.convert_to_args(needed)}")
 
     @classmethod
     def apply(cls, *pkgs: 'AUR') -> None:
@@ -127,10 +139,10 @@ class AUR(SystemPackage):
         if needed:
             print(f"Installing (AUR): {', '.join(needed)}")
             if shutil.which("aur"):
-                subprocess.run(["aur", "install"] + needed)
+                subprocess.run(["aur", "install"] + cls.convert_to_args(needed))
             else:
                 out = subprocess.run(
-                    ["python", "./aur/aur.py", "install"] + needed
+                    ["python", "./aur/aur.py", "install"] + cls.convert_to_args(needed)
                 )
                 if out.returncode != 0:
                     print(

@@ -5,9 +5,9 @@ set -euo pipefail
 BUILD_DIR=${BUILD_DIR:-/build}
 SHARE_DIR=${SHARE_DIR:-/src}
 
-PKGS=${PKGS:-/pkgs}
+OUT=${OUT:-/pkgs}
 # update packages to avoid weird issues with version mismatches
-sudo pacman -Syu --noconfirm
+sudo pacman -Syu --noconfirm ${PKGS:-}
 
 build_remote() {
    cd $BUILD_DIR
@@ -19,8 +19,8 @@ build_remote() {
    cd $pkg
    makepkg --noconfirm --syncdeps --install --nocheck
 
-   ls *.pkg.tar.xz &>/dev/null && cp *.pkg.tar.xz $PKGS/
-   ls *.pkg.tar.zst &>/dev/null && cp *.pkg.tar.zst $PKGS/
+   ls *.pkg.tar.xz &>/dev/null && cp *.pkg.tar.xz $OUT/
+   ls *.pkg.tar.zst &>/dev/null && cp *.pkg.tar.zst $OUT/
 }
 
 build_local() {
@@ -39,8 +39,8 @@ build_local() {
    cd $dst
    makepkg --noconfirm --syncdeps --install --nocheck
 
-   ls *.pkg.tar.xz &>/dev/null && cp *.pkg.tar.xz $PKGS/
-   ls *.pkg.tar.zst &>/dev/null && cp *.pkg.tar.zst $PKGS/
+   ls *.pkg.tar.xz &>/dev/null && cp *.pkg.tar.xz $OUT/
+   ls *.pkg.tar.zst &>/dev/null && cp *.pkg.tar.zst $OUT/
 }
 
 for pkg in "$@"; do

@@ -235,6 +235,7 @@ if __name__ == "__main__":
 
     rebuild = False
     force = False
+    opts_next = False
 
     pkgs = []
     action = "install"
@@ -243,11 +244,16 @@ if __name__ == "__main__":
             rebuild = True
         elif target  == "--force":
             force = True
+        elif target == "--opts":
+            opts_next = True
         elif target in {"build", "install", "sync", "list"}:
             action = target
         elif target in {"help", "--help", "-h"}:
             print_help()
             sys.exit(0)
+        elif opts_next:
+            opts_next = False
+            cmd += ["-e", f"PKGS={target}"]
         else:
             pkg = Package.parse_arg(target)
             pkgs.append(pkg)

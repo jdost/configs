@@ -2,7 +2,7 @@ import shutil
 import subprocess
 
 from pathlib import Path
-from typing import Set, Sequence
+from typing import Optional, Set, Sequence
 
 from cfgtools.system import SystemPackage
 from cfgtools.utils import cmd_output
@@ -49,7 +49,7 @@ class Pacman(SystemPackage):
 
 class AUR(SystemPackage):
     PRIORITY=2
-    def __init__(self, name: str, pkgs: Optional[List[str]] = None):
+    def __init__(self, name: str, pkgs: Optional[Sequence[str]] = None):
         self.is_local = False
         self.pkgs = pkgs if pkgs else []
 

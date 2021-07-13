@@ -4,7 +4,9 @@ from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import ensure_service, UserService
 from cfgtools.utils import hide_xdg_entry
 
-packages={Pacman("mpv"), Pacman("xsecurelock"), Pacman("xss-lock")}
+import mpv
+
+packages={Pacman("xsecurelock"), Pacman("xss-lock")}
 files=[
     UserBin(f"{__name__}/screenlock.sh", "_screenlock"),
     UserBin(f"{__name__}/screenlock_wrapper.sh", "screenlock"),
@@ -16,11 +18,6 @@ files=[
     ),
     DesktopEntry(f"{__name__}/screenlock.desktop"),
 ]
-
-
-@after
-def hide_unwanted_mpv_entries() -> None:
-    [hide_xdg_entry(e) for e in ["lstopo", "qvidcap", "qv4l2"]]
 
 
 @after

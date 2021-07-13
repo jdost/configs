@@ -22,7 +22,7 @@ c.auto_save.session = True
 
 # Colortheme/Look (based on Dracula)
 c.scrolling.bar = "when-searching"
-c.colors.webpage.darkmode.enabled = True
+c.colors.webpage.darkmode.enabled = False
 
 c.colors.completion.category.bg = "#282A36"
 c.colors.completion.category.border.bottom = "#282A36"
@@ -103,7 +103,6 @@ c.colors.tabs.selected.even.bg = "#282A36"
 c.colors.tabs.selected.even.fg = "#F8F8F2"
 c.colors.tabs.selected.odd.bg = "#282A36"
 c.colors.tabs.selected.odd.fg = "#F8F8F2"
-
 
 # Adblocking/Privacy
 c.content.blocking.adblock.lists = [

@@ -36,6 +36,7 @@ def add_group(group: str) -> None:
     if group in groups:
         return
 
+    print(f"Adding active user to the {group} group")
     subprocess.run(["sudo", "usermod", "-aG", group, getuser()])
     subprocess.run(["newgrp", group])
 
@@ -50,6 +51,7 @@ def hide_xdg_entry(entry: str) -> None:
     if not hidden_entry.parent.exists():
         hidden_entry.parent.mkdir(parents=True)
 
+    print(f"Hiding XDG Desktop entry for: {entry}")
     hidden_entry.touch()
     hidden_entry.write_text(src_entry.read_text() + "\nNoDisplay=true")
 

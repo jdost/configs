@@ -40,7 +40,13 @@ bspwm_setup_window() {
     bspc rule -l | grep "^$CLASS:" &>/dev/null && return 0
     # Sets the bspc rules for the new window to have it be a right-side bar
     local height=$(bspc query -m "primary" -T | jq ".rectangle.height")
-    bspc rule -a $CLASS sticky=on state=floating hidden=off rectangle=${WIDTH}x$(( $height - $VOFFSET ))+2000+${VOFFSET}
+    bspc rule \
+        -a $CLASS \
+        sticky=on \
+        state=floating \
+        hidden=off \
+        monitor=primary \
+        rectangle=${WIDTH}x$(( $height - $VOFFSET ))+2000+${VOFFSET}
 }
 
 record_windowid() {

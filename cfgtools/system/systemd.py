@@ -20,6 +20,8 @@ def ensure_service(service_name: str, user: bool = False) -> None:
             stdout=subprocess.PIPE,
         ).returncode == 0:
             return
+
+        print(f"Enabling user systemd service: {service_name}")
         subprocess.run(
             ["systemctl", "--user", "enable", "--now", service_name]
         )
@@ -29,4 +31,5 @@ def ensure_service(service_name: str, user: bool = False) -> None:
         ).returncode == 0:
             return
 
+        print(f"Enabling systemd service: {service_name}")
         subprocess.run(["sudo", "systemctl", "enable", "--now", service_name])

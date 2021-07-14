@@ -3,13 +3,13 @@
 """
 TODO
 - Add some helper args to allow a simple auth call to generate the token file
-- Probably some logic to avoid running if there is no token file
 """
 
 import datetime
 import json
 import os
 import signal
+import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Sequence
 
@@ -132,6 +132,15 @@ class LocalCache:
 
 
 if __name__ == "__main__":
+    # If this is triggered by the systemd timer before the user has done the
+    # auth flow to get the token, error out quickly and provide a log line
+    if (
+        "SYSTEMD_EXEC_PID" in os.environ and
+        not (XDG_CONFIG_HOME / "calcurse/token.pickle").exists()
+    ):
+        print("Please run this from your terminal to perform the initial auth")
+        sys.exit(1)
+
     calendar_file = XDG_CONFIG_HOME / "calcurse/calendars.txt"
     if not calendar_file.exists():
         calendar_file.touch()

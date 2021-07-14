@@ -49,9 +49,9 @@ class VirtualEnv(SystemPackage):
     @classmethod
     def dry_run(cls, *pkgs: 'VirtualEnv') -> None:
         for pkg in pkgs:
-            pkg.dry_run()
+            pkg._dry_run()
 
-    def dry_run(self) -> None:
+    def _dry_run(self) -> None:
         if not self.location.exists():
             print(f"$ {' '.join(self.venv_cmd)}")
             print(

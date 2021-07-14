@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync local calcurse appointments with remote Google Calendar events
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/gcal-sync/bin/python %h/.local/bin/gcal-sync
+
+[Install]
+WantedBy=default.target

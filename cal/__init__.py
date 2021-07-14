@@ -1,4 +1,4 @@
-from cfgtools.files import XDG_CONFIG_HOME, UserBin
+from cfgtools.files import XDGConfigFile, XDG_CONFIG_HOME, UserBin
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
@@ -12,6 +12,7 @@ files = [
     UserBin(f"{__name__}/gcal-sync.py", "gcal-sync"),
     UserService(f"{__name__}/gcal-sync.service"),
     UserService(f"{__name__}/gcal-sync.timer"),
+    XDGConfigFile(f"{__name__}/config", "calcurse/conf"),
     dropbox.EncryptedFile(
         "credentials/gcal-sync.json.gpg",
         XDG_CONFIG_HOME / "calcurse/credentials.json",

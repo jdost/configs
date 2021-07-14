@@ -135,7 +135,7 @@ if __name__ == "__main__":
     # If this is triggered by the systemd timer before the user has done the
     # auth flow to get the token, error out quickly and provide a log line
     if (
-        "SYSTEMD_EXEC_PID" in os.environ and
+        "MANAGERPID" in os.environ and
         not (XDG_CONFIG_HOME / "calcurse/token.pickle").exists()
     ):
         print("Please run this from your terminal to perform the initial auth")
@@ -195,7 +195,7 @@ if __name__ == "__main__":
             "\n".join(sorted(list(
                 calcurse_apts
                     - set([e.to_apt() for e in to_be_removed])
-                    | set([e.to_apt() for e in to_be_added])
+                    | set([e.to_apt() for e in to_be_added.values()])
             )))
         )
         # If there is a running calcurse, send an update

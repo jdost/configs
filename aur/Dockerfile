@@ -1,6 +1,7 @@
 FROM archlinux:base-devel
 
-RUN pacman -Syu --noconfirm \
+RUN echo "ParallelDownloads=5" >> /etc/pacman.conf \
+   && pacman -Syu --noconfirm \
       base-devel \
       git
 

@@ -1,5 +1,3 @@
-export COMPDUMPFILE=${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump
-
 c1=$'\e[1;33m'
 c3=$'\e[0;31m'
 reset_color=$'\e[0;0m'

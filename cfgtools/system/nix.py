@@ -10,6 +10,7 @@ from cfgtools.utils import bins, cmd_output
 
 HAS_NIX = shutil.which("nix-env") != None
 NIX_PROFILE = Path.home() / ".nix-profile"
+NIXPKGS_CHANNEL = "https://github.com/NixOS/nixpkgs/archive/refs/tags/21.05.tar.gz"
 
 
 def installed_pkgs() -> Set[str]:
@@ -35,7 +36,7 @@ class NixPkgBin(SystemPackage):
         to_be_installed = wanted - installed_pkgs() - bins()
         if to_be_installed:
             print(
-                "# nix-env " +
+                f"# nix-env --file {NIXPKGS_CHANNEL} " +
                 ' '.join(f"--install {pkg}" for pkg in to_be_installed)
             )
 
@@ -45,16 +46,21 @@ class NixPkgBin(SystemPackage):
         to_be_installed = set(wanted) - installed_pkgs() - bins()
         if to_be_installed:
             print(f"Installing (nix-env): {', '.join(list(to_be_installed))}")
-            cmd = ["nix-env"]
+            cmd = ["nix-env", "--file", NIXPKGS_CHANNEL]
             for pkg in to_be_installed:
                 cmd.extend(["--install", pkg])
 
             subprocess.run(cmd)
+
+        # Skip the out of profile symlinks if the destination doesn't exist
+        if not UserBin.DIR.exists():
+            return
 
         # We want to preserve the bins outside the profile in case that gets
         # manipulated
         for pkg_name in to_be_installed:
             bin_name = wanted[pkg_name].bin_name
             tgt = UserBin.DIR / bin_name
-            if not tgt.exists():
-                tgt.symlink_to((NIX_PROFILE / f"bin/{bin_name}").resolve())
+            src = NIX_PROFILE / f"bin/{bin_name}"
+            if not tgt.exists() and src.exists():
+                tgt.symlink_to(src.resolve())

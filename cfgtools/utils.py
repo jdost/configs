@@ -59,6 +59,8 @@ def hide_xdg_entry(entry: str) -> None:
 def bins() -> Set[str]:
     bins = set()
     for p in os.environ["PATH"].split(":"):
-        bins |= {f.name for f in Path(p).iterdir()}
+        path_dir = Path(p)
+        if path_dir.is_dir():
+            bins |= {f.name for f in path_dir.iterdir()}
 
     return bins

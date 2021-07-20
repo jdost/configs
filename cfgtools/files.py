@@ -104,10 +104,11 @@ class File(RegisteredFileAction):
 
 
 class EnvironmentFile(File):
-    def __init__(self, name: str):
+    def __init__(self, src_name: str, name: Optional[str] = None):
+        dst_name = name if name else src_name
         super().__init__(
-            src=(BASE / name / "environment"),
-            dst=(HOME / ".local/environment" / name),
+            src=(BASE / src_name / "environment"),
+            dst=(HOME / ".local/environment" / dst_name),
         )
 
 

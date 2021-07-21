@@ -1,8 +1,11 @@
 from cfgtools.files import File, XDG_CONFIG_HOME, XinitRC
 
+import alacritty
 import aur
+import autorandr
 import bat
 import bspwm
+import cal
 import docker
 import dropbox
 import git
@@ -10,7 +13,10 @@ import gpg
 import gtk
 import polybar
 import python
+import qutebrowser
 import screenlock
+import ssh
+import streamlink
 import tmux
 import unclutter
 import user_dirs

@@ -1,4 +1,4 @@
-from cfgtools.files import DesktopEntry, HOME, XDGConfigFile, UserBin
+from cfgtools.files import DesktopEntry, XDG_CONFIG_HOME, XDGConfigFile, UserBin
 from cfgtools.system.arch import AUR, Pacman
 
 import alacritty
@@ -14,7 +14,7 @@ files = [
     DesktopEntry(f"{__name__}/music-sidebar.desktop"),
     dropbox.EncryptedFile(
         "credentials/ncspot.toml.gpg",
-        HOME / ".config/ncspot/credentials.toml",
+        XDG_CONFIG_HOME / "ncspot/credentials.toml",
     ),
 ]
 

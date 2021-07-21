@@ -128,9 +128,10 @@ class XDGConfigFile(File):
 class XinitRC(File):
     DIR = XDG_CONFIG_HOME / "xorg/xinitrc.d"
     def __init__(self, name: str, priority: int = 99):
+        basename = name.split("/")[-1]
         super().__init__(
             src=(BASE / name / "xinitrc"),
-            dst=(self.DIR / f"{priority}-{name}"),
+            dst=(self.DIR / f"{priority}-{basename}"),
         )
 
 

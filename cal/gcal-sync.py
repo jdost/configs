@@ -16,6 +16,9 @@ from typing import Dict, List, Optional, Set, Sequence
 from gcsa.google_calendar import GoogleCalendar
 from gcsa.event import Event as GcsaEvent
 
+import pytz
+
+DEFAULT_TZ = pytz.timezone("US/Pacific")
 WINDOW = datetime.timedelta(days=90)
 XDG_CONFIG_HOME = Path(
     os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")
@@ -53,10 +56,14 @@ class CalEvent:
         self._id = src.event_id
         self.summary = src.summary
         if not isinstance(src.start, datetime.datetime):
-            src.start = datetime.datetime.combine(src.start, datetime.time.min)
+            src.start = datetime.datetime.combine(
+                src.start, datetime.time.min, tzinfo=DEFAULT_TZ
+            )
         self.start = src.start
         if not isinstance(src.end, datetime.datetime):
-            src.end = datetime.datetime.combine(src.end, datetime.time.min)
+            src.end = datetime.datetime.combine(
+                src.end, datetime.time.min, tzinfo=DEFAULT_TZ
+            )
         self.end = src.end
 
     def _load_json(self, src) -> None:
@@ -86,6 +93,9 @@ class CalEvent:
             f"({self.start}-{self.end})>"
         )
 
+    def __str__(self) -> str:
+        return f"{self.summary} ({self.start})"
+
     @classmethod
     def from_json(cls, src: Dict[str, str]) -> 'CalEvent':
         return cls(json_src=src)
@@ -105,7 +115,7 @@ class LocalCache:
 
     def __init__(self):
         self._events: Dict[str, CalEvent] = {}
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(tz=DEFAULT_TZ)
 
         if self.FILE.exists():
             for raw_event in json.load(self.FILE.open()):
@@ -122,6 +132,9 @@ class LocalCache:
 
     def __json__(self) -> Sequence[Dict[str, str]]:
         return [evt.__json__() for evt in self._events.values()]
+
+    def remove(self, key: str) -> None:
+        del self._events[key]
 
     def update(self, new_events: Sequence[CalEvent]) -> None:
         json.dump(
@@ -174,6 +187,7 @@ if __name__ == "__main__":
     # Collect anything that *was* on the remote previously but is no longer
     for key in local_cache.events - set(to_be_added.keys()):
         to_be_removed.append(local_cache[key])
+        local_cache.remove(key)
 
     # Check all events that were previously added
     for key in local_cache.events & set(to_be_added.keys()):
@@ -186,6 +200,14 @@ if __name__ == "__main__":
 
     # If we have any changes to make, update the appointments file
     if len(to_be_removed) or len(to_be_added):
+        if len(to_be_added):
+            print(f"Adding {len(to_be_added)}...")
+            for apt in to_be_added.values():
+                print(apt)
+        if len(to_be_removed):
+            print(f"Removing {len(to_be_removed)}...")
+            for apt in to_be_removed:
+                print(apt)
         # Start with the existing appointments
         calcurse_apts = set(
             (XDG_DATA_HOME / "calcurse/apts").read_text().strip().split("\n")

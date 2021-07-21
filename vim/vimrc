@@ -9,12 +9,15 @@ if empty($XDG_CONFIG_HOME)
   let $XDG_CONFIG_HOME=$HOME . "/.config"
 endif
 
-set directory=$XDG_CACHE_HOME/vim,~,/tmp
-set backupdir=$XDG_CACHE_HOME/vim,~/,/tmp
-set undodir=$XDG_CACHE_HOME/vim,.,/tmp
 if has('nvim')
+  set directory=$XDG_CACHE_HOME/nvim,~,/tmp
+  set backupdir=$XDG_CACHE_HOME/nvim,~/,/tmp
+  set undodir=$XDG_CACHE_HOME/nvim,.,/tmp
   set viminfo+=n$XDG_CACHE_HOME/nvim/viminfo
 else
+  set directory=$XDG_CACHE_HOME/vim,~,/tmp
+  set backupdir=$XDG_CACHE_HOME/vim,~/,/tmp
+  set undodir=$XDG_CACHE_HOME/vim,.,/tmp
   set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 endif
 set runtimepath=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after,$VIM,$VIMRUNTIME

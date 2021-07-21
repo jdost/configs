@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=calcurse
+GenericName=Calendar and TODO list manager
+Exec=calcurse
+Icon=calendar
+Terminal=true

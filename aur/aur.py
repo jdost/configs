@@ -26,9 +26,13 @@ def get_version_from_path(prefix: str, src: Path) -> str:
 
 
 def parse_version(version_str: str) -> Sequence[int]:
-    version, patch = version_str.split("-", 1)
-    if ":" in version:
-        _, version = version.split(":", 1)
+    try:
+        version, patch = version_str.split("-", 1)
+        if ":" in version:
+            _, version = version.split(":", 1)
+    except:
+        print(f"err: {version_str!r}")
+        raise
     return [int(n) for n in version.split(".") + [patch]]
 
 

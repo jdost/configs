@@ -22,3 +22,4 @@ c.url.searchengines = {
 # Misc
 c.changelog_after_upgrade = "major"
 c.content.fullscreen.window = True
+c.tabs.mousewheel_switching = False

@@ -15,6 +15,7 @@ from typing import Dict, List, Optional, Set, Sequence
 
 from gcsa.google_calendar import GoogleCalendar
 from gcsa.event import Event as GcsaEvent
+from google.auth.exceptions import RefreshError
 
 import pytz
 
@@ -169,11 +170,18 @@ if __name__ == "__main__":
         if not calendar:
             continue
 
-        cal = GoogleCalendar(
-            calendar,
-            credentials_path=XDG_CONFIG_HOME / "calcurse/credentials.json",
-            read_only=True,
-        )
+        try:
+            cal = GoogleCalendar(
+                calendar,
+                credentials_path=XDG_CONFIG_HOME / "calcurse/credentials.json",
+                read_only=True,
+            )
+        except RefreshError:
+            token = XDG_CONFIG_HOME / "calcurse/token.pickle"
+            if token.exists():
+                token.unlink()
+            print("Token expired.  Re-auth manually...")
+            sys.exit(1)
 
         for raw_event in cal.get_events(
             now,
@@ -195,6 +203,7 @@ if __name__ == "__main__":
         # old and re-add the updated event
         if local_cache[key].fingerprint != to_be_added[key].fingerprint:
             to_be_removed.append(local_cache[key])
+            local_cache.remove(key)
         else:  # otherwise don't add an identical event
             del to_be_added[key]
 

@@ -8,4 +8,5 @@ files = [
     EnvironmentFile(__name__),
     UserBin(FOLDER / "settitle.sh", "settitle"),
     UserBin(FOLDER / "term_info.sh", "term-info"),
+    UserBin(FOLDER / "retry.sh", "retry"),
 ]

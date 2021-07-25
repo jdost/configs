@@ -9,7 +9,7 @@ import dropbox
 packages = {Pacman("calcurse")}
 virtualenv = VirtualEnv("gcal-sync", "gcsa")
 files = [
-    UserBin(f"{__name__}/gcal-sync.py", "gcal-sync"),
+    UserBin(f"{__name__}/gcal-sync.sh", "gcal-sync"),
     UserService(f"{__name__}/gcal-sync.service"),
     UserService(f"{__name__}/gcal-sync.timer"),
     XDGConfigFile(f"{__name__}/config", "calcurse/conf"),

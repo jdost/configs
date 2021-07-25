@@ -1,6 +1,6 @@
 appearance.calendarview=monthly
 appearance.compactpanels=yes
-appearance.defaultpanel=calendar
+appearance.defaultpanel=todo
 appearance.layout=4
 appearance.headerline=yes
 appearance.eventseparator=yes

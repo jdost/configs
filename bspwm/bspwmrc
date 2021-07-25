@@ -54,7 +54,7 @@ set_rules 'video' \
 set_rules 'chat' \
     'Discord' 'discord' 'Android Messages' 'TelegramDesktop'
 
-for c in 'Peek' 'NoiseTorch'; do
+for c in 'Peek' 'scrcpy'; do
     bspc rule -a "$c" state=floating focus=on
 done
 

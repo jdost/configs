@@ -13,4 +13,8 @@ interval = 1.0
 time = %H:%M:%S
 label = "%time% "
 
+[module/spacer]
+type = custom/text
+content = "%{F}%{F-}"
+
 ; vim:ft=dosini

@@ -11,7 +11,11 @@ Plug 'junegunn/vim-plug'
 
 " Navigation/Movement {{{
 Plug 'rhysd/clever-f.vim'
-if !empty(glob('/usr/bin/fzf'))
+if has('nvim-0.5')
+  Plug 'nvim-lua/popup.nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+elseif !empty(glob('/usr/bin/fzf'))
   " Use fzf if it is installed
   Plug '/usr/share/vim/vimfiles' " Since we install via pacman, source the installed helpers
   Plug 'junegunn/fzf.vim'
@@ -88,7 +92,14 @@ Plug 'rhysd/git-messenger.vim', { 'on': 'GitMessenger' }
 " Appearance/UI {{{
 Plug 'sjl/badwolf'
 " `vim-indent-guides` doesn't work in neovim :(
-Plug has('nvim') ? 'Yggdroot/indentLine' : 'nathanaelkane/vim-indent-guides'
+if has('nvim-0.5')
+  Plug 'lukas-reineke/indent-blankline.nvim'
+  "Plug 'yuntan/neovim-indent-guides'
+elseif has('nvim')
+  Plug 'Yggdroot/indentLine'
+else
+  Plug 'nathanaelkane/vim-indent-guides'
+end
 "Plug 'junegunn/seoul256.vim'
 "Plug 'bagrat/vim-buffet'
 Plug 'CharlesGueunet/quickmenu.vim'
@@ -117,6 +128,9 @@ Plug 'sheerun/vim-polyglot'
 " --- Python
 Plug 'ehamberg/vim-cute-python', { 'for': 'python' }
 Plug 'hdima/python-syntax', { 'for': 'python' }
+if has('nvim')
+  Plug 'numirias/semshi', { 'for': 'python', 'do': ':UpdateRemotePlugins' }
+end
 " --- GoLang
 Plug 'fatih/vim-go', { 'for': 'go' }
 " --- Rust

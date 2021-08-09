@@ -43,10 +43,10 @@ require('telescope').setup{
     },
   },
   pickers = {
-    --buffers = { theme = "ivy", },
-    --find_files = { theme = "ivy", },
-    --git_files = { theme = "ivy", },
-    --live_grep = { theme = "ivy", },
+    buffers = { theme = "ivy", },
+    find_files = { theme = "ivy", },
+    git_files = { theme = "ivy", },
+    live_grep = { theme = "ivy", },
   },
 }
 EOF

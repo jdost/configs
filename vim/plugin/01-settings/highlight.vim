@@ -52,3 +52,15 @@ hi def InterestingWord5 guifg=#000000 ctermfg=16 guibg=#ff9eb8 ctermbg=211
 hi def InterestingWord6 guifg=#000000 ctermfg=16 guibg=#ff2c4b ctermbg=195
 
 " }}}
+"
+" LspHighlighting {{{
+hi LspDiagnosticsVirtualTextError ctermfg=88
+hi LspDiagnosticsVirtualTextWarning ctermfg=94
+hi LspDiagnosticsVirtualTextInformation ctermfg=239
+hi LspDiagnosticsVirtualTextHint ctermfg=239
+
+hi LspDiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi LspDiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi LspDiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi LspDiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
+" }}}

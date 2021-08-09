@@ -1,5 +1,4 @@
 import subprocess
-
 from collections import defaultdict
 from pathlib import Path
 from typing import Optional, Sequence
@@ -8,7 +7,8 @@ registered_packages = defaultdict(set)
 
 
 class SystemPackage:
-    PRIORITY=1
+    PRIORITY = 1
+
     def __init__(self):
         registered_packages[self.__class__].add(self)
 
@@ -28,7 +28,7 @@ def setup(dry_run: bool = False) -> None:
 
 
 class GitRepository(SystemPackage):
-    PRIORITY=10
+    PRIORITY = 10
     BASE_DIR = Path.home() / "src"
 
     def __init__(self, remote: str, name: Optional[str] = None):
@@ -46,22 +46,22 @@ class GitRepository(SystemPackage):
         return GitRepository.BASE_DIR / self.name
 
     @classmethod
-    def dry_run(cls, *repos: 'GitRepository') -> None:
+    def dry_run(cls, *repos: "GitRepository") -> None:
         for repo in repos:
-            repo.dry_run()
+            repo._dry_run()
 
-    def dry_run(self) -> None:
+    def _dry_run(self) -> None:
         if self.local_path.exists():
             return
 
         print(f"$ git clone {self.remote} {self.local_path}")
 
     @classmethod
-    def apply(cls, *repos: 'GitRepository') -> None:
+    def apply(cls, *repos: "GitRepository") -> None:
         for repo in repos:
-            repo.apply()
+            repo._apply()
 
-    def apply(self) -> None:
+    def _apply(self) -> None:
         if self.local_path.exists():
             return
 

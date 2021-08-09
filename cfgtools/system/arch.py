@@ -1,19 +1,16 @@
 import shutil
 import subprocess
-
 from pathlib import Path
-from typing import Optional, Set, Sequence
+from typing import List, Optional, Sequence, Set
 
 from cfgtools.system import SystemPackage
 from cfgtools.utils import cmd_output
 
-IS_ARCH = shutil.which('pacman') != None
+IS_ARCH = shutil.which("pacman") is not None
 
 
 def installed_pkgs() -> Set[str]:
-    return {
-        l.split(" ")[0] for l in cmd_output("pacman -Q")
-    }
+    return {line.split(" ")[0] for line in cmd_output("pacman -Q")}
 
 
 class Pacman(SystemPackage):
@@ -26,29 +23,26 @@ class Pacman(SystemPackage):
         return f"{self.__class__} {self.name}"
 
     @classmethod
-    def dry_run(cls, *pkgs: 'Pacman') -> None:
+    def dry_run(cls, *pkgs: "Pacman") -> None:
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
-            print(
-                "# pacman -Syu --needed -y "
-                f"{' '.join(list(to_be_installed))}"
-            )
+            print("# pacman -Syu --needed -y " f"{' '.join(list(to_be_installed))}")
 
     @classmethod
-    def apply(cls, *pkgs: 'Pacman') -> None:
+    def apply(cls, *pkgs: "Pacman") -> None:
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
             print(f"Installing (pacman): {', '.join(list(to_be_installed))}")
             subprocess.run(
-                ["sudo", "pacman", "-Syu", "--needed", "-y"] +
-                list(to_be_installed)
+                ["sudo", "pacman", "-Syu", "--needed", "-y"] + list(to_be_installed)
             )
 
 
 class AUR(SystemPackage):
-    PRIORITY=2
+    PRIORITY = 2
+
     def __init__(self, name: str, pkgs: Optional[Sequence[str]] = None):
         self.is_local = False
         self.pkgs = pkgs if pkgs else []
@@ -80,11 +74,15 @@ class AUR(SystemPackage):
 
     @staticmethod
     def parse_name_pkgbuild(src: Path) -> str:
-        srcinfo = subprocess.run(
-            ["makepkg", "--printsrcinfo", "-p", src.name],
-            stdout=subprocess.PIPE,
-            cwd=src.parent,
-        ).stdout.decode("utf-8").split("\n")
+        srcinfo = (
+            subprocess.run(
+                ["makepkg", "--printsrcinfo", "-p", src.name],
+                stdout=subprocess.PIPE,
+                cwd=src.parent,
+            )
+            .stdout.decode("utf-8")
+            .split("\n")
+        )
 
         for line in srcinfo:
             try:
@@ -98,14 +96,14 @@ class AUR(SystemPackage):
         raise ValueError()
 
     @classmethod
-    def filter(cls, pkgs: Sequence['AUR']) -> Sequence['AUR']:
+    def filter(cls, pkgs: Sequence["AUR"]) -> List["AUR"]:
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
 
         if not to_be_installed:
             return []
 
-        resolved_targets: Sequence['AUR'] = []
+        resolved_targets: List["AUR"] = []
         for pkg in pkgs:
             if pkg.name not in to_be_installed:
                 continue
@@ -115,12 +113,12 @@ class AUR(SystemPackage):
         return resolved_targets
 
     @classmethod
-    def convert_to_args(cls, pkgs: Sequence['AUR']) -> Sequence[str]:
+    def convert_to_args(cls, pkgs: List["AUR"]) -> List[str]:
         deps: Set[str] = set()
         names: Set[str] = set()
 
         for pkg in pkgs:
-            [deps.add(o) for o in pkg.pkgs]
+            map(deps.add, pkg.pkgs)
             names.add(pkg.local_path if pkg.is_local else pkg.name)
 
         if deps:
@@ -128,16 +126,16 @@ class AUR(SystemPackage):
         return list(names)
 
     @classmethod
-    def dry_run(cls, *pkgs: 'AUR') -> None:
+    def dry_run(cls, *pkgs: "AUR") -> None:
         needed = cls.filter(pkgs)
         if needed:
             print(f"$ aur install {cls.convert_to_args(needed)}")
 
     @classmethod
-    def apply(cls, *pkgs: 'AUR') -> None:
+    def apply(cls, *pkgs: "AUR") -> None:
         needed = cls.filter(pkgs)
         if needed:
-            print(f"Installing (AUR): {', '.join(needed)}")
+            print(f"Installing (AUR): {', '.join(map(str, needed))}")
             if shutil.which("aur"):
                 subprocess.run(["aur", "install"] + cls.convert_to_args(needed))
             else:

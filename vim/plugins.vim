@@ -39,11 +39,14 @@ Plug 'roxma/vim-paste-easy'  " Smart pasting detection
 Plug 'wellle/targets.vim'  " Additional text objects
 "Plug 'thaerkh/vim-workspace'
 Plug 'tweekmonster/startuptime.vim', { 'on': 'StartupTime' }
+if has('nvim-0.5')
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'branch': '0.5-compat' }
+endif
 " }}}
 
 " Editting {{{
 Plug 'ervandew/supertab'
-Plug 'prabirshrestha/vim-lsp'
+Plug has('nvim-0.5') ? 'neovim/nvim-lspconfig' : 'prabirshrestha/vim-lsp'
 if ! has('nvim')
 " asyncomplete+friends {{{
   Plug 'prabirshrestha/asyncomplete.vim'
@@ -95,6 +98,9 @@ Plug 'sjl/badwolf'
 if has('nvim-0.5')
   Plug 'lukas-reineke/indent-blankline.nvim'
   "Plug 'yuntan/neovim-indent-guides'
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'folke/trouble.nvim'
+  Plug 'folke/lsp-colors.nvim'
 elseif has('nvim')
   Plug 'Yggdroot/indentLine'
 else

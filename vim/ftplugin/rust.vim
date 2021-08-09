@@ -11,4 +11,9 @@ if executable('rls') && has_key(g:plugs, 'vim-lsp')
 
     let g:ale_linters.rust = ['vim-lsp']
   augroup END
+elseif executable('rls') && has_key(g:plugs, 'nvim-lspconfig')
+  lua << EOF
+local ncm2 = require('ncm2')
+require'lspconfig'.rls.setup{on_init = ncm2.register_lsp_source}
+EOF
 endif

@@ -1,5 +1,7 @@
 [Unit]
 Description=Sync local calcurse appointments with remote Google Calendar events
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=oneshot

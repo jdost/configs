@@ -28,6 +28,7 @@ XDG_CACHE_HOME = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
 XDG_DATA_HOME = Path(
     os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")
 )
+SYSTEMD_RUN = "MANAGERPID" in os.environ
 
 
 class CalEvent:
@@ -149,11 +150,30 @@ if __name__ == "__main__":
     # If this is triggered by the systemd timer before the user has done the
     # auth flow to get the token, error out quickly and provide a log line
     if (
-        "MANAGERPID" in os.environ and
+        SYSTEMD_RUN and
         not (XDG_CONFIG_HOME / "calcurse/token.pickle").exists()
     ):
         print("Please run this from your terminal to perform the initial auth")
         sys.exit(1)
+    elif SYSTEMD_RUN:
+        import webbrowser
+
+        def fake_register_standard_browsers():
+            import subprocess
+
+            res = subprocess.run([
+                "notify-send",
+                "--icon",
+                "calendar",
+                "--app-name",
+                "gcal-sync",
+                "--expire-time",
+                str(1000 * 30),
+                "GCal Sync Failed",
+                "Token probably expired, run manually to refresh"
+            ], check=True)
+            raise ImportError("webbrowser doesn't work in a headless setting.")
+        webbrowser.register_standard_browsers = fake_register_standard_browsers
 
     calendar_file = XDG_CONFIG_HOME / "calcurse/calendars.txt"
     if not calendar_file.exists():

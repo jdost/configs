@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Smart URL Opener
+Keywords=Internet;WWW;Browser;Web;Explorer
+Exec=web-xdg-open
+Icon=web-browser
+Terminal=false
+Type=Application
+NoDisplay=true

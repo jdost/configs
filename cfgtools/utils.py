@@ -64,3 +64,13 @@ def bins() -> Set[str]:
             bins |= {f.name for f in path_dir.iterdir()}
 
     return bins
+
+
+def xdg_settings_get(key: str) -> None:
+    cmd = subprocess.run(["xdg-settings", "get", key], stdout=subprocess.PIPE)
+    assert cmd_output.returncode == 0, f"Command `xdg-settings get {key}` failed."
+    return cmd.stdout.strip()
+
+
+def xdg_settings_set(key: str, val: str) -> None:
+    subprocess.run(["xdg-settings", "set", key, val], check=True)

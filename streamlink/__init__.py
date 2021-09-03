@@ -3,6 +3,7 @@ from cfgtools.system.arch import Pacman
 
 import dropbox
 import mpv
+import web_xdg_open
 
 packages={Pacman("streamlink"), Pacman("xclip")}
 files=[
@@ -13,4 +14,5 @@ files=[
         "credentials/streamlink.crunchyroll.gpg",
         XDG_CONFIG_HOME  / "streamlink/config.crunchyroll",
     ),
+    web_xdg_open.SettingsFile(f"{__name__}/web-xdg-open", "streamlink"),
 ]

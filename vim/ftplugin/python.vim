@@ -25,16 +25,19 @@ endif
 
 if executable('pylsp') && has_key(g:plugs, 'nvim-lspconfig')
   lua << EOF
-local ncm2 = require('ncm2')
-require'lspconfig'.pylsp.setup{on_init = ncm2.register_lsp_source}
+require'lspconfig'.pylsp.setup{}
 EOF
 endif
 
-if has_key(g:plugs, 'ale')
+if has_key(g:plugs, 'ale') && !has_key(g:plugs, 'nvim-lspconfig')
   " Ale specific settings for python
   let b:ale_fixers = ['black', 'isort', 'autoimport']
   let b:ale_linters = ['vim-lsp', 'mypy']
-  let b:ale_python_black_options = "--line-length 80"
+elseif has_key(g:plugs, 'ale')
+  let b:ale_fixers = ['autoimport', 'isort']
+  let b:ale_linters = []
+
+  let b:ale_python_isort_options = "--settings-path ~/.config/isort.cfg"
 endif
 
 if has_key(g:plugs, 'indentLine')

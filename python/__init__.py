@@ -10,8 +10,6 @@ python_tools = [
     "mypy",
     "mypy-ls",
     "neovim",
-    "pycodestyle",
-    "pyls-isort",
     "python-lsp-black",
     "python-lsp-server",
     "pynvim",
@@ -28,4 +26,6 @@ files = [
     XDGConfigFile(f"{__name__}/pip.conf", "pip/pip.conf"),
     EnvironmentFile(__name__),
     XDGConfigFile(f"{__name__}/python_startup.py", "python/startup.py"),
+    XDGConfigFile(f"{__name__}/black.toml", "black"),
+    XDGConfigFile(f"{__name__}/isort.cfg", "isort.cfg"),
 ]

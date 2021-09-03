@@ -47,7 +47,20 @@ endif
 " Editting {{{
 Plug 'ervandew/supertab'
 Plug has('nvim-0.5') ? 'neovim/nvim-lspconfig' : 'prabirshrestha/vim-lsp'
-if ! has('nvim')
+if has('nvim-0.5')
+  " Plug 'hrsh7th/nvim-cmp'
+  " Plug 'hrsh7th/cmp-nvim-lsp'
+  " Plug 'hrsh7th/cmp-buffer'
+  " Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/nvim-compe'
+  Plug 'onsails/lspkind-nvim'
+elseif has('nvim')
+" ncm2 {{{
+  Plug 'roxma/nvim-yarp' | Plug 'ncm2/ncm2'
+  Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
+  Plug 'ncm2/ncm2-vim-lsp'
+" }}}
+else
 " asyncomplete+friends {{{
   Plug 'prabirshrestha/asyncomplete.vim'
   Plug 'prabirshrestha/async.vim'
@@ -56,12 +69,6 @@ if ! has('nvim')
   Plug 'prabirshrestha/asyncomplete-file.vim'
   Plug 'Shougo/neco-syntax'
   Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
-" }}}
-else
-" ncm2 {{{
-  Plug 'roxma/nvim-yarp' | Plug 'ncm2/ncm2'
-  Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
-  Plug 'ncm2/ncm2-vim-lsp'
 " }}}
 end
 

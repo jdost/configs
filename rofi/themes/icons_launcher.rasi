@@ -2,7 +2,6 @@ configuration {
     combi-modi: [window,drun];
     modi: "combi";
 
-    columns: 5;
     fixed-num-lines: true;
 
     combi-hide-mode-prefix: true;
@@ -18,9 +17,10 @@ configuration {
     background2: rgba(0, 0, 0, 0.5);
     bar-background: rgba(242, 242, 242, 0.1);
     foreground: rgba(242, 242, 242, 0.9);
-    highlight: rgba(123, 123, 123, 0.3);
+    highlight: rgba(61, 61, 61, 0.6);
     active: rgba(160, 150, 90, 0.3);
     urgent: rgba(250, 190, 90, 0.3);
+    transparent: rgba(0, 0, 0, 0);
 
     margin: 0;
     border: 0;
@@ -104,11 +104,15 @@ mainbox {
             element-icon {
                 size: 64px;
                 border: 0;
+                background-color: @transparent;
+                horizontal-align: 0.5;
+                text-color: @transparent;
             }
 
             element-text {
                 horizontal-align: 0.5;
                 vertical-align: 0.5;
+                background-color: @transparent;
                 text-color: inherit;
                 margin: 0.5% 0.5% -0.5% 0.5%;
                 expand: true;

@@ -1,6 +1,6 @@
 import subprocess
 
-from cfgtools.files import File, XDGConfigFile, XDG_CONFIG_HOME
+from cfgtools.files import File, XDGConfigFile, XDG_CONFIG_HOME, UserBin
 from cfgtools.hooks import after
 from cfgtools.system import GitRepository
 from cfgtools.system.arch import AUR, Pacman

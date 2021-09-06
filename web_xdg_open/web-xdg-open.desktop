@@ -6,3 +6,4 @@ Icon=web-browser
 Terminal=false
 Type=Application
 NoDisplay=true
+MimeType=x-scheme-handler/unknown;x-scheme-handler/about;x-scheme-handler/https;x-scheme-handler/http;text/html;

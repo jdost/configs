@@ -68,7 +68,7 @@ def bins() -> Set[str]:
 
 def xdg_settings_get(key: str) -> None:
     cmd = subprocess.run(["xdg-settings", "get", key], stdout=subprocess.PIPE)
-    assert cmd_output.returncode == 0, f"Command `xdg-settings get {key}` failed."
+    assert cmd.returncode == 0, f"Command `xdg-settings get {key}` failed."
     return cmd.stdout.strip()
 
 

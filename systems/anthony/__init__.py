@@ -25,6 +25,8 @@ import wallpaper
 import zathura
 import zsh
 
+cal.ENABLED = False
+
 File("systems/anthony/polybar", XDG_CONFIG_HOME / "polybar/system")
 File("systems/anthony/Xresources", XDG_CONFIG_HOME / "xorg/Xresources.system")
 File("systems/anthony/bspwm_external_rules.sh", XDG_CONFIG_HOME / "bspwm/external_rules")

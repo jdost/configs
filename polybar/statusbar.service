@@ -1,6 +1,10 @@
 [Unit]
 Description=polybar - Status Bar
+PartOf=xorg.target
 
 [Service]
 ExecStart=polybar main
 Restart=on-failure
+
+[Install]
+WantedBy=xorg.target

@@ -6,6 +6,8 @@ from cfgtools.system.systemd import ensure_service, UserService
 
 import dropbox
 
+ENABLED = True
+
 packages = {Pacman("calcurse")}
 virtualenv = VirtualEnv("gcal-sync", "gcsa")
 files = [
@@ -23,4 +25,8 @@ files = [
 
 @after
 def enable_sync_timer() -> None:
+    global ENABLED
+    if not ENABLED:
+        return
+
     ensure_service("gcal-sync.timer", user=True)

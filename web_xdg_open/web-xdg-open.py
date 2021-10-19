@@ -50,5 +50,4 @@ if not target_browser:
     sys.exit("No browser installed from expected list.")
 
 args = [url]
-print(repr([which(target_browser), *args]))
 os.execl(which(target_browser), target_browser, *args)

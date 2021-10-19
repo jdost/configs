@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=Firefox (Private)
+Keywords=Internet;WWW;Browser;Web;Explorer
+Exec=/usr/bin/firefox --private-window %u
+Icon=firefox-trunk
+Terminal=false
+Type=Application
+StartupNotify=true
+StartupWMClass=firefox
+Categories=Network;WebBrowser;

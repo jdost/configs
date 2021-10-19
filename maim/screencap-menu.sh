@@ -43,7 +43,14 @@ Copied to clipboard"
     echo $output | xclip -in -selection clipboard
 }
 
-selection=$(echo -e $OPTS | rofi -no-config -dmenu -theme screencap -columns $NOPTS -width $(( $NOPTS*4 + 2 )))
+selection=$(
+    echo -e $OPTS | \
+    rofi \
+        -no-config \
+        -dmenu \
+        -theme screencap \
+        -theme-str "listview { columns: $NOPTS; } window { width: $(( $NOPTS*100 )); }"
+)
 case $selection in
     "select") take_screenshot --select ;;
     "window")

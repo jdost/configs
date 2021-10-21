@@ -4,6 +4,7 @@ from typing import Optional, Sequence, Set, Union
 
 from cfgtools.system import SystemPackage
 
+
 def installed_pkgs(virtualenv: Optional[Path] = None) -> Set[str]:
     pybin: Union[str, Path] = (
         virtualenv / "bin/python" if virtualenv else "python3"
@@ -23,12 +24,9 @@ class VirtualEnv(SystemPackage):
     PRIORITY = 3
     BASE_LOCATION = Path.home() / ".local"
 
-    def __init__(
-        self, name: str, *requirements: str, system_packages: bool = False
-    ):
+    def __init__(self, name: str, *requirements: str):
         self.name = name
         self.requirements = set(requirements)
-        self.system_packages = system_packages
         super().__init__()
 
     def __repr__(self):
@@ -47,9 +45,7 @@ class VirtualEnv(SystemPackage):
 
     @property
     def venv_cmd(self) -> Sequence[str]:
-        cmd = ["python", "-m", "venv"]
-        if self.system_packages:
-            cmd.append("--system-site-packages")
+        cmd = ["python", "-m", "venv", "--system-site-packages"]
         cmd += ["--prompt", f"({self.name})"]
         cmd += [str(self.location)]
 

@@ -19,6 +19,7 @@ packages = {
     Pacman("python"),
     Pacman("python-wheel"),
     Apt("python3"),
+    Apt("python3-pip"),
     Apt("python3-venv"),
     VirtualEnv("python-code-tools", *python_tools),
 }

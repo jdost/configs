@@ -39,7 +39,7 @@ Plug 'roxma/vim-paste-easy'  " Smart pasting detection
 Plug 'wellle/targets.vim'  " Additional text objects
 "Plug 'thaerkh/vim-workspace'
 Plug 'tweekmonster/startuptime.vim', { 'on': 'StartupTime' }
-if has('nvim-0.5')
+if has('nvim-0.5') && ( executable('gcc') || executable('clang') )
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'branch': '0.5-compat' }
 endif
 " }}}

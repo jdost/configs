@@ -13,4 +13,13 @@ require('nvim-treesitter.configs').setup {
   },
 }
 EOF
+  if has_key(g:plugs, 'quickmenu.vim')
+
+    function! TSInstallCurrent()
+      execute ':TSInstall ' . &filetype
+    endfunction
+
+    call g:quickmenu#current(0)
+    call g:quickmenu#append('Install TS Language Support', 'call TSInstallCurrent()', 'Install TreeSitter plugin for current language', '', 0, '')
+  endif
 endif

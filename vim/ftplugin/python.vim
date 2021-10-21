@@ -5,7 +5,13 @@ setlocal wrap
 setlocal textwidth=79
 setlocal colorcolumn=80
 
-setlocal foldmethod=indent
+if has_key(g:plugs, 'nvim-treesitter')
+  " Use treesitter for folding logic
+  setlocal foldmethod=expr
+  setlocal foldexpr=nvim_treesitter#foldexpr()
+else
+  setlocal foldmethod=indent
+endif
 
 if !empty(glob($HOME . '/.local/python-code-tools'))
   let $PATH=$HOME . '/.local/python-code-tools/bin:' . $PATH
@@ -23,10 +29,30 @@ if executable('pyls') && has_key(g:plugs, 'vim-lsp')
   augroup END
 endif
 
-if executable('pylsp') && has_key(g:plugs, 'nvim-lspconfig')
-  lua << EOF
+if executable('pylsp')
+  if has_key(g:plugs, 'nvim-lspconfig') && has_key(g:plugs, 'ncm2')
+    lua << EOF
+local ncm2 = require('ncm2')
+require'lspconfig'.pylsp.setup{on_init = ncm2.register_lsp_source}
+EOF
+  elseif has_key(g:plugs, 'nvim-lspconfig')
+    lua << EOF
 require'lspconfig'.pylsp.setup{}
 EOF
+  endif
+endif
+
+if executable('pyright')
+  if has_key(g:plugs, 'nvim-lspconfig') && has_key(g:plugs, 'ncm2')
+    lua << EOF
+local ncm2 = require('ncm2')
+require'lspconfig'.pyright.setup{on_init = ncm2.register_lsp_source}
+EOF
+  elseif has_key(g:plugs, 'nvim-lspconfig')
+    lua << EOF
+require'lspconfig'.pyright.setup{}
+EOF
+  endif
 endif
 
 if has_key(g:plugs, 'ale') && !has_key(g:plugs, 'nvim-lspconfig')

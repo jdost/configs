@@ -13,8 +13,8 @@ else
   setlocal foldmethod=indent
 endif
 
-if !empty(glob($HOME . '/.local/python-code-tools'))
-  let $PATH=$HOME . '/.local/python-code-tools/bin:' . $PATH
+if !empty(glob($HOME.'/.local/python-code-tools'))
+  let $PATH .= ':'.$HOME.'/.local/python-code-tools/bin'
 endif
 
 if executable('pyls') && has_key(g:plugs, 'vim-lsp')
@@ -35,10 +35,12 @@ if executable('pylsp')
 local ncm2 = require('ncm2')
 require'lspconfig'.pylsp.setup{on_init = ncm2.register_lsp_source}
 EOF
+    LspStart
   elseif has_key(g:plugs, 'nvim-lspconfig')
     lua << EOF
 require'lspconfig'.pylsp.setup{}
 EOF
+    LspStart
   endif
 endif
 
@@ -48,10 +50,12 @@ if executable('pyright')
 local ncm2 = require('ncm2')
 require'lspconfig'.pyright.setup{on_init = ncm2.register_lsp_source}
 EOF
+    LspStart
   elseif has_key(g:plugs, 'nvim-lspconfig')
     lua << EOF
 require'lspconfig'.pyright.setup{}
 EOF
+    LspStart
   endif
 endif
 

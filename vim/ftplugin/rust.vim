@@ -17,10 +17,12 @@ if executable('rls')
 local ncm2 = require('ncm2')
 require'lspconfig'.rls.setup{on_init = ncm2.register_lsp_source}
 EOF
+    LspStart
   elseif has_key(g:plugs, 'nvim-lspconfig')
     lua << EOF
 require'lspconfig'.rls.setup{}
 EOF
+    LspStart
   endif
 elseif executable('rust-analyzer')
   if has_key(g:plugs, 'nvim-lspconfig') && has_key(g:plugs, 'ncm2')
@@ -28,9 +30,11 @@ elseif executable('rust-analyzer')
 local ncm2 = require('ncm2')
 require'lspconfig'.rust_analyzer.setup{on_init = ncm2.register_lsp_source}
 EOF
+    LspStart
   elseif has_key(g:plugs, 'nvim-lspconfig')
     lua << EOF
 require'lspconfig'.rust_analyzer.setup{}
 EOF
+    LspStart
   endif
 endif

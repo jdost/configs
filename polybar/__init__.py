@@ -13,7 +13,7 @@ packages={
     Pacman("python-gobject"), Pacman("noto-fonts"), Pacman("noto-fonts-emoji"),
 }
 systemhud_repo = GitRepository("git@github.com:jdost/systemhud.git")
-systemhud_venv = VirtualEnv("systemhud", system_packages=True)
+systemhud_venv = VirtualEnv("systemhud")
 files=[
     UserService("polybar/statusbar.service"),
     XDGConfigFile(f"{__name__}/config"),

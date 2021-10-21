@@ -45,15 +45,18 @@ endif
 " }}}
 
 " Editting {{{
-Plug 'ervandew/supertab'
 Plug has('nvim-0.5') ? 'neovim/nvim-lspconfig' : 'prabirshrestha/vim-lsp'
 if has('nvim-0.5')
+" nvim-cmp (experimental) {{{
   " Plug 'hrsh7th/nvim-cmp'
   " Plug 'hrsh7th/cmp-nvim-lsp'
   " Plug 'hrsh7th/cmp-buffer'
   " Plug 'hrsh7th/cmp-path'
+" }}}
+" nvim-compe {{{
   Plug 'hrsh7th/nvim-compe'
   Plug 'onsails/lspkind-nvim'
+" }}}
 elseif has('nvim')
 " ncm2 {{{
   Plug 'roxma/nvim-yarp' | Plug 'ncm2/ncm2'
@@ -61,6 +64,7 @@ elseif has('nvim')
   Plug 'ncm2/ncm2-vim-lsp'
 " }}}
 else
+  Plug 'ervandew/supertab'
 " asyncomplete+friends {{{
   Plug 'prabirshrestha/asyncomplete.vim'
   Plug 'prabirshrestha/async.vim'
@@ -141,7 +145,7 @@ Plug 'sheerun/vim-polyglot'
 " --- Python
 Plug 'ehamberg/vim-cute-python', { 'for': 'python' }
 Plug 'hdima/python-syntax', { 'for': 'python' }
-if has('nvim')
+if has('nvim') && !has('nvim-0.5')
   Plug 'numirias/semshi', { 'for': 'python', 'do': ':UpdateRemotePlugins' }
 end
 " --- GoLang

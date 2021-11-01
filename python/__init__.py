@@ -4,15 +4,15 @@ from cfgtools.system.python import VirtualEnv
 from cfgtools.system.ubuntu import Apt
 
 python_tools = [
-    "autoimport",
     "black",
+    "flake8",
     "isort",
     "mypy",
     "mypy-ls",
     "neovim",
+    "pynvim",
     "python-lsp-black",
     "python-lsp-server",
-    "pynvim",
 ]
 
 packages = {

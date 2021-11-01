@@ -46,7 +46,7 @@ set_rules() {
 }
 
 set_rules 'web' \
-    'Chromium' 'Google-chrome' 'Firefox' 'qutebrowser'
+    'Chromium' 'Google-chrome' 'firefox' 'qutebrowser'
 set_rules 'games' \
     'Lutris' 'MultiMC5' 'Steam'
 set_rules 'video' \

@@ -3,7 +3,11 @@ from cfgtools.system.arch import Pacman
 
 import web_xdg_open
 
-packages = {Pacman("firefox")}
+packages = {
+    Pacman("firefox"),
+    Pacman("firefox-extension-privacybadger"),
+    Pacman("firefox-ublock-origin"),
+}
 
 files = [
     DesktopEntry(f"{__name__}/private.desktop", "firefox-private.desktop"),

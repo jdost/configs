@@ -29,21 +29,6 @@ if executable('pyls') && has_key(g:plugs, 'vim-lsp')
   augroup END
 endif
 
-if executable('pylsp')
-  if has_key(g:plugs, 'nvim-lspconfig') && has_key(g:plugs, 'ncm2')
-    lua << EOF
-local ncm2 = require('ncm2')
-require'lspconfig'.pylsp.setup{on_init = ncm2.register_lsp_source}
-EOF
-    LspStart
-  elseif has_key(g:plugs, 'nvim-lspconfig')
-    lua << EOF
-require'lspconfig'.pylsp.setup{}
-EOF
-    LspStart
-  endif
-endif
-
 if executable('pyright')
   if has_key(g:plugs, 'nvim-lspconfig') && has_key(g:plugs, 'ncm2')
     lua << EOF
@@ -54,6 +39,19 @@ EOF
   elseif has_key(g:plugs, 'nvim-lspconfig')
     lua << EOF
 require'lspconfig'.pyright.setup{}
+EOF
+    LspStart
+  endif
+elseif executable('pylsp')
+  if has_key(g:plugs, 'nvim-lspconfig') && has_key(g:plugs, 'ncm2')
+    lua << EOF
+local ncm2 = require('ncm2')
+require'lspconfig'.pylsp.setup{on_init = ncm2.register_lsp_source}
+EOF
+    LspStart
+  elseif has_key(g:plugs, 'nvim-lspconfig')
+    lua << EOF
+require'lspconfig'.pylsp.setup{}
 EOF
     LspStart
   endif

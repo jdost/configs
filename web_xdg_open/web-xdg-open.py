@@ -3,7 +3,6 @@
 import os
 import re
 import sys
-
 from pathlib import Path
 from shutil import which
 
@@ -50,4 +49,6 @@ if not target_browser:
     sys.exit("No browser installed from expected list.")
 
 args = [url]
-os.execl(which(target_browser), target_browser, *args)
+target_browser_path = which(target_browser)
+assert target_browser_path is not None
+os.execl(target_browser_path, target_browser, *args)

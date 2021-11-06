@@ -106,6 +106,7 @@ Plug 'rhysd/git-messenger.vim', { 'on': 'GitMessenger' }
 
 " Appearance/UI {{{
 Plug 'sjl/badwolf'
+"Plug 'Reewr/vim-monokai-phoenix'
 " `vim-indent-guides` doesn't work in neovim :(
 if has('nvim-0.5')
   Plug 'lukas-reineke/indent-blankline.nvim'

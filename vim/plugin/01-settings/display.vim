@@ -2,6 +2,8 @@
 if &t_Co >= 256
   if has_key(g:plugs, 'badwolf')
     colorscheme badwolf
+  elseif has_key(g:plugs, 'vim-monokai-phoenix')
+    colorscheme monokai-phoenix
   elseif has_key(g:plugs, 'seoul256.vim')
     let g:seoul256_background = 235
     colorscheme seoul256

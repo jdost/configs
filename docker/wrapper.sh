@@ -61,9 +61,10 @@ ncurses() {
     local lazydocker_path="$HOME/.local/bin/lazydocker"
     if [[ ! -x "$lazydocker_path" ]]; then
         # prepare the download URL
-        local version=$(curl -L -s -H 'Accept: application/json' https://github.com/jesseduffield/lazydocker/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+        local repo="jesseduffield/lazydocker"
+        local version=$(curl -L -s -H 'Accept: application/json' https://github.com/$repo/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
         local github_file="lazydocker_${version//v/}_$(uname -s)_x86.tar.gz"
-        local url="https://github.com/jesseduffield/lazydocker/releases/download/${version}/${github_file}"
+        local url="https://github.com/$repo/releases/download/${version}/${github_file}"
 
         # install/update the local binary
         curl -L -o lazydocker.tar.gz $url
@@ -72,6 +73,23 @@ ncurses() {
         rm lazydocker.tar.gz
     fi
     exec $lazydocker_path
+}
+
+inspect() {
+    local dive_path="$HOME/.local/bin/dive"
+    if [[ ! -x "$dive_path" ]]; then
+        local repo="wagoodman/dive"
+        local version=$(curl -L -s -H 'Accept: application/json' https://github.com/$repo/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+        local github_file="dive_${version//v/}_$(uname -s)_amd64.tar.gz"
+        local url="https://github.com/$repo/releases/download/${version}/${github_file}"
+
+        # install/update the local binary
+        curl -L -o dive.tar.gz $url
+        tar xzvf dive.tar.gz dive
+        mv -f dive ${dive_path}
+        rm dive.tar.gz
+    fi
+    exec $dive_path "$@"
 }
 
 
@@ -88,6 +106,10 @@ case "${1:-}" in
          | grep -v "CONTAINER" \
          | awk '{ print $1 }' \
          | xargs $BIN stop
+      ;;
+   "dive"|"inspect-image")
+      shift
+      inspect "$@"
       ;;
    "--raw") # Provides a bypass, will avoid the above overrides
       shift

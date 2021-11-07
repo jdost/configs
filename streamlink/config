@@ -1,4 +1,5 @@
 player=mpv --cache 2048
+title={author} - {title}
 player-continuous-http
 default-stream=best
 hls-segment-threads=3

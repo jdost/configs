@@ -1,0 +1,10 @@
+[Unit]
+Description=nm-applet - NetworkManager tray applet
+PartOf=xorg.target
+
+[Service]
+ExecStart=nm-applet
+Restart=on-failure
+
+[Install]
+WantedBy=xorg.target

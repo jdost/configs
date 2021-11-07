@@ -1,0 +1,12 @@
+export GDK_DPI_SCALE=1.0
+systemctl --user import-environment GDK_DPI_SCALE
+if which dbus-update-activation-environment &>/dev/null; then
+    dbus-update-activation-environment GDK_DPI_SCALE
+fi
+unset GDK_DPI_SCALE
+
+#xrandr --setprovideroutputsource modesetting NVIDIA-0
+#xrandr --auto
+xrandr --output eDP-1 --scale 0.5x0.5
+
+# vim: ft=bash

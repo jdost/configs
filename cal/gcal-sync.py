@@ -11,13 +11,12 @@ import os
 import signal
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Sequence
-
-from gcsa.google_calendar import GoogleCalendar
-from gcsa.event import Event as GcsaEvent
-from google.auth.exceptions import RefreshError
+from typing import Dict, List, Optional, Sequence, Set
 
 import pytz
+from gcsa.event import Event as GcsaEvent
+from gcsa.google_calendar import GoogleCalendar
+from google.auth.exceptions import RefreshError
 
 DEFAULT_TZ = pytz.timezone("US/Pacific")
 WINDOW = datetime.timedelta(days=90)
@@ -39,10 +38,10 @@ class CalEvent:
     calendar: str
 
     def __init__(
-            self,
-            calendar: str = '',
-            gcsa_src: Optional[GcsaEvent] = None,
-            json_src: Optional[str] = None
+        self,
+        calendar: str = "",
+        gcsa_src: Optional[GcsaEvent] = None,
+        json_src: Optional[str] = None,
     ):
         if gcsa_src is not None:
             self.calendar = calendar
@@ -99,7 +98,7 @@ class CalEvent:
         return f"{self.summary} ({self.start})"
 
     @classmethod
-    def from_json(cls, src: Dict[str, str]) -> 'CalEvent':
+    def from_json(cls, src: str) -> "CalEvent":
         return cls(json_src=src)
 
     def __json__(self) -> Dict[str, str]:
@@ -140,9 +139,8 @@ class LocalCache:
 
     def update(self, new_events: Sequence[CalEvent]) -> None:
         json.dump(
-            [evt.__json__() for evt in to_be_added.values()] + \
-                self.__json__(),
-            self.FILE.open("w")
+            [evt.__json__() for evt in to_be_added.values()] + self.__json__(),
+            self.FILE.open("w"),
         )
 
 
@@ -173,6 +171,7 @@ if __name__ == "__main__":
                 "Token probably expired, run manually to refresh"
             ], check=True)
             raise ImportError("webbrowser doesn't work in a headless setting.")
+
         webbrowser.register_standard_browsers = fake_register_standard_browsers
 
     calendar_file = XDG_CONFIG_HOME / "calcurse/calendars.txt"
@@ -204,10 +203,7 @@ if __name__ == "__main__":
             sys.exit(1)
 
         for raw_event in cal.get_events(
-            now,
-            now + WINDOW,
-            single_events=True,
-            order_by="startTime"
+            now, now + WINDOW, single_events=True, order_by="startTime"
         ):
             event = CalEvent(calendar, raw_event)
             to_be_added[event._id] = event
@@ -243,11 +239,14 @@ if __name__ == "__main__":
         )
         # Remove anything to be pruned and add anything to be added
         (XDG_DATA_HOME / "calcurse/apts").write_text(
-            "\n".join(sorted(list(
-                calcurse_apts
-                    - set([e.to_apt() for e in to_be_removed])
-                    | set([e.to_apt() for e in to_be_added.values()])
-            )))
+            "\n".join(
+                sorted(
+                    list(
+                        calcurse_apts - set([e.to_apt() for e in to_be_removed])
+                        | set([e.to_apt() for e in to_be_added.values()])
+                    )
+                )
+            )
         )
         # If there is a running calcurse, send an update
         if (XDG_DATA_HOME / "calcurse/.calcurse.pid").exists():

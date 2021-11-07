@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Telegram
+GenericName=Containerized Secure Messaging
+Comment=Containerized secure messaging
+Exec=telegram
+Icon=telegram
+Terminal=false
+Categories=Network;InstantMessaging;Chat;
+Keywords=Messaging Chat Text

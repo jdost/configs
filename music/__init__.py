@@ -9,6 +9,7 @@ packages = {Pacman("cmus"), AUR("ncspot")}
 files = [
     XDGConfigFile(f"{__name__}/ncspot.toml", "ncspot/config.toml"),
     XDGConfigFile(f"{__name__}/cmus", "cmus/rc"),
+    XDGConfigFile(f"{__name__}/cmus.theme", "cmus/local.theme"),
     UserBin(f"{__name__}/music-tmux.sh", "music-tmux"),
     UserBin(f"{__name__}/playerctl-wrapper.sh", "playerctl"),
     DesktopEntry(f"{__name__}/music-sidebar.desktop"),
@@ -17,5 +18,3 @@ files = [
         XDG_CONFIG_HOME / "ncspot/credentials.toml",
     ),
 ]
-
-# populate ~/.config/ncspot/credentials.toml from pass?

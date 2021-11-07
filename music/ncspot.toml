@@ -1,5 +1,6 @@
 notify = false
 use_nerdfont = true
+gapless = true
 
 [keybindings]
 # Navigation
@@ -16,23 +17,26 @@ use_nerdfont = true
 "z" = "previous"
 "x" = "playpause"
 "c" = "next"
+# toggle playback order
+"Z" = "shuffle"
+"r" = "repeat"
 # General
 "Q" = "quit"
 
 [theme]
 background = "default"
-primary = "#22CCDD"
-secondary = "#444444"
-title = "#1ED760"
-playing = "#FFFFFF"
-playing_selected = "#FFFFFF"
-playing_bg = "#444444"
-highlight = "#FF9B00"
-highlight_bg = "#888888"
-error = "#FFE4E4"
-error_bg = "#E01B1B"
-statusbar = "#222222"
-statusbar_progress = "#B1D7EE"
-statusbar_bg = "#7C9AA6"
-cmdline = "#4FADBF"
-cmdline_bg = "#444444"
+primary = "#22CCDD"  # 44
+secondary = "#444444" # 238
+title = "#1ED760"  # 41
+playing = "#FFFFFF" # 231
+playing_selected = "#FFFFFF" # 231
+playing_bg = "#444444" # 238
+highlight = "#FF9B00" # 208
+highlight_bg = "#888888" # 102
+error = "#FFE4E4" #224
+error_bg = "#E01B1B" # 160
+statusbar = "#222222" # 235
+statusbar_progress = "#B1D7EE" # 153
+statusbar_bg = "#7C9AA6" # 103
+cmdline = "#4FADBF" # 73
+cmdline_bg = "#444444" # 238

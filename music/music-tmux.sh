@@ -46,7 +46,7 @@ bspwm_setup_window() {
         state=floating \
         hidden=off \
         monitor=primary \
-        rectangle=${WIDTH}x$(( $height - $VOFFSET ))+2000+${VOFFSET}
+        rectangle=${WIDTH}x$(( $height - $VOFFSET ))+4000+${VOFFSET}
 }
 
 record_windowid() {

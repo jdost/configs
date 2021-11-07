@@ -9,7 +9,7 @@ network-interface =
 [bar/main]
 modules-left = bspwm
 modules-center = title
-modules-right = audio cpu memory date
+modules-right = audio cpu memory clock spacer
 module-margin = 1
 fixed_center = true
 ; Tray

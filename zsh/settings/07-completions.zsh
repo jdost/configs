@@ -42,11 +42,6 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin  \
    /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 # application specific completion
 zstyle ':completion:*' group-name            ''
- # mplayer
-zstyle ':completion:*:*:mplayer:*'           tag-order files
-zstyle ':completion:*:*:mplayer:*'           file-patterns   \
-      '*.(rmvb|mkv|mpg|wmv|mpeg|avi|flv|mp3|mp4|flac|ogg):video' \
-      '*:all-files' '*(-/):directories'
  # vim
 zstyle ':completion:*:*:(vim|vimdiff):*:*files' \
   ignored-patterns '*~|*.(old|bak|zwc|viminfo|rxvt-*|zcompdump)|pm_to_blib|cover_db|blib' \
@@ -55,7 +50,4 @@ zstyle ':completion:*:*:(vim|vimdiff):*' \
   file-sort modification
 zstyle ':completion:*:*:(vim|vimdiff):*' \
   tag-order files
-# pdf
-zstyle ':completion:*:*:(llpp|apvlv|zathura):*'             tag-order files
-zstyle ':completion:*:*:(llpp|apvlv|zathura):*'             file-patterns '*.pdf'
 # vim: ft=zsh tw=2

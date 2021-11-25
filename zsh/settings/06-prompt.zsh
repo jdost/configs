@@ -22,10 +22,18 @@ function fancy_path() {
     for d in $parts[@]; do
         if [[ $n > 0 ]];then
             printf " %%F{$n}»%%F{7} "
+        elif [[ "$d" =~ ^[^~] ]]; then
+            # If this is the first step and isn't aliased (i.e. starts with `~`),
+            #   re-add the `/` prefix as it should be a root based path
+            printf "%%F{7}/"
         fi
         n=$(( $n + 1 ))
         printf $d
     done
+    if [[ $n -eq 0 ]]; then
+        # If no parts were iterated on, this should be the root (`/`)
+        printf "%%F{7}/"
+    fi
     printf "%%f"
 }
 

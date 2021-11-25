@@ -17,9 +17,9 @@ bindkey -M vicmd "//" history-beginning-search-backward
 bindkey -M vicmd "??" history-beginning-search-forward
 
 bindkey -M vicmd "q" push-line
-bindkey -M vicmd "!" edit-command-output
 
 autoload -Uz edit-command-line
+zle -N edit-command-line
 bindkey -M vicmd 'v' edit-command-line
 
 # converts ... -> ../.. and backwards

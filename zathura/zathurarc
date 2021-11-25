@@ -22,7 +22,7 @@ set statusbar-h-padding 10
 set recolor true
 set recolor-keephue true
 set recolor-darkcolor   "#eeeeee"  # Foreground
-set recolor-lightcolor  "#111111"  # Background
+set recolor-lightcolor  rgba(0,0,0,0)  # Background, don't set, let window take over
 
 set notification-error-bg   "#ee3333"
 set notification-error-fg   "#111111"
@@ -51,7 +51,7 @@ set statusbar-fg            "#eeeeee"
 set highlight-color         "#ffcc88"
 set highlight-active-color  "#ff9900"
 
-set default-bg              "#111111"
+set default-bg              rgba(17,17,17,0.4)
 set default-fg              "#eeeeee"
 
 set render-loading          true

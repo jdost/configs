@@ -1,6 +1,9 @@
 configuration {
-    modi: "combi,:~/.config/rofi/scripts/pass,:~/.config/rofi/scripts/totp";
-    combi-modi: ",";
+    modi: "combi,password-store:~/.config/rofi/scripts/pass,totp:~/.config/rofi/scripts/totp";
+    combi-modi: "password-store,totp";
+    password-store { display-name: ""; }
+    totp { display-name: ""; }
+    combi-hide-mode-prefix: false;
 
     kb-accept-alt: "Alt+Return";
     kb-custom-1: "Shift+Return";

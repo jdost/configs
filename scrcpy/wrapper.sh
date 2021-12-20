@@ -17,12 +17,12 @@ fi
 #   launches
 adb start-server 1>/dev/null
 # If args are passed, treat it as a straight passthrough
-[[ "$#" != "0" ]] && exec $SCRCPY_BIN "$@"
+[[ "$#" != "0" ]] && exec $BIN "$@"
 
 DEVICES=$(adb devices | grep -e "device$" | awk '{ print $1 }')
 
 if [[ "$(echo $DEVICES | head -n1)" == *":"* ]]; then
-   exec $SCRCPY_BIN --bit-rate 2M --max-size 800 --max-fps 15
+   exec $BIN --bit-rate 2M --max-size 800 --max-fps 15
 else
-   exec $SCRCPY_BIN
+   exec $BIN
 fi

@@ -65,6 +65,7 @@ fi
 [[ ! -d "$CONFIG_DIR" ]] && mkdir "$CONFIG_DIR"
 [[ ! -d "$DATA_DIR" ]] && mkdir "$DATA_DIR"
 
+msg "Launching..."
 exec docker run \
     --rm \
     --interactive \

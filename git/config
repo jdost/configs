@@ -1,47 +1,47 @@
 [core]
-   editor = vim
-   excludesfile = ~/.config/git/ignore
+    editor = vim
+    excludesfile = ~/.config/git/ignore
 
 [user]
-   name = Jeff
-   email = jdost@users.noreply.github.com
+    name = Jeff
+    email = jdost@users.noreply.github.com
 
 [init]
     defaultBranch = main
 
 [push]
-   default = current
+    default = current
 
 [pull]
-   ff = only
+    ff = only
 
 [alias]
-   st = status -s
-   co = checkout
-   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
-   serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
-   churn = !git --no-pager log --name-only --oneline | grep -v ' ' | sort | uniq -c | sort -nr | head
-   last = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat -1
-   staged = diff --staged
-   amend = commit --amend --no-edit
-   merged = !git branch --merged master | grep -v " master"
+    st = status -s
+    co = checkout
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+    serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+    churn = !git --no-pager log --name-only --oneline | grep -v ' ' | sort | uniq -c | sort -nr | head
+    last = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat -1
+    staged = diff --staged
+    amend = commit --amend --no-edit
+    merged = !git branch --merged master | grep -v " master"
 
 [color]
-   branch = auto
-   diff = auto
-   status = auto
+    branch = auto
+    diff = auto
+    status = auto
 [color "branch"]
-   current = yellow reverse
-   local = yellow
-   remote = green
+    current = yellow reverse
+    local = yellow
+    remote = green
 [color "diff"]
-   meta = yellow bold
-   frag = magenta bold
-   old = red bold
-   new = green bold
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
 [color "status"]
-   added = yellow
-   changed = green
-   untracked = cyan
+    added = yellow
+    changed = green
+    untracked = cyan
 
 # vim: ft=gitconfig

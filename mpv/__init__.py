@@ -5,7 +5,7 @@ from cfgtools.utils import hide_xdg_entry
 
 import web_xdg_open
 
-packages={Pacman("mpv"), Pacman("youtube-dl")}
+packages={Pacman("mpv"), Pacman("yt-dlp")}
 files=[
     XDGConfigFile(f"{__name__}/mpv.conf"),
     web_xdg_open.SettingsFile(f"{__name__}/web-xdg-open", "mpv"),

@@ -1,1 +1,4 @@
+cache=~/.cache/npm
+init.module=~/.config/npm/init.js
+init-module=~/.config/npm/init.js
 prefix=~/.local

@@ -1,4 +1,4 @@
-from cfgtools.files import XDGConfigFile
+from cfgtools.files import XDGConfigFile, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import AUR
 from cfgtools.system.systemd import ensure_service, UserService
@@ -6,10 +6,12 @@ from cfgtools.utils import hide_xdg_entry
 
 import aur
 
+NAME = normalize(__name__)
+
 system_packages={AUR("picom-git")}
 files=[
-    XDGConfigFile(f"{__name__}/picom.conf"),
-    UserService(f"{__name__}/compositor.service"),
+    XDGConfigFile(f"{NAME}/picom.conf"),
+    UserService(f"{NAME}/compositor.service"),
 ]
 unwanted_entries=["compton", "picom"]
 

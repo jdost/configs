@@ -1,18 +1,20 @@
-from cfgtools.files import DesktopEntry, XDG_CONFIG_HOME, XDGConfigFile, UserBin
+from cfgtools.files import DesktopEntry, XDG_CONFIG_HOME, XDGConfigFile, UserBin, normalize
 from cfgtools.system.arch import AUR, Pacman
 
 import alacritty
 import tmux
 import dropbox
 
+NAME = normalize(__name__)
+
 packages = {Pacman("cmus"), AUR("ncspot")}
 files = [
-    XDGConfigFile(f"{__name__}/ncspot.toml", "ncspot/config.toml"),
-    XDGConfigFile(f"{__name__}/cmus", "cmus/rc"),
-    XDGConfigFile(f"{__name__}/cmus.theme", "cmus/local.theme"),
-    UserBin(f"{__name__}/music-tmux.sh", "music-tmux"),
-    UserBin(f"{__name__}/playerctl-wrapper.sh", "playerctl"),
-    DesktopEntry(f"{__name__}/music-sidebar.desktop"),
+    XDGConfigFile(f"{NAME}/ncspot.toml", "ncspot/config.toml"),
+    XDGConfigFile(f"{NAME}/cmus", "cmus/rc"),
+    XDGConfigFile(f"{NAME}/cmus.theme", "cmus/local.theme"),
+    UserBin(f"{NAME}/music-tmux.sh", "music-tmux"),
+    UserBin(f"{NAME}/playerctl-wrapper.sh", "playerctl"),
+    DesktopEntry(f"{NAME}/music-sidebar.desktop"),
     dropbox.EncryptedFile(
         "credentials/ncspot.toml.gpg",
         XDG_CONFIG_HOME / "ncspot/credentials.toml",

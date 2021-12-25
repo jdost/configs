@@ -1,14 +1,16 @@
 from cfgtools.hooks import after
-from cfgtools.files import XDGConfigFile
+from cfgtools.files import XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 from cfgtools.utils import hide_xdg_entry
 
 import web_xdg_open
 
+NAME = normalize(__name__)
+
 packages={Pacman("mpv"), Pacman("yt-dlp")}
 files=[
-    XDGConfigFile(f"{__name__}/mpv.conf"),
-    web_xdg_open.SettingsFile(f"{__name__}/web-xdg-open", "mpv"),
+    XDGConfigFile(f"{NAME}/mpv.conf"),
+    web_xdg_open.SettingsFile(f"{NAME}/web-xdg-open", "mpv"),
 ]
 
 

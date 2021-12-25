@@ -1,5 +1,7 @@
-from cfgtools.files import DesktopEntry
+from cfgtools.files import DesktopEntry, normalize
 from cfgtools.system.arch import Pacman
+
+NAME = normalize(__name__)
 
 packages = {
     Pacman("firefox"),
@@ -7,7 +9,6 @@ packages = {
     Pacman("firefox-extension-privacybadger"),
     Pacman("firefox-ublock-origin"),
 }
-
 files = [
-    DesktopEntry(f"{__name__}/private.desktop", "firefox-private.desktop"),
+    DesktopEntry(f"{NAME}/private.desktop", "firefox-private.desktop"),
 ]

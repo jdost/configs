@@ -1,7 +1,9 @@
-from cfgtools.files import EnvironmentFile, XDGConfigFile
+from cfgtools.files import EnvironmentFile, XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
 from cfgtools.system.ubuntu import Apt
+
+NAME = normalize(__name__)
 
 python_tools = [
     "black",
@@ -24,9 +26,9 @@ packages = {
     VirtualEnv("python-code-tools", *python_tools),
 }
 files = [
-    XDGConfigFile(f"{__name__}/pip.conf", "pip/pip.conf"),
-    EnvironmentFile(__name__),
-    XDGConfigFile(f"{__name__}/python_startup.py", "python/startup.py"),
-    XDGConfigFile(f"{__name__}/black.toml", "black"),
-    XDGConfigFile(f"{__name__}/isort.cfg", "isort.cfg"),
+    XDGConfigFile(f"{NAME}/pip.conf", "pip/pip.conf"),
+    EnvironmentFile(NAME),
+    XDGConfigFile(f"{NAME}/python_startup.py", "python/startup.py"),
+    XDGConfigFile(f"{NAME}/black.toml", "black"),
+    XDGConfigFile(f"{NAME}/isort.cfg", "isort.cfg"),
 ]

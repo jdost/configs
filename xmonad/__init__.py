@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import alacritty
 import deadd
 import picom
@@ -7,8 +5,10 @@ import polybar
 import rofi
 import unclutter
 import xorg
-from cfgtools.files import File, XDGConfigFile, XinitRC
+from cfgtools.files import HOME, File, XDGConfigFile, XinitRC, normalize
 from cfgtools.system.arch import Pacman
+
+NAME = normalize(__name__)
 
 pkgs = {
     Pacman("xmonad"), Pacman("xmonad-contrib"),
@@ -16,8 +16,8 @@ pkgs = {
 }
 
 files = [
-    File(f"{__name__}/xmonad.hs", Path.home() / ".xmonad/xmonad.hs"),
-    File(f"{__name__}/lib", Path.home() / ".xmonad/lib"),
-    XDGConfigFile(f"{__name__}/polybar", "polybar/{__name__}"),
-    XinitRC(__name__, priority=99),
+    File(f"{NAME}/xmonad.hs", HOME / ".xmonad/xmonad.hs"),
+    File(f"{NAME}/lib", HOME / ".xmonad/lib"),
+    XDGConfigFile(f"{NAME}/polybar", f"polybar/xmonad"),
+    XinitRC(NAME, priority=99),
 ]

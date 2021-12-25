@@ -1,16 +1,17 @@
-from cfgtools.files import DesktopEntry, UserBin, XinitRC
+from cfgtools.files import DesktopEntry, UserBin, XinitRC, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import ensure_service, UserService
 
+NAME = normalize(__name__)
 
 packages = {Pacman("feh"), Pacman("curl"), Pacman("which")}
 files = [
-    UserBin(f"{__name__}/wallpaper.sh", "wallpaper"),
-    UserService(f"{__name__}/wallpaper.service"),
-    UserService(f"{__name__}/wallpaper.timer"),
-    XinitRC(__name__, priority=90),
-    DesktopEntry(f"{__name__}/wallpaper.desktop"),
+    UserBin(f"{NAME}/wallpaper.sh", "wallpaper"),
+    UserService(f"{NAME}/wallpaper.service"),
+    UserService(f"{NAME}/wallpaper.timer"),
+    XinitRC(NAME, priority=90),
+    DesktopEntry(f"{NAME}/wallpaper.desktop"),
 ]
 
 

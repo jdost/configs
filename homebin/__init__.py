@@ -1,12 +1,11 @@
-from pathlib import Path
-from cfgtools.files import HOME, Folder, UserBin, EnvironmentFile
+from cfgtools.files import HOME, Folder, UserBin, EnvironmentFile, normalize
 
-FOLDER = Path(__name__)
+NAME = normalize(__name__)
 
 files = [
     Folder(HOME / ".local/bin", permissions=0o755),
-    EnvironmentFile(__name__),
-    UserBin(FOLDER / "settitle.sh", "settitle"),
-    UserBin(FOLDER / "term_info.sh", "term-info"),
-    UserBin(FOLDER / "retry.sh", "retry"),
+    EnvironmentFile(NAME),
+    UserBin(f"{NAME}/settitle.sh", "settitle"),
+    UserBin(f"{NAME}/term_info.sh", "term-info"),
+    UserBin(f"{NAME}/retry.sh", "retry"),
 ]

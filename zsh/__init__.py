@@ -2,13 +2,14 @@ import getpass
 import os
 import subprocess
 
-from cfgtools.files import EnvironmentFile, File, HOME, XDGConfigFile
+from cfgtools.files import EnvironmentFile, File, HOME, XDGConfigFile, normalize
 from cfgtools.system.arch import AUR, Pacman
 from cfgtools.system.nix import NixPkgBin
 from cfgtools.system.ubuntu import Apt
 from cfgtools.hooks import after
 
 _SUDO_CHSH = False
+NAME = normalize(__name__)
 
 packages = {
     Pacman("zsh"), Pacman("zsh-syntax-highlighting"), Pacman("zsh-completions"),
@@ -18,9 +19,9 @@ packages = {
     NixPkgBin("colordiff"), NixPkgBin("fzf"),
 }
 files = [
-    File(f"{__name__}/zshrc", HOME / ".zshrc"),
-    XDGConfigFile(f"{__name__}/settings"),
-    EnvironmentFile(__name__),
+    File(f"{NAME}/zshrc", HOME / ".zshrc"),
+    XDGConfigFile(f"{NAME}/settings"),
+    EnvironmentFile(NAME),
 ]
 
 

@@ -1,11 +1,11 @@
-from pathlib import Path
-
-from cfgtools.files import EnvironmentFile, XDGConfigFile
+from cfgtools.files import EnvironmentFile, XDGConfigFile, HOME, normalize
 from cfgtools.system.arch import Pacman
 from cfgtools.system import GitRepository
 
 import dropbox
 import rofi
+
+NAME = normalize(__name__)
 
 packages = {
     Pacman("pass"),
@@ -13,13 +13,13 @@ packages = {
     Pacman("xclip"),
     Pacman("xdotool"),
     GitRepository(
-        Path.home() / ".local/dropbox/pass.git",
-        Path.home() / ".local/password_store",
+        HOME / ".local/dropbox/pass.git",
+        HOME / ".local/password_store",
     ),
 }
 files = [
-    XDGConfigFile(f"{__name__}/totp_rofi", "rofi/scripts/totp"),
-    XDGConfigFile(f"{__name__}/pass_rofi", "rofi/scripts/pass"),
-    XDGConfigFile(f"{__name__}/config.rasi", "rofi/themes/auth.rasi"),
-    EnvironmentFile(__name__),
+    XDGConfigFile(f"{NAME}/totp_rofi", "rofi/scripts/totp"),
+    XDGConfigFile(f"{NAME}/pass_rofi", "rofi/scripts/pass"),
+    XDGConfigFile(f"{NAME}/config.rasi", "rofi/themes/auth.rasi"),
+    EnvironmentFile(NAME),
 ]

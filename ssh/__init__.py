@@ -1,20 +1,22 @@
 import urllib.request
 from pathlib import Path
 
-from cfgtools.files import File
+from cfgtools.files import HOME, File, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.ubuntu import Apt
 
+NAME = normalize(__name__)
+
 packages = {Pacman("openssh"), Apt("ssh-client")}
 files = [
-    File(f"{__name__}/default.ssh", Path.home() / ".ssh/config.d/default")
+    File(f"{NAME}/default.ssh", HOME / ".ssh/config.d/default")
 ]
 
 
 @after
 def setup_base_ssh_config() -> None:
-    base_config = Path.home() / ".ssh/config"
+    base_config = HOME / ".ssh/config"
     base_config_template = Path(__file__).parent / "base.ssh"
 
     if not base_config.exists():
@@ -29,7 +31,7 @@ def setup_base_ssh_config() -> None:
 
 @after
 def populate_ssh_authorized_keys() -> None:
-    authorized_keys = Path.home() / ".ssh/authorized_keys"
+    authorized_keys = HOME / ".ssh/authorized_keys"
     authorized_keys_perms = 0o644
 
     if not authorized_keys.exists():

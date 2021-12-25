@@ -18,6 +18,10 @@ def convert_loc(p: Union[Path, str]) -> Path:
     return p if p.is_absolute() else BASE / p
 
 
+def normalize(n: str) -> str:
+    return n.replace(".", "/")
+
+
 class LocalConflict(Exception):
     def __init__(self, conflicting_path: Path):
         super().__init__(

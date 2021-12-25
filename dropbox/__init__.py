@@ -1,21 +1,22 @@
 import subprocess
-from pathlib import Path
 
-from cfgtools.files import RegisteredFileAction, UserBin, convert_loc
+from cfgtools.files import HOME, RegisteredFileAction, UserBin, convert_loc, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
 from cfgtools.system.systemd import ensure_service, UserService
 from cfgtools.utils import run
 
+NAME = normalize(__name__)
+
 packages = {Pacman("qt5-base")}
 virtualenv = VirtualEnv("maestral", "maestral", "maestral-qt")
 files = [
     UserBin(virtualenv.location / "bin/maestral", "maestral"),
-    UserService(f"{__name__}/dropbox.service"),
+    UserService(f"{NAME}/dropbox.service"),
 ]
 
-DROPBOX_DIR = Path.home() / ".local/dropbox"
+DROPBOX_DIR = HOME / ".local/dropbox"
 
 
 class EncryptedFile(RegisteredFileAction):

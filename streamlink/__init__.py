@@ -1,18 +1,20 @@
-from cfgtools.files import DesktopEntry, UserBin, XDGConfigFile, XDG_CONFIG_HOME
+from cfgtools.files import DesktopEntry, UserBin, XDGConfigFile, XDG_CONFIG_HOME, normalize
 from cfgtools.system.arch import Pacman
 
 import dropbox
 import mpv
 import web_xdg_open
 
+NAME = normalize(__name__)
+
 packages={Pacman("streamlink"), Pacman("xclip")}
 files=[
-    XDGConfigFile(f"{__name__}/config", "streamlink/config"),
-    DesktopEntry(f"{__name__}/streamlink.desktop"),
-    UserBin(f"{__name__}/streamlink-clipboard.sh", "_streamlink-clipboard"),
+    XDGConfigFile(f"{NAME}/config", "streamlink/config"),
+    DesktopEntry(f"{NAME}/streamlink.desktop"),
+    UserBin(f"{NAME}/streamlink-clipboard.sh", "_streamlink-clipboard"),
     dropbox.EncryptedFile(
         "credentials/streamlink.crunchyroll.gpg",
         XDG_CONFIG_HOME  / "streamlink/config.crunchyroll",
     ),
-    web_xdg_open.SettingsFile(f"{__name__}/web-xdg-open", "streamlink"),
+    web_xdg_open.SettingsFile(f"{NAME}/web-xdg-open", "streamlink"),
 ]

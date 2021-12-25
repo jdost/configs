@@ -1,4 +1,4 @@
-from cfgtools.files import DesktopEntry, XDGConfigFile, XDG_CONFIG_HOME, UserBin
+from cfgtools.files import DesktopEntry, XDGConfigFile, XDG_CONFIG_HOME, UserBin, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
@@ -7,15 +7,16 @@ from cfgtools.system.systemd import ensure_service, UserService
 import dropbox
 
 ENABLED = True
+NAME = normalize(__name__)
 
 packages = {Pacman("calcurse")}
 virtualenv = VirtualEnv("gcal-sync", "gcsa")
 files = [
-    UserBin(f"{__name__}/gcal-sync.sh", "gcal-sync"),
-    UserService(f"{__name__}/gcal-sync.service"),
-    UserService(f"{__name__}/gcal-sync.timer"),
-    XDGConfigFile(f"{__name__}/config", "calcurse/conf"),
-    DesktopEntry(f"{__name__}/calcurse.desktop"),
+    UserBin(f"{NAME}/gcal-sync.sh", "gcal-sync"),
+    UserService(f"{NAME}/gcal-sync.service"),
+    UserService(f"{NAME}/gcal-sync.timer"),
+    XDGConfigFile(f"{NAME}/config", "calcurse/conf"),
+    DesktopEntry(f"{NAME}/calcurse.desktop"),
     dropbox.EncryptedFile(
         "credentials/gcal-sync.json.gpg",
         XDG_CONFIG_HOME / "calcurse/credentials.json",

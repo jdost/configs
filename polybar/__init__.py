@@ -1,9 +1,11 @@
-from cfgtools.files import File, XDGConfigFile, XDG_CONFIG_HOME, UserBin
+from cfgtools.files import File, XDGConfigFile, XDG_CONFIG_HOME, UserBin, normalize
 from cfgtools.hooks import after
 from cfgtools.system import GitRepository
 from cfgtools.system.arch import AUR, Pacman
 from cfgtools.system.python import VirtualEnv
 from cfgtools.system.systemd import ensure_service, UserService
+
+NAME = normalize(__name__)
 
 packages={
     AUR("polybar"), AUR("./aur/pkgs/ttf-anonymous-pro-ext"),
@@ -14,8 +16,8 @@ systemhud_repo = GitRepository("git@github.com:jdost/systemhud.git")
 systemhud_venv = VirtualEnv("systemhud")
 files=[
     UserService("polybar/statusbar.service"),
-    XDGConfigFile(f"{__name__}/config"),
-    XDGConfigFile(f"{__name__}/modules"),
+    XDGConfigFile(f"{NAME}/config"),
+    XDGConfigFile(f"{NAME}/modules"),
 ]
 
 

@@ -1,7 +1,9 @@
 from cfgtools.system.arch import AUR, Pacman
-from cfgtools.files import XDGConfigFile
+from cfgtools.files import XDGConfigFile, normalize
+
+NAME = normalize(__name__)
 
 pkgs = {Pacman("wezterm"), AUR("./aur/pkgs/ttf-iosevka-ext")}
 files = [
-    XDGConfigFile(f"{__name__}/wezterm.lua", "wezterm/wezterm.lua"),
+    XDGConfigFile(f"{NAME}/wezterm.lua", "wezterm/wezterm.lua"),
 ]

@@ -1,10 +1,13 @@
+from cfgtools.files import normalize
 from cfgtools.hooks import after
 from cfgtools.system.systemd import ensure_service, UserService
 from cfgtools.system.arch import Pacman
 
+NAME = normalize(__name__)
+
 system_packages={Pacman("network-manager-applet")}
 files=[
-    UserService(f"{__name__}/networkmanager-tray.service"),
+    UserService(f"{NAME}/networkmanager-tray.service"),
 ]
 
 

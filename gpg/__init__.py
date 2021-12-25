@@ -1,20 +1,18 @@
-from pathlib import Path
-
-from cfgtools.files import EnvironmentFile, File, Folder, HOME, XinitRC
+from cfgtools.files import EnvironmentFile, File, Folder, HOME, XinitRC, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import ensure_service
 
-FOLDER = Path(__name__)
+NAME = normalize(__name__)
 USER_GPG_FOLDER = HOME / ".local/gpg"
 GPG_CONFIG_FILES = ["gpg.conf", "gpg-agent.conf", "scdaemon.conf"]
 
 packages={Pacman("gnupg"), Pacman("pcsclite"), Pacman("ccid")}
 files=[
-    EnvironmentFile(__name__),
+    EnvironmentFile(NAME),
     Folder(USER_GPG_FOLDER, permissions=0o700),
-    XinitRC(__name__, priority=20),
-] + [File(FOLDER / f, USER_GPG_FOLDER / f) for f in GPG_CONFIG_FILES]
+    XinitRC(NAME, priority=20),
+] + [File(f"{NAME}/f", USER_GPG_FOLDER / f) for f in GPG_CONFIG_FILES]
 
 
 @after

@@ -1,0 +1,4 @@
+export WINDOW_MANAGER="xmonad"
+xsetroot -cursor_name left_ptr
+
+# vim: ft=sh

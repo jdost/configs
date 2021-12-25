@@ -1,0 +1,5 @@
+[module/xmonad]
+type = custom/script
+exec = tail -F /tmp/xmonad-polybar
+tail = true
+; vim: ft=dosini

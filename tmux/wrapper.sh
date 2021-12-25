@@ -15,6 +15,10 @@ fi
 # Set up some defaults
 TMUX_TMPDIR=/tmp/tmux-$UID
 DEFAULT_TMUX=default
+TMUX_CONF=${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf
+if [[ ! -f "$TMUX_CONF" ]]; then
+    TMUX_CONF=$HOME/.tmux.conf
+fi
 
 if [[ ! -d "$TMUX_TMPDIR" ]]; then
     mkdir -p "$TMUX_TMPDIR"
@@ -34,7 +38,7 @@ start() {
     fi
     if [[ ! -S "$TMUX_TMPDIR/$name" ]]; then
         _debug "Creating new session: $name..."
-        $BIN -L $name new-session -s $name -d
+        $BIN -f $TMUX_CONF -L $name new-session -s $name -d
     fi
     attach $name
 }
@@ -43,13 +47,13 @@ attach() {
     local name=${1:-$DEFAULT_TMUX}
     _debug "Attaching to session: $name..."
     settitle "$name"
-    exec $BIN -L $name attach -t $name
+    exec $BIN -f $TMUX_CONF -L $name attach -t $name
 }
 
 _check() {
     local name=${1:-$DEFAULT_TMUX}
     [[ ! -S "$TMUX_TMPDIR/$name" ]] && return 1
-    if ! $BIN -L $name has-session -t $name &>/dev/null; then
+    if ! $BIN -f $TMUX_CONF -L $name has-session -t $name &>/dev/null; then
         return 1
     fi
 }
@@ -79,8 +83,8 @@ case "${1:-}" in
         ;;
     "--raw")
         shift
-        exec $BIN "$@"
+        exec $BIN -f $TMUX_CONF "$@"
         ;;
     *)
-        exec $BIN "$@" ;;
+        exec $BIN -f $TMUX_CONF "$@" ;;
 esac

@@ -31,6 +31,7 @@ fill_tmux() {
 bspwm_show_window() {
     # Sets the bspc flags to use the already created window
     bspc node $(cat $PIDFILE) --flag hidden
+    bspc node $(cat $PIDFILE) --to-monitor focused
     bspc node $(cat $PIDFILE) --focus
     return 0
 }

@@ -1,3 +1,14 @@
+// Personal settings
+user_pref("browser.startup.page", 3);  // Open previous windows and tabs startup
+
+// Fixes
+//user_pref("ui.context_menus.after_mouseup", true);  // Fix for weird right click behavior
+
+// Hardware Acceleration
+user_pref("media.ffmpeg.vaapi.enabled", true);
+user_pref("media.rdd-ffmpeg.vaapi.enabled", true);
+user_pref("layers.acceleration.disabled", false);
+
 // A lot of these settings are from github.com/pyllyukko/user.js
 /**** Security ****/
 // Disable Service Workers
@@ -265,7 +276,7 @@ user_pref("browser.sessionstore.privacy_level", 2);  // Clear SSL form data
 user_pref("browser.helperApps.deleteTempFileOnExit", true);  // Clear temp files on close
 user_pref("browser.shell.shortcutFavicons", false);  // Don't store favicons for .url files
 user_pref("browser.bookmarks.max_backups", 0);  // Disable bookmark backups
-user_pref("browser.chrome.site_icons", false);  // Disable favicons
+//user_pref("browser.chrome.site_icons", false);  // Disable favicons
 user_pref("security.insecure_password.ui.enabled", true);  // Warn on passwords on non HTTPS pages
 //user_pref("browser.download.folderList", 2);  // Disable downloading to desktop
 //user_pref("dom.event.contextmenu.enabled", false);  // Disable JS overriding context menu

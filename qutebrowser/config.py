@@ -19,6 +19,10 @@ c.url.searchengines = {
     "aur": "https://aur.archlinux.org/packages/?O=0&K={}",
 }
 
+# External opening behavior
+c.new_instance_open_target = "tab"
+c.new_instance_open_target_window = "last-focused"
+
 # Misc
 c.changelog_after_upgrade = "major"
 c.content.fullscreen.window = True

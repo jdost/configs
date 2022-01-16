@@ -140,4 +140,15 @@ function +vi-git-st() {
    hook_com[misc]+=${(j:/:)gitstatus}%f
 }
 
+# Remove the extra information part of the prompt after every command
+function prompt-accept-line() {
+    PROMPT="$(echo $PROMPT | tail -n 1)"
+    RPROMPT=""
+    zle reset-prompt
+    zle accept-line
+}
+
+zle -N prompt-accept-line
+# bindkey "^M" prompt-accept-line
+
 # vim: ft=zsh

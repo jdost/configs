@@ -2,11 +2,12 @@ import getpass
 import os
 import subprocess
 
+import bat
 from cfgtools.files import EnvironmentFile, File, HOME, XDGConfigFile, normalize
+from cfgtools.hooks import after
 from cfgtools.system.arch import AUR, Pacman
 from cfgtools.system.nix import NixPkgBin
 from cfgtools.system.ubuntu import Apt
-from cfgtools.hooks import after
 
 _SUDO_CHSH = False
 NAME = normalize(__name__)

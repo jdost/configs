@@ -17,7 +17,7 @@ configuration {
     background2: rgba(0, 0, 0, 0.5);
     bar-background: rgba(242, 242, 242, 0.1);
     foreground: rgba(242, 242, 242, 0.9);
-    highlight: rgba(61, 61, 61, 0.6);
+    highlight: rgba(242, 242, 242, 0.5);
     active: rgba(160, 150, 90, 0.3);
     urgent: rgba(250, 190, 90, 0.3);
     transparent: rgba(0, 0, 0, 0);
@@ -55,8 +55,8 @@ mainbox {
         background-color: @bar-background;
         text-color: @foreground;
         expand: false;
-        border: 0 0 0 0;
-        border-color: rgba(200, 200, 200, 1.0);
+        border: 2;
+        border-color: rgba(150, 150, 150, 0.6);
         border-radius: 12px;
         margin: 0 0 0 0;
         padding: 1.5%;
@@ -90,15 +90,14 @@ mainbox {
             background-color: @background;
             orientation: vertical;
             padding: 2% 0 2% 0;
-            border-radius: 0;
-            margin: 0;
+            border-radius: 12px;
+            margin: 2px;
         }
 
             element selected {
                 background-color: @highlight;
-                text-color: @foreground;
+                text-color: rgba(41, 41, 41, 0.9);
                 transition: 20;
-                border-radius: 12px;
             }
 
             element-icon {

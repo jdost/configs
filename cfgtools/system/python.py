@@ -87,7 +87,7 @@ class VirtualEnv(SystemPackage):
         uninstalled: Set[str] = self.requirements - self.installed_requirements
         if uninstalled:
             print(f"Installing (virtualenv): {', '.join(list(uninstalled))}")
-            bin: Path = self.location / "bin/python"
+            bin = self.location / "bin/python"
             subprocess.run([bin, "-m", "pip", "install"] + list(uninstalled))
 
 

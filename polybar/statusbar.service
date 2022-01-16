@@ -3,6 +3,8 @@ Description=polybar - Status Bar
 PartOf=xorg.target
 
 [Service]
+# Sleep a second to let bspwm start so the workspaces are populated
+ExecStartPre=/usr/bin/sleep 1
 ExecStart=polybar main
 Restart=on-failure
 

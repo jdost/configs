@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from cfgtools.hooks import after
 from cfgtools.files import DesktopEntry, File, UserBin, XDG_CONFIG_HOME, normalize
 from cfgtools.system.arch import Pacman
@@ -10,6 +12,7 @@ class SettingsFile(File):
 
 
 NAME = normalize(__name__)
+DEFAULT_BROWSER = XDG_CONFIG_HOME / NAME / "default"
 
 packages={
     Pacman("xdg-utils"),
@@ -21,8 +24,27 @@ files=[
 
 
 @after
-def register_as_default_browser():
+def register_as_default_browser() -> None:
     # xdg-settings set default-web-browser web-xdg-open.desktop
     tgt = "web-xdg-open.desktop"
     if xdg_settings_get("default-web-browser") != tgt:
         xdg_settings_set("default-web-browser", tgt)
+
+
+def set_default(browser: str) -> None:
+    from shutil import which
+
+    if not DEFAULT_BROWSER.exists():
+        @after
+        def register_default_browser() -> None:
+            target = Path(which(browser))
+            # symlink DEFAULT_BROWSER -> target
+    elif DEFAULT_BROWSER.is_symlink():
+        if DEFAULT_BROWSER.readlink() != Path(which(browser)):
+        assert DEFAULT_BROWSER.readlink() == Path(which(browser)),
+            (
+                "Default web-xdg-open browser already set to: "
+                f"{DEFAULT_BROWSER.readlink().name}"
+            )
+    else:
+        raise f"{DEFAULT_BROWSER} should be a symlink"

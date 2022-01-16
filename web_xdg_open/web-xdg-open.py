@@ -15,7 +15,11 @@ target_browser = ""
 url = sys.argv[1]
 
 XDG_CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+default_browser = XDG_CONFIG_HOME / "web-xdg-open/default"
 for browser_config in (XDG_CONFIG_HOME / "web-xdg-open").iterdir():
+    if browser_config.name == "default":
+        continue
+
     values = browser_config.read_text().split("\n")
     name = values[0]
     if not which(name):
@@ -40,10 +44,13 @@ if target_browser and not which(target_browser):
     target_browser = ""
 
 if not target_browser:
-    for browser in browsers:
-        if which(browser):
-            target_browser = browser
-            break
+    if default_browser.exists():
+        target_browser = default_browser
+    else:
+        for browser in browsers:
+            if which(browser):
+                target_browser = browser
+                break
 
 if not target_browser:
     sys.exit("No browser installed from expected list.")

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Signal
+GenericName=Containerized Secure Messaging Application
+Comment=Containerized secure messaging
+Exec=signal
+Icon=signal-desktop
+Terminal=false
+Categories=Network;InstantMessaging;Chat;
+Keywords=Messaging Chat Text

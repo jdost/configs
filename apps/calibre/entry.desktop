@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Calibre
+GenericName=Containerized eBook Converter/Manager
+Comment=Containerized eBook Converter/Manager
+Exec=calibre
+Icon=calibre
+Terminal=false
+Categories=Literature;
+Keywords=Book

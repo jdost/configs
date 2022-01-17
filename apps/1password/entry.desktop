@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=1password
+GenericName=Containerized Password Manager
+Comment=Containerized Password Manager
+Exec=1password
+Icon=1password
+Terminal=false
+Categories=Office;
+Keywords=Password

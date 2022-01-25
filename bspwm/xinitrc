@@ -7,7 +7,6 @@ if ! pgrep -x sxhkd > /dev/null; then
     if [[ -e "$SXHKD_DIR/system" ]]; then
         sxhkd_cmd="$sxhkd_cmd $SXHKD_DIR/system"
     fi
-    echo "sxhkd_cmd: $sxhkd_cmd" >> ~/tmp/xorg.log
     $sxhkd_cmd &
 fi
 

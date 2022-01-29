@@ -19,8 +19,8 @@ ncurses() {
         local url="https://github.com/jesseduffield/lazygit/releases/download/${version}/${github_file}"
 
         # install/update the local binary
-        curl -L -o lazygit.tar.gz $url
-        tar xzvf lazygit.tar.gz lazygit
+        curl -sL -o lazygit.tar.gz $url
+        tar xzf lazygit.tar.gz lazygit
         mv -f lazygit ${lazygit_path}
         rm lazygit.tar.gz
     fi
@@ -34,22 +34,8 @@ case "${1:-}" in
         ;;
     "grep")
         if which rg &>/dev/null; then
-            TOPLEVEL=""
-            if $BIN rev-parse --show-toplevel &>/dev/null; then
-                TOPLEVEL=$($BIN rev-parse --show-toplevel 2>/dev/null)
-            else
-                echo "fatal: not a git repository"
-                exit 1
-            fi
-            shift # Remove the `grep` argument
-            exec rg \
-                --ignore-file=$TOPLEVEL/.gitignore \
-                --column \
-                --line-number \
-                --no-heading \
-                --color=always \
-                --smart-case \
-                "$@"
+            shift
+            exec git-rgrep "$@"
         else
             exec $BIN "$@"
         fi

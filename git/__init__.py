@@ -14,4 +14,5 @@ files=[
     XDGConfigFile(f"{NAME}/config"),
     XDGConfigFile(f"{NAME}/ignore"),
     UserBin(f"{NAME}/wrapper.sh", "git"),
+    UserBin(f"{NAME}/git-rgrep.sh", "git-rgrep"),
 ]

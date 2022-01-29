@@ -1,0 +1,11 @@
+# default common tools to use human-readable formats
+which df &>/dev/null && \
+    alias df="df -h"
+which dy &>/dev/null && \
+    alias du="du -h"
+
+# default ping to not be indefinite
+which ping &>/dev/null && \
+    alias ping="ping -c 5"
+
+# vim: ft=sh

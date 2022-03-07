@@ -1,16 +1,12 @@
-import getpass
-import os
-import subprocess
-
-import bat
-from cfgtools.files import EnvironmentFile, File, HOME, XDGConfigFile, normalize
-from cfgtools.hooks import after
+import utils.bat
+from cfgtools.files import (HOME, EnvironmentFile, File, XDGConfigFile,
+                            normalize)
 from cfgtools.system.arch import AUR, Pacman
 from cfgtools.system.nix import NixPkgBin
 from cfgtools.system.ubuntu import Apt
 
-_SUDO_CHSH = False
 NAME = normalize(__name__)
+BIN = "/bin/zsh"
 
 packages = {
     Pacman("zsh"), Pacman("zsh-syntax-highlighting"), Pacman("zsh-completions"),
@@ -24,15 +20,3 @@ files = [
     XDGConfigFile(f"{NAME}/settings"),
     EnvironmentFile(NAME),
 ]
-
-
-@after
-def change_user_shell() -> None:
-    zsh_bin = "/bin/zsh"
-    if os.environ.get("SHELL") == zsh_bin:
-        return
-
-    if _SUDO_CHSH:
-        subprocess.run(["sudo", "chsh", "-s", zsh_bin, getpass.getuser()])
-    else:
-        subprocess.run(["chsh", "-s", zsh_bin])

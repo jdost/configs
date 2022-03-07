@@ -1,8 +1,11 @@
+import getpass
+import os
 import subprocess
 from collections import defaultdict
 from pathlib import Path
 from typing import Optional, Sequence
 
+_SUDO_CHSH = False
 registered_packages = defaultdict(set)
 
 
@@ -69,3 +72,17 @@ class GitRepository(SystemPackage):
 
     def run_in(self, cmd: Sequence[str]) -> None:
         subprocess.run(cmd, cwd=self.local_path)
+
+
+def set_default_shell(shell_bin: str) -> None:
+    from cfgtools.hooks import after
+
+    @after
+    def change_user_shell() -> None:
+        if os.environ.get("SHELL") == shell_bin:
+            return
+
+        if _SUDO_CHSH:
+            subprocess.run(["sudo", "chsh", "-s", shell_bin, getpass.getuser()])
+        else:
+            subprocess.run(["chsh", "-s", shell_bin])

@@ -1,7 +1,13 @@
 from pathlib import Path
 
+from cfgtools.files import (
+    XDG_CONFIG_HOME,
+    DesktopEntry,
+    File,
+    UserBin,
+    normalize
+)
 from cfgtools.hooks import after
-from cfgtools.files import DesktopEntry, File, UserBin, XDG_CONFIG_HOME, normalize
 from cfgtools.system.arch import Pacman
 from cfgtools.utils import xdg_settings_get, xdg_settings_set
 
@@ -40,9 +46,7 @@ def set_default(browser: str) -> None:
             target = Path(which(browser))
             # symlink DEFAULT_BROWSER -> target
     elif DEFAULT_BROWSER.is_symlink():
-        if DEFAULT_BROWSER.readlink() != Path(which(browser)):
-        assert DEFAULT_BROWSER.readlink() == Path(which(browser)),
-            (
+        assert DEFAULT_BROWSER.readlink() == Path(which(browser)), (
                 "Default web-xdg-open browser already set to: "
                 f"{DEFAULT_BROWSER.readlink().name}"
             )

@@ -6,6 +6,6 @@ NAME = normalize(__name__)
 
 packages = {AUR("./aur/pkgs/cli-utils"),NixPkgBin("bat")}
 files = [
-    XDGConfigFile(f"{NAME}/config"),
+    XDGConfigFile(f"{NAME}/config", "bat/config"),
     EnvironmentFile(NAME, "bat"),
 ]

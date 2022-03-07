@@ -12,7 +12,7 @@ files=[
     EnvironmentFile(NAME),
     Folder(USER_GPG_FOLDER, permissions=0o700),
     XinitRC(NAME, priority=20),
-] + [File(f"{NAME}/f", USER_GPG_FOLDER / f) for f in GPG_CONFIG_FILES]
+] + [File(f"{NAME}/{f}", USER_GPG_FOLDER / f) for f in GPG_CONFIG_FILES]
 
 
 @after

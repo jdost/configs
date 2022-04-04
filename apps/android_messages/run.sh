@@ -17,9 +17,9 @@ CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/$NAME
 DOCKER_FLAGS_X=(
     --hostname $(cat /proc/sys/kernel/hostname)
     --env DISPLAY=$DISPLAY
-    --volume $HOME/.Xauthority:/tmp/.Xauthority
+    --volume $HOME/.Xauthority:/tmp/.Xauthority:ro
     --env XAUTHORITY=/tmp/.Xauthority
-    --volume /tmp/.X11-unix:/tmp/.X11-unix
+    --volume /tmp/.X11-unix:/tmp/.X11-unix:ro
 )
 DOCKER_FLAGS_DBUS=(
     --env DBUS_SESSION_BUS_ADDRESS=unix:path=/var/run/user/$UID/bus

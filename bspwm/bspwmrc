@@ -52,7 +52,7 @@ set_rules 'games' \
 set_rules 'video' \
     'mpv' 'streamlink-twitch-gui'
 set_rules 'chat' \
-    'Discord' 'discord' 'Android Messages' 'TelegramDesktop'
+    'Discord' 'discord' 'android-messages-desktop' 'TelegramDesktop'
 
 # Floating by default
 for c in 'Peek' 'scrcpy' 'pinentry-qt'; do

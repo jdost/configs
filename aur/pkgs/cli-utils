@@ -1,5 +1,5 @@
 pkgname='cli-utils'
-pkgver=2
+pkgver=3
 pkgrel=0
 pkgdesc='Meta package of common command line utilites'
 arch=('any')
@@ -8,6 +8,7 @@ depends=(
   'exa' 'ripgrep' 'bat' 'fd' 'colordiff'
   # generally useful tools
   'jq' 'bind-tools' 'curl' 'ack' 'tmux' 'which' 'fzf'
+  'openbsd-netcat' 'lsof'
   # bigger things that are basically required
   'git' 'openssh' 'zsh'
 )

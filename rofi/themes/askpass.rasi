@@ -1,0 +1,68 @@
+configuration {
+    fixed-num-lines: true;
+}
+
+* {
+    foreground: rgba(242, 242, 242, 0.9);
+    transparent: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.3);
+    background2: rgba(123, 123, 123, 0.3);
+    font: "Hack Nerd Font Mono 18";
+
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+window {
+    transparency: "real";
+    location: center;
+
+    background-color: @transparent;
+    text-color: @foreground;
+    width: 400px;
+}
+
+mainbox {
+    children: [ message, inputbar ];
+
+    background-color: @background;
+    border: 0 0 0 0;
+    border-radius: 12px;
+    padding: 5px;
+    text-color: @foreground;
+    spacing: 3px;
+}
+
+    message {
+        children: [ textbox ];
+        background-color: @transparent;
+        border-radius: 6px;
+        padding: 5px 15px 5px 15px;
+    }
+        textbox {
+            background-color: @transparent;
+            text-color: @foreground;
+        }
+
+
+    inputbar {
+        children: [ entry ];
+        background-color: @background2;
+        border: 2;
+        border-radius: 12px;
+        expand: false;
+        margin: 0 3px 3px 3px;
+        padding: 15px 10px 15px 10px;
+        text-color: inherit;
+    }
+        entry {
+            background-color: @transparent;
+            blink: true;
+            expand: true;
+            horizontal-align: 0;
+            padding: 0 15px 0 15px;
+            placeholder: "Password";
+            placeholder-color: rgba(121, 121, 121, 0.9);
+            text-color: inherit;
+        }

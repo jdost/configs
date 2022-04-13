@@ -30,9 +30,6 @@ def symlink_firefox_profile_userjs() -> None:
         if not len(parts) == 2:
             continue
         if len(parts[0]) == 8:
-            profile = setting
-            break
-
-    # Uses the same underlying handler, just manually applies it
-    user_js = File(f"{__name__}/user.js", profile / "user.js")
-    user_js.apply()
+            # Uses the same underlying handler, just manually applies it
+            user_js = File(f"{__name__}/user.js", setting / "user.js")
+            user_js.apply()

@@ -19,7 +19,7 @@ user_pref("dom.webnotifications.enabled", false);
 user_pref("dom.enable_performance", false);
 user_pref("dom.enable_user_timing", false);
 // Disable Web Audio API
-user_pref("dom.webaudio.enabled", false);
+//user_pref("dom.webaudio.enabled", false);  // Disabled, discord webapp fails to load
 // Limit geo API
 user_pref("geo.enabled", false);
 user_pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");
@@ -49,7 +49,7 @@ user_pref("dom.network.enabled", false);  // network API
 user_pref("dom.battery.enabled", false);  // battery API
 user_pref("dom.telephony.enabled", false);  // web telephony
 user_pref("beacon.enabled", false);  // beacon- async telemetry transfers
-user_pref("dom.event.clipboardevents.enabled", false);  // limit clipboard events in JS
+//user_pref("dom.event.clipboardevents.enabled", false);  // limit clipboard events in JS -- Disabled, basically blocks copy+pasting in some pages
 user_pref("dom.allow_cut_copy", false);  // disable adding to clipboard via JS
 user_pref("media.webspeech.recognition.enabled", false);  // speech recognition
 user_pref("media.webspeech.synth.enabled", false);  // speech synthesis
@@ -75,6 +75,8 @@ user_pref("intl.local.matchOS", false);
 user_pref("browser.search.geoSpecificDefaults", false);
 // Disable linux autocopy functionality
 user_pref("clipboard.autocopy", false);
+// Strip special characters in clipboard actions
+user_pref("clipboard.plainTextOnly", true);
 // Tell JS to always use en_us for locale formatting
 user_pref("javascript.use_us_english_locale", true);
 // Don't fallback to searching for invalid URL entries?
@@ -103,7 +105,7 @@ user_pref("browser.urlbar.filter.javascript", true);  // filter javascript from 
 user_pref("gfx.font_rendering.opentype_svg.enabled", false);  // SVG in opentype fonts
 //user_pref("svg.disabled", true);  // disable SVG rendering
 user_pref("media.video_stats.enabled", false);  // Disable video stats
-user_pref("browser.display.use_document_fonts", 0);  // Hide system fonts to avoid fingerprinting
+//user_pref("browser.display.use_document_fonts", 0);  // Hide system fonts to avoid fingerprinting -- Disabled, some pages require icon fonts
 // External protocol handler settings
 user_pref("network.protocol-handler.warn-external-default", true);
 user_pref("network.protocol-handler.external.http", false);
@@ -320,6 +322,10 @@ user_pref("browser.newtabpage.directory.source", "data:text/plain,{}");
 // Bookmark exporting
 //user_pref("browser.bookmarks.autoExportHTML",  true);
 //user_pref("browser.bookmarks.file", '/path/to/bookmarks-export.html');
+// Mozilla VPN
+user_pref("browser.privatebrowsing.vpnpromourl", "");
+user_pref("browser.contentblocking.report.hide_vpn_banner", true);
+user_pref("browser.contentblocking.report.vpn.enabled", false);
 // URL bar
 //user_pref("browser.urlbar.autoFill", false);
 //user_pref("browser.urlbar.autoFill.typed", false);

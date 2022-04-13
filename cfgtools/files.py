@@ -1,6 +1,5 @@
 import os
 import subprocess
-
 from pathlib import Path
 from typing import Optional, Union
 
@@ -123,7 +122,7 @@ class UserBin(File):
 
 
 class XDGConfigFile(File):
-    def __init__(self, src: str, tgt: Optional[str] = None):
+    def __init__(self, src: Union[Path, str], tgt: Optional[str] = None):
         #dst = f"{tgt}/{Path(src).name}" if tgt else src
         dst = tgt if tgt else src
         super().__init__(src=src, dst=XDG_CONFIG_HOME / dst)

@@ -66,6 +66,7 @@ output() {  # output a value to the display after a short wait
 
 ACTION="${1:-}"
 if [[ -z "$ACTION" ]]; then
+    echo -en "\0use-hot-keys\x1ftrue\n"
     list
     echo "$REFRESH"
 elif [[ "$ACTION" == "$REFRESH" ]]; then

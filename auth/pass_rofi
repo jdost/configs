@@ -3,6 +3,7 @@
 set -euo pipefail
 
 PASSWORD_LENGTH=24
+export PASSWORD_STORE_DIR=${PASSWORD_STORE_DIR:-$HOME/.local/password_store}
 
 fail() {  # output failure message and fail
     echo ${1:-'Something went wrong.'}
@@ -16,7 +17,7 @@ message() {  # dump a message to the rofi message bar
 }
 
 list() {  # dump list of stored passwords with standard prefix
-    find "${PASSWORD_STORE_DIR:-$HOME/.password_store}" -name "*.gpg" -printf "%P\n" \
+    find $PASSWORD_STORE_DIR -name "*.gpg" -printf "%P\n" \
         | sed "s/.gpg//"
 }
 
@@ -61,6 +62,7 @@ get() {  # retrieve the stored password as passed in
 
 ACTION="${1:-}"
 if [[ -z "$ACTION" ]]; then
+    echo -en "\0use-hot-keys\x1ftrue\n"
     list
 elif [[ "$ACTION" == "oops" ]]; then
     exit 5

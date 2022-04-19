@@ -18,7 +18,7 @@ class SettingsFile(File):
 
 
 NAME = normalize(__name__)
-DEFAULT_BROWSER = XDG_CONFIG_HOME / NAME / "default"
+DEFAULT_BROWSER = XDG_CONFIG_HOME / "web-xdg-open/default"
 
 packages={
     Pacman("xdg-utils"),
@@ -45,6 +45,7 @@ def set_default(browser: str) -> None:
         def register_default_browser() -> None:
             target = Path(which(browser))
             # symlink DEFAULT_BROWSER -> target
+            DEFAULT_BROWSER.symlink_to(target)
     elif DEFAULT_BROWSER.is_symlink():
         assert DEFAULT_BROWSER.readlink() == Path(which(browser)), (
                 "Default web-xdg-open browser already set to: "

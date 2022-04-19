@@ -5,7 +5,6 @@ import os
 import re
 import subprocess
 import sys
-
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence, Set
 
@@ -125,7 +124,8 @@ class Package:
         else:
             srcinfo = subprocess.run(
                 ["makepkg", "--printsrcinfo", "-p", self.name],
-                stdout=subprocess.PIPE
+                stdout=subprocess.PIPE,
+                cwd=self.path.parent,
             ).stdout.decode("utf-8").split()
 
             info = {}

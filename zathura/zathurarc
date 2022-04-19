@@ -51,7 +51,7 @@ set statusbar-fg            "#eeeeee"
 set highlight-color         "#ffcc88"
 set highlight-active-color  "#ff9900"
 
-set default-bg              rgba(17,17,17,0.4)
+set default-bg              rgba(17,17,17,0.7)
 set default-fg              "#eeeeee"
 
 set render-loading          true

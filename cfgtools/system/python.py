@@ -45,7 +45,7 @@ class VirtualEnv(SystemPackage):
 
     @property
     def venv_cmd(self) -> Sequence[str]:
-        cmd = ["python", "-m", "venv", "--system-site-packages"]
+        cmd = ["python3", "-m", "venv", "--system-site-packages"]
         cmd += ["--prompt", f"({self.name})"]
         cmd += [str(self.location)]
 

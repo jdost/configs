@@ -8,7 +8,7 @@ from cfgtools.system.ubuntu import Apt
 
 NAME = normalize(__name__)
 
-packages = {Pacman("openssh"), Apt("ssh-client")}
+packages = {Pacman("openssh"), Apt("openssh-client")}
 files = [
     File(f"{NAME}/default.ssh", HOME / ".ssh/config.d/default")
 ]

@@ -1,8 +1,10 @@
 // Personal settings
 user_pref("browser.startup.page", 3);  // Open previous windows and tabs startup
+user_pref("media.autoplay.default", 5);  // Block all autoplay
 
 // Fixes
 //user_pref("ui.context_menus.after_mouseup", true);  // Fix for weird right click behavior
+user_pref("browser.aboutConfig.showWarning", false);  // Don't warn when wanting to change config values
 
 // Hardware Acceleration
 user_pref("media.ffmpeg.vaapi.enabled", true);
@@ -23,7 +25,15 @@ user_pref("dom.enable_user_timing", false);
 // Limit geo API
 user_pref("geo.enabled", false);
 user_pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");
+user_pref("geo.wifi.network.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");
 user_pref("geo.wifi.logging.enabled", false);
+// Disable OS specific geo services
+user_pref("geo.provider.ms-windows-location", false);  // Windows
+user_pref("geo.provider.use_corelocation", false);  // Mac
+user_pref("geo.provider.use_gpsd", false);  // Linux
+// Disable Region updates
+user_pref("browser.region.network.url", "");
+user_pref("browser.region.update.enabled", false);
 // Disable mozTCPSocket
 user_pref("dom.mozTCPSocket.enabled", false);
 // WebRTC limitations
@@ -41,6 +51,8 @@ user_pref("webgl.min_capability_mode", true);
 user_pref("webgl.disable-extensions", true);
 user_pref("webgl.disable-fail-if-major-performance-caveat", true);
 user_pref("webgl.enable-debug-renderer-info", true);
+user_pref("webgl.dxgl.enabled", false);
+user_pref("webgl.enable-webgl2", false);
 // WASM
 user_pref("javascript.options.wasm", false);
 // Misc unnecessary APIs
@@ -166,9 +178,22 @@ user_pref("devtools.debugger.force-local", true);
 user_pref("toolkit.telemetry.enabled", false);
 user_pref("toolkit.telemetry.unified", false);
 user_pref("toolkit.telemetry.archive.enabled", false);
+user_pref("toolkit.telemetry.server", "data:,");
+user_pref("toolkit.telemetry.newProfilePing.enabled", false);
+user_pref("toolkit.telemetry.shutdownPingSender.enabled", false);
+user_pref("toolkit.telemetry.updatePing.enabled", false);
+user_pref("toolkit.telemetry.bhrPing.enabled", false);
+user_pref("toolkit.telemetry.firstShutdownPing.enabled", false);
+user_pref("toolkit.telemetry.coverage.opt-out", true);
+user_pref("toolkit.telemetry.pioneer-new-studies-available", false);
+user_pref("toolkit.coverage.opt-out", true);
+user_pref("toolkit.coverage.endpoing.base", "");
+user_pref("browser.ping-centre.telemetry", false);
 user_pref("experiments.supported", false);
 user_pref("experiments.enabled", false);
 user_pref("experiments.manifest.uri", "");
+user_pref("extensions.getAddons.showPane", false);  // Uses Google Analytics
+user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
 // Pocket
 user_pref("browser.pocket.enabled", false);
 user_pref("extensions.pocket.enabled", false);
@@ -177,6 +202,7 @@ user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
 user_pref("breakpad.reportURL", "");  // Firefox crash reports
 user_pref("browser.tabs.crashReporting.sendReport", false);
 user_pref("browser.crashReports.unsubmittedCheck.enabled", false);
+user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false);
 user_pref("dom.flyweb.enabled", false);  // FlyWeb (IoT discovery)
 user_pref("browser.uitour.enabled", false);  // UITour backend
 user_pref("browser.startup.blankWindow", false);  // disable fast window display on launch
@@ -233,6 +259,8 @@ user_pref("browser.aboutHomeSnippets.updateUrl", "");
 user_pref("browser.search.update", false);
 // Disable automatic captive portal detection (Firefox >= 52.0)
 user_pref("network.captive-portal-service.enabled", false);
+user_pref("captivedetect.canonicalURL", "");
+user_pref("network.connectivity-service.enabled", false);
 
 // CSP (Content Security Policy)
 user_pref("security.csp.experimentalEnabled", true);

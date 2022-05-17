@@ -18,17 +18,17 @@ format = <label-monitor> <label-state>
 label-monitor = "%{O-8}%{B-} "
 
 label-focused-font = 3
-label-focused = "  %{O-22}%icon%%{O11}"
+label-focused = "  %{O-22}%icon%%{O8}"
 label-focused-background = #3333EE33
 
 label-empty-font = 3
-label-empty = "  %{O-22}%icon%%{O11}"
+label-empty = "  %{O-22}%icon%%{O8}"
 label-empty-foreground = #999999
 
-label-occupied = "  %{O-22}%icon%%{O11}"
+label-occupied = "  %{O-22}%icon%%{O8}"
 label-occupied-font = 3
 
-label-urgent = "  %{O-22}%icon%%{O11}"
+label-urgent = "  %{O-22}%icon%%{O8}"
 label-urgent-font = 3
 label-urgent-background = #33FF9900
 

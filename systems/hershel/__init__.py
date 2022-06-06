@@ -7,7 +7,7 @@ import firefox
 import git
 import gpg
 import gtk
-import python
+import languages.python
 import qutebrowser
 import scrcpy
 import ssh

@@ -1,7 +1,7 @@
 # default common tools to use human-readable formats
 which df &>/dev/null && \
     alias df="df -h"
-which dy &>/dev/null && \
+which du &>/dev/null && \
     alias du="du -h"
 
 # default ping to not be indefinite

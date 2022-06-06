@@ -1,3 +1,3 @@
-import apps
+from apps import docker
 
-apps.App("signal")
+docker.App("signal")

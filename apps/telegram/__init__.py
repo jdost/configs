@@ -1,3 +1,3 @@
-import apps
+from apps import docker
 
-apps.App("telegram")
+docker.App("telegram")

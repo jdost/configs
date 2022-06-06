@@ -1,3 +1,3 @@
-import apps
+from apps import docker
 
-apps.App("remmina")
+docker.App("remmina")

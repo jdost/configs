@@ -1,3 +1,3 @@
-import apps
+from apps import docker
 
-apps.App("notion")
+docker.App("notion")

@@ -1,3 +1,3 @@
-import apps
+from apps import docker
 
-apps.App("1password")
+docker.App("1password")

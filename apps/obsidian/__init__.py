@@ -1,3 +1,3 @@
-import apps
+from apps import docker
 
-apps.App("obsidian")
+docker.App("obsidian")

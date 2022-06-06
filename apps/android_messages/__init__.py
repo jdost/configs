@@ -1,3 +1,3 @@
-import apps
+from apps import docker
 
-apps.App("android_messages", "android-messages")
+docker.App("android_messages", "android-messages")

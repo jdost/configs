@@ -1,3 +1,4 @@
+import apps.zathura
 import aur
 import bspwm
 import cal
@@ -18,7 +19,6 @@ import user_dirs
 import vim.neovim
 import wallpaper
 import web_xdg_open
-import zathura
 import zsh
 from cfgtools.files import XDG_CONFIG_HOME, File, XinitRC
 from cfgtools.system import set_default_shell

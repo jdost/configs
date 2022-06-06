@@ -2,6 +2,7 @@ from cfgtools.files import File, HOME, XDG_CONFIG_HOME, XinitRC
 from cfgtools.system import set_default_shell
 
 import alacritty
+import apps.zathura
 import aur
 import autorandr
 import bspwm
@@ -23,7 +24,6 @@ import user_dirs
 import utils.bat
 import vim
 import wallpaper
-import zathura
 import zsh
 
 cal.ENABLED = False

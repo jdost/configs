@@ -6,5 +6,5 @@ system_packages = {
     AUR("./aur/pkgs/ttf-hack-ext"),
 }
 files = [
-    XDGConfigFile("zathura/zathurarc"),
+    XDGConfigFile("apps/zathura/zathurarc", "zathura/zathurarc"),
 ]

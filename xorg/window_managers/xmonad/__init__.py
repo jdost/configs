@@ -18,6 +18,6 @@ pkgs = {
 files = [
     File(f"{NAME}/xmonad.hs", HOME / ".xmonad/xmonad.hs"),
     File(f"{NAME}/lib", HOME / ".xmonad/lib"),
-    XDGConfigFile(f"{NAME}/polybar", f"polybar/xmonad"),
+    XDGConfigFile(f"{NAME}/polybar", "polybar/xmonad"),
     XinitRC(NAME, priority=99),
 ]

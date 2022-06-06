@@ -6,5 +6,5 @@ NAME = normalize(__name__)
 
 pkgs = {Pacman("rust"), Pacman("rust-analyzer"), NixPkgBin("rust-analyzer")}
 files = [
-    EnvironmentFile(NAME),
+    EnvironmentFile(NAME, "rust"),
 ]

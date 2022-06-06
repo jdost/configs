@@ -17,6 +17,6 @@ packages = {
 }
 files = [
     File(f"{NAME}/zshrc", HOME / ".zshrc"),
-    XDGConfigFile(f"{NAME}/settings"),
-    EnvironmentFile(NAME),
+    XDGConfigFile(f"{NAME}/settings", "zsh/settings"),
+    EnvironmentFile(NAME, "zsh"),
 ]

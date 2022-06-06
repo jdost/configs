@@ -23,8 +23,8 @@ import user_dirs
 import utils.bat
 import utils.ssh
 import utils.unclutter
+import utils.wallpaper
 import vim
-import wallpaper
 
 cal.ENABLED = False
 

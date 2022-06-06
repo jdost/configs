@@ -17,8 +17,8 @@ import tmux
 import user_dirs
 import utils.ssh
 import utils.unclutter
+import utils.wallpaper
 import vim.neovim
-import wallpaper
 import web_xdg_open
 from cfgtools.files import XDG_CONFIG_HOME, File, XinitRC
 from cfgtools.system import set_default_shell

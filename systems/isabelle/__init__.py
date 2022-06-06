@@ -18,8 +18,8 @@ import tmux
 import user_dirs
 import utils.ssh
 import utils.unclutter
+import utils.wallpaper
 import vim
-import wallpaper
 from cfgtools.files import HOME, File, XinitRC
 from cfgtools.systems import set_default_shell
 

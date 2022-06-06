@@ -19,10 +19,10 @@ import screenlock
 import shells.zsh
 import streamlink
 import tmux
-import unclutter
 import user_dirs
 import utils.bat
 import utils.ssh
+import utils.unclutter
 import vim
 import wallpaper
 

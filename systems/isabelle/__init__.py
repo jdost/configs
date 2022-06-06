@@ -15,9 +15,9 @@ import python
 import screenlock
 import shells.zsh
 import tmux
-import unclutter
 import user_dirs
 import utils.ssh
+import utils.unclutter
 import vim
 import wallpaper
 from cfgtools.files import HOME, File, XinitRC

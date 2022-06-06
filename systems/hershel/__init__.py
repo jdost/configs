@@ -14,9 +14,9 @@ import scrcpy
 import shells.zsh
 import streamlink
 import tmux
-import unclutter
 import user_dirs
 import utils.ssh
+import utils.unclutter
 import vim.neovim
 import wallpaper
 import web_xdg_open

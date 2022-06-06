@@ -14,10 +14,10 @@ import polybar
 import python
 import screenlock
 import shells.zsh
-import ssh
 import tmux
 import unclutter
 import user_dirs
+import utils.ssh
 import vim
 import wallpaper
 from cfgtools.files import HOME, File, XinitRC

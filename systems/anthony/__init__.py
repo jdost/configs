@@ -17,12 +17,12 @@ import python
 import qutebrowser
 import screenlock
 import shells.zsh
-import ssh
 import streamlink
 import tmux
 import unclutter
 import user_dirs
 import utils.bat
+import utils.ssh
 import vim
 import wallpaper
 

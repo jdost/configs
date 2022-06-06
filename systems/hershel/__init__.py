@@ -12,11 +12,11 @@ import languages.python
 import qutebrowser
 import scrcpy
 import shells.zsh
-import ssh
 import streamlink
 import tmux
 import unclutter
 import user_dirs
+import utils.ssh
 import vim.neovim
 import wallpaper
 import web_xdg_open

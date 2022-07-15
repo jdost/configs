@@ -1,29 +1,26 @@
 from pathlib import Path
 
-from cfgtools.files import (
-    XDG_CONFIG_HOME,
-    DesktopEntry,
-    File,
-    UserBin,
-    normalize
-)
+from cfgtools.files import (XDG_CONFIG_HOME, DesktopEntry, File, UserBin,
+                            normalize)
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.utils import xdg_settings_get, xdg_settings_set
 
 
 class SettingsFile(File):
+    DIR = XDG_CONFIG_HOME / "web-xdg-open"
+
     def __init__(self, src: str, tgt: str):
-        super().__init__(src=src, dst=XDG_CONFIG_HOME / f"web-xdg-open/{tgt}")
+        super().__init__(src=src, dst=self.DIR / tgt)
 
 
 NAME = normalize(__name__)
 DEFAULT_BROWSER = XDG_CONFIG_HOME / "web-xdg-open/default"
 
-packages={
+packages = {
     Pacman("xdg-utils"),
 }
-files=[
+files = [
     DesktopEntry(f"{NAME}/web-xdg-open.desktop"),
     UserBin(f"{NAME}/web-xdg-open.py", "web-xdg-open"),
 ]

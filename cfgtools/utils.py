@@ -1,7 +1,6 @@
 import os
 import shlex
 import subprocess
-
 from getpass import getuser
 from pathlib import Path
 from typing import Sequence, Set
@@ -66,10 +65,10 @@ def bins() -> Set[str]:
     return bins
 
 
-def xdg_settings_get(key: str) -> None:
+def xdg_settings_get(key: str) -> str:
     cmd = subprocess.run(["xdg-settings", "get", key], stdout=subprocess.PIPE)
     assert cmd.returncode == 0, f"Command `xdg-settings get {key}` failed."
-    return cmd.stdout.strip()
+    return cmd.stdout.decode().strip()
 
 
 def xdg_settings_set(key: str, val: str) -> None:

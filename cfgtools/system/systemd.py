@@ -1,16 +1,18 @@
 import subprocess
-
 from pathlib import Path
+from typing import Optional
 
-from cfgtools.files import File, XDG_CONFIG_HOME
+from cfgtools.files import XDG_CONFIG_HOME, File
 from cfgtools.utils import cmd_output
 
 
 class UserService(File):
-    def __init__(self, src: str):
-        service_name = Path(src).name
+    DIR = XDG_CONFIG_HOME / "systemd/user"
+
+    def __init__(self, src: str, name: Optional[str] = None):
+        service_name = name if name else Path(src).name
         super().__init__(
-            src=src, dst=(XDG_CONFIG_HOME / f"systemd/user/{service_name}")
+            src=src, dst=self.DIR / service_name
         )
 
 

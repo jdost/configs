@@ -122,10 +122,11 @@ class UserBin(File):
 
 
 class XDGConfigFile(File):
+    DIR = XDG_CONFIG_HOME
     def __init__(self, src: Union[Path, str], tgt: Optional[str] = None):
         #dst = f"{tgt}/{Path(src).name}" if tgt else src
         dst = tgt if tgt else src
-        super().__init__(src=src, dst=XDG_CONFIG_HOME / dst)
+        super().__init__(src=src, dst=self.DIR / dst)
 
 
 class XinitRC(File):

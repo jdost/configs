@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Lightnovel Reader
+GenericName=Read lightnovels in the terminal
+Exec=lightnovel-cli
+Icon=accessories-ebook-reader
+Terminal=true

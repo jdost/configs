@@ -11,7 +11,7 @@ set -euo pipefail
 CLASS="music-sidebar"
 PIDFILE="/var/run/user/$UID/$CLASS.pid"
 WIDTH=600
-VOFFSET=22  # Roughly the heigth of the statusbar
+VOFFSET=22  # Roughly the height of the statusbar
 
 fill_tmux() {
     # Run in a fresh tmux session, this launches the various applications inside of
@@ -40,13 +40,13 @@ bspwm_setup_window() {
     # Skip this if already set
     bspc rule -l | grep "^$CLASS:" &>/dev/null && return 0
     # Sets the bspc rules for the new window to have it be a right-side bar
-    local height=$(bspc query -m "primary" -T | jq ".rectangle.height")
+    local height=$(bspc query -m "focused" -T | jq ".rectangle.height")
     bspc rule \
         -a $CLASS \
         sticky=on \
         state=floating \
         hidden=off \
-        monitor=primary \
+        monitor=focused \
         rectangle=${WIDTH}x$(( $height - $VOFFSET ))+4000+${VOFFSET}
 }
 

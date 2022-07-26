@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Epy Reader
+GenericName=Read ebooks in the terminal
+Exec=epy
+Icon=accessories-ebook-reader
+Terminal=true

@@ -45,7 +45,7 @@ _retrieve() {
    curl --silent "$src" > $tmpfile
 
    if which magick &>/dev/null; then
-      local id="$(magick convert $tmpfile -scale100x100 - | md5sum - | cut -c-8)"
+      local id="$(magick convert $tmpfile -scale 100x100 - | md5sum - | cut -c-8)"
       local dst="$FOLDER/$id.jpg"
       if [[ -e "$dst" ]]; then
          echo "DUPLICATE"

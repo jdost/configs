@@ -24,7 +24,7 @@ window {
 }
 
 mainbox {
-    children: [ message, inputbar ];
+    children: [ message, inputbar, listview ];
 
     background-color: @background;
     border: 0 0 0 0;
@@ -66,3 +66,8 @@ mainbox {
             placeholder-color: rgba(121, 121, 121, 0.9);
             text-color: inherit;
         }
+
+    listview {
+        lines: 0;
+        require-input: true;
+    }

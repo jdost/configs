@@ -4,7 +4,7 @@
     "DictionaryClient": "auto",
     "ShowProgressIndicator": true,
     "PageScrollAnimation": true,
-    "MouseSupport": false,
+    "MouseSupport": true,
     "StartWithDoubleSpread": false,
     "DefaultColorFG": -1,
     "DefaultColorBG": -1,
@@ -12,7 +12,7 @@
     "DarkColorBG": 235,
     "LightColorFG": 238,
     "LightColorBG": 253,
-    "SeamlessBetweenChapters": false,
+    "SeamlessBetweenChapters": true,
     "PreferredTTSEngine": null,
     "TTSEngineArgs": []
   },

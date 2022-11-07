@@ -1,5 +1,6 @@
 import apps.zathura
 import aur
+import browsers.qutebrowser
 import cal
 import docker
 import dropbox
@@ -8,7 +9,6 @@ import git
 import gpg
 import gtk
 import languages.python
-import qutebrowser
 import scrcpy
 import shells.zsh
 import streamlink

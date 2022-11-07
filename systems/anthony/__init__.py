@@ -5,6 +5,7 @@ import apps.alacritty
 import apps.zathura
 import aur
 import autorandr
+import browsers.qutebrowser
 import cal
 import docker
 import dropbox
@@ -13,7 +14,6 @@ import gpg
 import gtk
 import polybar
 import python
-import qutebrowser
 import screenlock
 import shells.zsh
 import streamlink

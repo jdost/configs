@@ -1,10 +1,10 @@
 import apps.zathura
 import aur
+import browsers.firefox
 import browsers.qutebrowser
 import cal
 import docker
 import dropbox
-import firefox
 import git
 import gpg
 import gtk

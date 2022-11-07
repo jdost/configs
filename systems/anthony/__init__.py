@@ -5,7 +5,6 @@ import apps.alacritty
 import apps.zathura
 import aur
 import autorandr
-import bspwm
 import cal
 import docker
 import dropbox
@@ -25,6 +24,7 @@ import utils.ssh
 import utils.unclutter
 import utils.wallpaper
 import vim
+import xorg.window_managers.bspwm
 
 cal.ENABLED = False
 

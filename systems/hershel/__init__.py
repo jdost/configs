@@ -1,6 +1,5 @@
 import apps.zathura
 import aur
-import bspwm
 import cal
 import docker
 import dropbox
@@ -20,6 +19,7 @@ import utils.unclutter
 import utils.wallpaper
 import vim.neovim
 import web_xdg_open
+import xorg.window_managers.bspwm
 from cfgtools.files import XDG_CONFIG_HOME, File, XinitRC
 from cfgtools.system import set_default_shell
 

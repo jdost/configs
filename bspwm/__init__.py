@@ -1,7 +1,7 @@
 from cfgtools.files import XinitRC, XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 
-import alacritty
+import apps.alacritty
 import deadd
 import picom
 import polybar

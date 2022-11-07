@@ -1,4 +1,4 @@
-import alacritty
+import apps.alacritty
 import aur
 import auth
 import autorandr

@@ -1,7 +1,7 @@
 from cfgtools.files import DesktopEntry, XDG_CONFIG_HOME, XDGConfigFile, UserBin, normalize
 from cfgtools.system.arch import AUR, Pacman
 
-import alacritty
+import apps.alacritty
 import tmux
 import dropbox
 

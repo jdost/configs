@@ -1,7 +1,7 @@
 from cfgtools.files import File, HOME, XDG_CONFIG_HOME, XinitRC
 from cfgtools.system import set_default_shell
 
-import alacritty
+import apps.alacritty
 import apps.zathura
 import aur
 import autorandr

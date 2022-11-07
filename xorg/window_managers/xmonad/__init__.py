@@ -1,4 +1,4 @@
-import alacritty
+import apps.alacritty
 import deadd
 import picom
 import polybar

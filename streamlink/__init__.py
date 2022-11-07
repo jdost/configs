@@ -1,9 +1,9 @@
 from cfgtools.files import DesktopEntry, UserBin, XDGConfigFile, XDG_CONFIG_HOME, normalize
 from cfgtools.system.arch import Pacman
 
+import browsers.web_xdg_open
 import dropbox
 import mpv
-import web_xdg_open
 
 NAME = normalize(__name__)
 
@@ -16,5 +16,5 @@ files=[
         "credentials/streamlink.crunchyroll.gpg",
         XDG_CONFIG_HOME  / "streamlink/config.crunchyroll",
     ),
-    web_xdg_open.SettingsFile(f"{NAME}/web-xdg-open", "streamlink"),
+    browsers.web_xdg_open.SettingsFile(f"{NAME}/web-xdg-open", "streamlink"),
 ]

@@ -3,14 +3,14 @@ from cfgtools.files import XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 from cfgtools.utils import hide_xdg_entry
 
-import web_xdg_open
+import browsers.web_xdg_open
 
 NAME = normalize(__name__)
 
 packages={Pacman("mpv"), Pacman("yt-dlp")}
 files=[
     XDGConfigFile(f"{NAME}/mpv.conf"),
-    web_xdg_open.SettingsFile(f"{NAME}/web-xdg-open", "mpv"),
+    browsers.web_xdg_open.SettingsFile(f"{NAME}/web-xdg-open", "mpv"),
 ]
 
 

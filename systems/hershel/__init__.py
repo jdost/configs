@@ -2,6 +2,7 @@ import apps.zathura
 import aur
 import browsers.firefox
 import browsers.qutebrowser
+import browsers.web_xdg_open
 import cal
 import docker
 import dropbox
@@ -18,12 +19,11 @@ import utils.ssh
 import utils.unclutter
 import utils.wallpaper
 import vim.neovim
-import web_xdg_open
 import xorg.window_managers.bspwm
 from cfgtools.files import XDG_CONFIG_HOME, File, XinitRC
 from cfgtools.system import set_default_shell
 
-web_xdg_open.set_default("firefox")
+browsers.web_xdg_open.set_default("firefox")
 
 File("systems/hershel/polybar", XDG_CONFIG_HOME / "polybar/system")
 File("systems/hershel/bspwmrc", XDG_CONFIG_HOME / "bspwm/system")

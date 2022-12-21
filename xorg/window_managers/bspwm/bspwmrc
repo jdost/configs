@@ -55,13 +55,13 @@ set_rules 'chat' \
     'Discord' 'discord' 'android-messages-desktop' 'TelegramDesktop'
 
 # Floating by default
-for c in 'Peek' 'scrcpy' 'pinentry-qt'; do
+for c in 'Peek' 'scrcpy' 'pinentry-qt' 'Zathura'; do
     bspc rule -a "$c" state=floating focus=on
 done
 # Fixes
 
 # Zathura wants to float by default, not desirable
-bspc rule -a "Zathura" state=tiled
+#bspc rule -a "Zathura" state=tiled
 
 EXTERNAL_RULES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/external_rules"
 if [[ -x $EXTERNAL_RULES_FILE ]]; then

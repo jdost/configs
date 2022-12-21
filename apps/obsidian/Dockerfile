@@ -1,6 +1,6 @@
 from ubuntu:20.04
 
-ARG VERSION="0.11.13"
+ARG VERSION="1.1.8"
 ARG APPIMAGE_RELEASE_URI="https://github.com/obsidianmd/obsidian-releases/releases/download"
 
 RUN apt-get update \

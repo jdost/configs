@@ -12,7 +12,8 @@ APP_DIR=$( cd -P "$( dirname "$LAUNCHER" )" &>/dev/null && pwd )
 RUN_DIR=$( pwd )
 
 NAME=android-messages
-IMAGE=desktop-app/$NAME:$(sha256sum $APP_DIR/Dockerfile | awk '{ print $1 }')
+IMAGE_TAG=$(sha256sum $APP_DIR/Dockerfile | awk '{ print substr($1, 0, 24) }')
+IMAGE=desktop-app/$NAME:$IMAGE_TAG
 CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/$NAME
 DOCKER_FLAGS_X=(
     --hostname $(cat /proc/sys/kernel/hostname)

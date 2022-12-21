@@ -14,7 +14,7 @@ RUN_DIR=$( pwd )
 NAME=calibre
 IMAGE=desktop-app/$NAME:$(sha256sum $APP_DIR/Dockerfile | awk '{ print $1 }')
 CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/$NAME
-DATA_DIR=$HOME/documente/ebooks
+DATA_DIR=$HOME/documents/ebooks
 TRANSFER_DIR=$HOME/tmp/transfer
 DOCKER_FLAGS_X=(
     --hostname $(cat /proc/sys/kernel/hostname)
@@ -71,8 +71,8 @@ exec docker run \
     --rm \
     --interactive \
     --name $NAME \
-    --volume $CONFIG_DIR:/config \
-    --volume $DATA_DIR:/home/calibre/library \
+    --volume $CONFIG_DIR:/home/calibre/.config/calibre \
+    --volume $DATA_DIR:/home/calibre/"Calibre Library" \
     --volume $TRANSFER_DIR:/home/calibre/transfer \
     "${DOCKER_FLAGS_X[@]}" \
     $IMAGE

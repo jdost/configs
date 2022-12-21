@@ -36,6 +36,8 @@ return {
         {key="x", mods="CTRL|SHIFT", action=wezterm.action{CopyTo="PrimarySelection"}},
         {key="v", mods="CTRL", action=wezterm.action{PasteFrom="Clipboard"}},
         {key="v", mods="CTRL|SHIFT", action=wezterm.action{PasteFrom="PrimarySelection"}},
+        {key="=", mods="CTRL", action = wezterm.action.IncreaseFontSize},
+        {key="-", mods="CTRL", action = wezterm.action.DecreaseFontSize},
     },
     window_background_opacity = 0.65,
 }

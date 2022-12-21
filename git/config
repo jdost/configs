@@ -15,6 +15,9 @@
 [pull]
     ff = only
 
+[diff]
+    renameLimit = 10240
+
 [alias]
     st = status -s
     co = checkout

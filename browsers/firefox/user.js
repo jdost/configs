@@ -46,7 +46,7 @@ user_pref("media.navigator.video.enabled", false);
 user_pref("media.getusermedia.screensharing.enabled", false);
 user_pref("media.getusermedia.audiocapture.enabled", false);
 // WebGL
-user_pref("webgl.disabled", true);
+//user_pref("webgl.disabled", true);
 user_pref("webgl.min_capability_mode", true);
 user_pref("webgl.disable-extensions", true);
 user_pref("webgl.disable-fail-if-major-performance-caveat", true);
@@ -340,11 +340,17 @@ user_pref("security.tls.version.fallback-limit", 3);
 // New tabpage behavior
 user_pref("browser.pagethumbnails.capturing_disabled", true);  // Don't keep page thumbnails
 user_pref("browser.newtabpage.enabled", false);
-user_pref("browser.newtab.url", "about:blank");
-user_pref("browser.newtabpage.activity-stream.feeds.snippets", false);
-user_pref("browser.newtabpage.activity-stream.enabled", false);
-user_pref("browser.newtabpage.enhanced", false);
 user_pref("browser.newtab.preload", false);
+user_pref("browser.newtab.url", "about:blank");
+user_pref("browser.newtabpage.activity-stream.enabled", false);
+user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
+user_pref("browser.newtabpage.activity-stream.telemetry", false);
+user_pref("browser.newtabpage.activity-stream.feeds.snippets", false);
+user_pref("browser.newtabpage.activity-stream.showSponsored", false);
+user_pref("browser.newtabpage.activity-stream.feeds.discoverystreamfeed", false);
+user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
+user_pref("browser.newtabpage.activity-stream.default.sites", "");
+user_pref("browser.newtabpage.enhanced", false);
 user_pref("browser.newtabpage.directory.ping", "");
 user_pref("browser.newtabpage.directory.source", "data:text/plain,{}");
 // Bookmark exporting

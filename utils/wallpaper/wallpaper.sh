@@ -15,6 +15,7 @@ fi
 
 ACTIVE_WALLPAPER="/tmp/wallpaper.$UID"
 FOLDER="${WALLPAPER_FOLDER:-$HOME/.local/dropbox/wallpaper}"
+_MIN_IMG_WARN_SIZE=10000
 [[ -h "$FOLDER" ]] && FOLDER=$(readlink -f "$FOLDER")
 
 help() {
@@ -60,6 +61,10 @@ _retrieve() {
       if [[ -e "$dst" ]]; then
          echo "DUPLICATE"
          return 1
+      fi
+      local fsize=$(stat -c%s "$tmpfile")
+      if (( fsize < _MIN_IMG_WARN_SIZE )); then
+          echo "WARNING -- retrieved image is small, please check..."
       fi
       cp $tmpfile "$dst"
       echo "$id.$suffix"

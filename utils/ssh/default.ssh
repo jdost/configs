@@ -1,8 +1,14 @@
 Host *
     ForwardAgent yes
+    # Enable if using kerberos for GSSAPI Auth
+    GSSAPIAuthentication no
     ServerAliveInterval 20
     ServerAliveCountMax 6
+    # User high level protocolsfor KeepAlive
+    TCPKeepAlive no
     StrictHostKeyChecking ask
     UserKnownHostsFile ~/.ssh/known_hosts
+    # Forward locale envvars
+    SendEnv LANG LC_*
 
 # vim: ft=sshconfig

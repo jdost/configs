@@ -8,7 +8,6 @@ import browsers.qutebrowser
 import dropbox
 import git
 import gpg
-import gtk
 import polybar
 import python
 import screenlock
@@ -24,6 +23,7 @@ import utils.unclutter
 import utils.wallpaper
 import vim
 import xorg.autorandr
+import xorg.icons.papirus
 import xorg.window_managers.bspwm
 
 utils.cal.ENABLED = False

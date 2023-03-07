@@ -5,7 +5,6 @@ import bat
 import dropbox
 import git
 import gpg
-import gtk
 import networkmanager
 import polybar
 import python
@@ -19,6 +18,7 @@ import utils.unclutter
 import utils.wallpaper
 import vim
 import xorg.autorandr
+import xorg.icons.papirus
 import xorg.window_managers.bspwm
 from cfgtools.files import HOME, File, XinitRC
 from cfgtools.systems import set_default_shell

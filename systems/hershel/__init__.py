@@ -6,7 +6,6 @@ import browsers.web_xdg_open
 import dropbox
 import git
 import gpg
-import gtk
 import languages.python
 import scrcpy
 import shells.zsh
@@ -19,6 +18,7 @@ import utils.ssh
 import utils.unclutter
 import utils.wallpaper
 import vim.neovim
+import xorg.icons.papirus
 import xorg.window_managers.bspwm
 from cfgtools.files import XDG_CONFIG_HOME, File, XinitRC
 from cfgtools.system import set_default_shell

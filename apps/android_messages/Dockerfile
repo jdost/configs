@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 # The installer is sourced from the project's github release page, so we can define
 #   the target version via an arg
-ARG VERSION=5.4.0
+ARG VERSION=5.4.1
 ARG DEB_RELEASE_URI=https://github.com/OrangeDrangon/android-messages-desktop/releases/download
 
 RUN apt-get update \
@@ -14,7 +14,7 @@ RUN apt-get update \
         libx11-xcb1 \
         wget \
         xclip \
-    && wget --quiet -O /tmp/android-messages.deb $DEB_RELEASE_URI/v${VERSION}/AndroidMessages-v${VERSION}-linux-amd64.deb \
+    && wget --quiet -O /tmp/android-messages.deb $DEB_RELEASE_URI/v${VERSION}/Android.Messages-v${VERSION}-linux-amd64.deb \
     && apt install -y --no-install-recommends /tmp/android-messages.deb \
     && rm -rf /tmp/android-messages.deb \
         /var/lib/apt/lists/* \

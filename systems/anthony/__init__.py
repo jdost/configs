@@ -4,7 +4,6 @@ from cfgtools.system import set_default_shell
 import apps.alacritty
 import apps.zathura
 import aur
-import autorandr
 import browsers.qutebrowser
 import cal
 import docker
@@ -24,6 +23,7 @@ import utils.ssh
 import utils.unclutter
 import utils.wallpaper
 import vim
+import xorg.autorandr
 import xorg.window_managers.bspwm
 
 cal.ENABLED = False

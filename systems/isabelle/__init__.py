@@ -1,7 +1,6 @@
 import apps.alacritty
 import aur
 import auth
-import autorandr
 import bat
 import docker
 import dropbox
@@ -19,6 +18,7 @@ import utils.ssh
 import utils.unclutter
 import utils.wallpaper
 import vim
+import xorg.autorandr
 import xorg.window_managers.bspwm
 from cfgtools.files import HOME, File, XinitRC
 from cfgtools.systems import set_default_shell

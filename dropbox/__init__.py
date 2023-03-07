@@ -1,5 +1,3 @@
-import subprocess
-
 from cfgtools.files import (HOME, XDG_CONFIG_HOME, InputType,
                             RegisteredFileAction, UserBin, convert_loc,
                             normalize)
@@ -7,6 +5,7 @@ from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
 from cfgtools.system.systemd import UserService, ensure_service
+from cfgtools.utils import run
 
 NAME = normalize(__name__)
 
@@ -29,7 +28,7 @@ class EncryptedFile(RegisteredFileAction):
           <dst>
     """
     DROPBOX_BASE = DROPBOX_DIR
-    U_RO=0o400
+    U_RO = 0o400
 
     def __init__(self, src: InputType, dst: InputType):
         self.src = self.DROPBOX_BASE / src
@@ -62,7 +61,7 @@ class EncryptedFile(RegisteredFileAction):
             self.dst.parent.mkdir(parents=True)
 
         print(f"Decrypting: {self.src} -> {self.dst}")
-        subprocess.run(["gpg", "--quiet", "--output", str(self.dst), "--decrypt", str(self.src)])
+        run(f"gpg --quiet --output {self.dst} --decrypt {self.src}")
         self.dst.chmod(self.U_RO)
 
 

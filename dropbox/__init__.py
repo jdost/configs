@@ -1,11 +1,12 @@
 import subprocess
 
-from cfgtools.files import HOME, RegisteredFileAction, UserBin, convert_loc, normalize
+from cfgtools.files import (HOME, XDG_CONFIG_HOME, InputType,
+                            RegisteredFileAction, UserBin, convert_loc,
+                            normalize)
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
-from cfgtools.system.systemd import ensure_service, UserService
-from cfgtools.utils import run
+from cfgtools.system.systemd import UserService, ensure_service
 
 NAME = normalize(__name__)
 
@@ -20,10 +21,17 @@ DROPBOX_DIR = HOME / ".local/dropbox"
 
 
 class EncryptedFile(RegisteredFileAction):
+    """
+    Creation Command:
+      gpg --encrypt \
+          --output <DROPBOX_DIR>/credentials/<src> \
+          --recipient <GPG EMAIL> \
+          <dst>
+    """
     DROPBOX_BASE = DROPBOX_DIR
     U_RO=0o400
 
-    def __init__(self, src: str, dst: str):
+    def __init__(self, src: InputType, dst: InputType):
         self.src = self.DROPBOX_BASE / src
         self.dst = convert_loc(dst)
 
@@ -58,6 +66,25 @@ class EncryptedFile(RegisteredFileAction):
         self.dst.chmod(self.U_RO)
 
 
+# Could be a different `after` hook, but we want to ensure this exists *before*
+# potentially starting the service
+def setup_initial_config() -> None:
+    config_file = XDG_CONFIG_HOME / "maestral/maestral.ini"
+    # Don't do anything if it exists, we can look into safely doing this
+    # another time
+    if config_file.exists():
+        return
+
+    from configparser import ConfigParser
+
+    config = ConfigParser()
+    config["sync"] = {"path": str(DROPBOX_DIR)}
+
+    with config_file.open("w") as fp:
+        config.write(fp)
+
+
 @after
 def enable_dropbox_service() -> None:
+    setup_initial_config()
     ensure_service("dropbox", user=True)

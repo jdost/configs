@@ -5,7 +5,6 @@ import apps.alacritty
 import apps.zathura
 import aur
 import browsers.qutebrowser
-import cal
 import docker
 import dropbox
 import git
@@ -19,6 +18,7 @@ import streamlink
 import tmux
 import user_dirs
 import utils.bat
+import utils.cal
 import utils.ssh
 import utils.unclutter
 import utils.wallpaper
@@ -26,7 +26,7 @@ import vim
 import xorg.autorandr
 import xorg.window_managers.bspwm
 
-cal.ENABLED = False
+utils.cal.ENABLED = False
 
 File("systems/anthony/polybar", XDG_CONFIG_HOME / "polybar/system")
 File("systems/anthony/Xresources", XDG_CONFIG_HOME / "xorg/Xresources.system")

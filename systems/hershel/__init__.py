@@ -3,7 +3,6 @@ import aur
 import browsers.firefox
 import browsers.qutebrowser
 import browsers.web_xdg_open
-import cal
 import docker
 import dropbox
 import git
@@ -15,6 +14,7 @@ import shells.zsh
 import streamlink
 import tmux
 import user_dirs
+import utils.cal
 import utils.ssh
 import utils.unclutter
 import utils.wallpaper

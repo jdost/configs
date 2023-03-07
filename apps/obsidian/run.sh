@@ -15,6 +15,9 @@ NAME=obsidian
 IMAGE=desktop-app/$NAME:$(sha256sum $APP_DIR/Dockerfile | awk '{ print $1 }')
 CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/$NAME
 DATA_DIR=$HOME/.local/share/obsidian
+DOCKER_FLAGS_BASE=(
+    --volume /etc/localtime:/etc/localtime:ro
+)
 DOCKER_FLAGS_X=(
     --hostname $(cat /proc/sys/kernel/hostname)
     --env DISPLAY=$DISPLAY
@@ -24,7 +27,6 @@ DOCKER_FLAGS_X=(
 )
 DOCKER_FLAGS_DBUS=(
     --env DBUS_SESSION_BUS_ADDRESS=unix:path=/var/run/user/$UID/bus
-    --volume /etc/localtime:/etc/localtime:ro
     --volume /etc/machine-id:/etc/machine-id:ro
     --volume /var/run/user/$UID:/var/run/user/$UID
 )
@@ -72,5 +74,6 @@ exec docker run \
     --name $NAME \
     --volume $CONFIG_DIR:/config \
     --volume $DATA_DIR:/data \
+    "${DOCKER_FLAGS_BASE[@]}" \
     "${DOCKER_FLAGS_X[@]}" \
     $IMAGE

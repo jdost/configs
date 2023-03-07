@@ -28,14 +28,14 @@ list() {  # dump list of TOTP tokens with standard prefix
         return
     fi
 
-    ykman oath list > $TOTP_CACHE
+    ykman oath accounts list > $TOTP_CACHE
     cat $TOTP_CACHE
 }
 
 get() {  # retrieve the current TOTP as passed in
     local target=${1:-}
     [ -z "$target" ] && fail 'Need a TOTP token to generate a code for'
-    ykman oath code -s "$target"
+    ykman oath accounts code -s "$target"
 }
 
 copy() {  # temporarily populate the clipboard with the value

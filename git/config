@@ -18,6 +18,11 @@
 [diff]
     renameLimit = 10240
 
+[merge]
+    # Default uses "diff2" showing just "ours" and "theirs"
+    # diff3 shows "ours", "theirs", and "original"
+    conflictstyle = diff3
+
 [alias]
     st = status -s
     co = checkout
@@ -33,15 +38,18 @@
     branch = auto
     diff = auto
     status = auto
+
 [color "branch"]
     current = yellow reverse
     local = yellow
     remote = green
+
 [color "diff"]
     meta = yellow bold
     frag = magenta bold
     old = red bold
     new = green bold
+
 [color "status"]
     added = yellow
     changed = green

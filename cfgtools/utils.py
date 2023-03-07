@@ -45,7 +45,7 @@ def hide_xdg_entry(entry: str) -> None:
     hidden_entry = Path.home() / f".local/share/applications/{entry}.desktop"
 
     if hidden_entry.exists():
-        return
+        return None
 
     if not hidden_entry.parent.exists():
         hidden_entry.parent.mkdir(parents=True)
@@ -53,6 +53,7 @@ def hide_xdg_entry(entry: str) -> None:
     print(f"Hiding XDG Desktop entry for: {entry}")
     hidden_entry.touch()
     hidden_entry.write_text(src_entry.read_text() + "\nNoDisplay=true")
+    return None
 
 
 def bins() -> Set[str]:

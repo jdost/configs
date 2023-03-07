@@ -27,7 +27,10 @@ class Pacman(SystemPackage):
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
-            print("# pacman -Syu --needed -y " f"{' '.join(list(to_be_installed))}")
+            print(
+                "# pacman -Syu --needed -y "
+                f"{' '.join(list(to_be_installed))}"
+            )
 
     @classmethod
     def apply(cls, *pkgs: "Pacman") -> None:
@@ -36,7 +39,8 @@ class Pacman(SystemPackage):
         if to_be_installed:
             print(f"Installing (pacman): {', '.join(list(to_be_installed))}")
             subprocess.run(
-                ["sudo", "pacman", "-Syu", "--needed", "-y"] + list(to_be_installed)
+                ["sudo", "pacman", "-Syu", "--needed", "-y"]
+                + list(to_be_installed)
             )
 
 
@@ -137,10 +141,13 @@ class AUR(SystemPackage):
         if needed:
             print(f"Installing (AUR): {', '.join(map(str, needed))}")
             if shutil.which("aur"):
-                subprocess.run(["aur", "install"] + cls.convert_to_args(needed))
+                subprocess.run(
+                    ["aur", "install"] + cls.convert_to_args(needed)
+                )
             else:
                 out = subprocess.run(
-                    ["python", "./aur/aur.py", "install"] + cls.convert_to_args(needed)
+                    ["python", "./aur/aur.py", "install"]
+                    + cls.convert_to_args(needed)
                 )
                 if out.returncode != 0:
                     print(

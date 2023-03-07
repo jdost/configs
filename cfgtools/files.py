@@ -8,9 +8,10 @@ BASE = Path(__file__).resolve().parent.parent
 XDG_CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME", HOME / ".config"))
 
 registered_files = set()
+InputType = Union[Path, str]
 
 
-def convert_loc(p: Union[Path, str]) -> Path:
+def convert_loc(p: InputType) -> Path:
     if not isinstance(p, Path):
         p = Path(p)
 
@@ -41,7 +42,7 @@ class File(RegisteredFileAction):
     dst: Path
     force: bool = False
 
-    def __init__(self, src: Union[Path, str], dst: Union[Path, str], force: bool = False):
+    def __init__(self, src: InputType, dst: InputType, force: bool = False):
         self.src = convert_loc(src)
         self.dst = convert_loc(dst)
         self.force = force
@@ -117,20 +118,23 @@ class EnvironmentFile(File):
 
 class UserBin(File):
     DIR = HOME / ".local/bin"
-    def __init__(self, src: Union[str, Path], name: str):
+
+    def __init__(self, src: InputType, name: str):
         super().__init__(src=src, dst=(UserBin.DIR / name))
 
 
 class XDGConfigFile(File):
     DIR = XDG_CONFIG_HOME
-    def __init__(self, src: Union[Path, str], tgt: Optional[str] = None):
-        #dst = f"{tgt}/{Path(src).name}" if tgt else src
+
+    def __init__(self, src: InputType, tgt: Optional[str] = None):
+        # dst = f"{tgt}/{Path(src).name}" if tgt else src
         dst = tgt if tgt else src
         super().__init__(src=src, dst=self.DIR / dst)
 
 
 class XinitRC(File):
     DIR = XDG_CONFIG_HOME / "xorg/xinitrc.d"
+
     def __init__(self, name: str, priority: int = 99):
         basename = name.split("/")[-1]
         super().__init__(
@@ -141,16 +145,17 @@ class XinitRC(File):
 
 class DesktopEntry(File):
     DIR = HOME / ".local/share/applications"
+
     def __init__(self, src: str, name: Optional[str] = None):
         filename = name if name else Path(src).name
         if not filename.endswith(".desktop"):
-            filename=f"{filename}.desktop"
+            filename = f"{filename}.desktop"
         super().__init__(src=src, dst=(DesktopEntry.DIR / filename))
 
 
 class Folder(RegisteredFileAction):
     UNSET_PERMISSIONS = -1
-    MASK=0o777
+    MASK = 0o777
 
     def __init__(self, location: Path, permissions: int = UNSET_PERMISSIONS):
         self.location = location

@@ -83,6 +83,8 @@ def set_default_shell(shell_bin: str) -> None:
             return
 
         if _SUDO_CHSH:
-            subprocess.run(["sudo", "chsh", "-s", shell_bin, getpass.getuser()])
+            subprocess.run(
+                ["sudo", "chsh", "-s", shell_bin, getpass.getuser()]
+            )
         else:
             subprocess.run(["chsh", "-s", shell_bin])

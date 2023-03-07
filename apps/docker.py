@@ -2,7 +2,7 @@ from cfgtools.files import DesktopEntry, UserBin
 from pathlib import Path
 from typing import Optional
 
-import docker
+import utils.docker
 
 apps_folder = Path(__file__).parent
 

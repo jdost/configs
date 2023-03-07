@@ -1,15 +1,16 @@
-from cfgtools.files import UserBin
+import homebin
+from cfgtools.files import UserBin, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
-from cfgtools.system.ubuntu import Apt
 from cfgtools.system.systemd import ensure_service
+from cfgtools.system.ubuntu import Apt
 from cfgtools.utils import add_group
 
-import homebin
+NAME = normalize(__name__)
 
-system_packages={Pacman("docker"), Apt("docker.io")}
-files=[
-    UserBin("docker/wrapper.sh", "docker")
+system_packages = {Pacman("docker"), Apt("docker.io")}
+files = [
+    UserBin(f"{NAME}/wrapper.sh", "docker")
 ]
 
 @after

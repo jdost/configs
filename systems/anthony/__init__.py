@@ -5,7 +5,6 @@ import apps.alacritty
 import apps.zathura
 import aur
 import browsers.qutebrowser
-import docker
 import dropbox
 import git
 import gpg
@@ -19,6 +18,7 @@ import tmux
 import user_dirs
 import utils.bat
 import utils.cal
+import utils.docker
 import utils.ssh
 import utils.unclutter
 import utils.wallpaper

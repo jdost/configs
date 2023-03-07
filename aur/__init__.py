@@ -1,8 +1,8 @@
 from cfgtools.files import UserBin
 from cfgtools.system.arch import Pacman
 
-import docker
 import homebin
+import utils.docker
 
 packages={Pacman("binutils")}
 files=[

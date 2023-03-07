@@ -2,7 +2,6 @@ import apps.alacritty
 import aur
 import auth
 import bat
-import docker
 import dropbox
 import git
 import gpg
@@ -14,6 +13,7 @@ import screenlock
 import shells.zsh
 import tmux
 import user_dirs
+import utils.docker
 import utils.ssh
 import utils.unclutter
 import utils.wallpaper

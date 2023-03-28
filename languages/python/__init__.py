@@ -8,13 +8,14 @@ NAME = normalize(__name__)
 
 python_tools = [
     "black",
-    "flake8",
+    "ruff",
     "isort",
     "mypy",
     "mypy-ls",
     "neovim",
     "pynvim",
     "python-lsp-black",
+    "python-lsp-ruff",
     "python-lsp-server",
 ]
 

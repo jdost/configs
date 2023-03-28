@@ -45,3 +45,42 @@ def setup_tabcomplete() -> None:
 
     sys.ps1 = ColoredPS(">>>")
     sys.ps2 = ColoredPS("...")
+
+
+def autoindent() -> None:
+    """Auto-indent upon typing a new line according to the contents of the
+    previous line.  This function will be used as Readline's
+    pre-input-hook.
+
+    """
+    hist_len = readline.get_current_history_length()
+    last_input = readline.get_history_item(hist_len)
+    try:
+        last_indent_index = last_input.rindex("    ")
+    except Exception:
+        last_indent = 0
+    else:
+        last_indent = int(last_indent_index / 4) + 1
+
+    if len(last_input.strip()) > 1:
+        if last_input.count("(") > last_input.count(")"):
+            indent = ''.join(["    " for n in range(last_indent + 2)])
+        elif last_input.count(")") > last_input.count("("):
+            indent = ''.join(["    " for n in range(last_indent - 1)])
+        elif last_input.count("[") > last_input.count("]"):
+            indent = ''.join(["    " for n in range(last_indent + 2)])
+        elif last_input.count("]") > last_input.count("["):
+            indent = ''.join(["    " for n in range(last_indent - 1)])
+        elif last_input.count("{") > last_input.count("}"):
+            indent = ''.join(["    " for n in range(last_indent + 2)])
+        elif last_input.count("}") > last_input.count("{"):
+            indent = ''.join(["    " for n in range(last_indent - 1)])
+        elif last_input[-1] == ":":
+            indent = ''.join(["    " for n in range(last_indent + 1)])
+        else:
+            indent = ''.join(["    " for n in range(last_indent)])
+    readline.insert_text(indent)
+
+
+def setup_autoindent() -> None:
+    readline.set_pre_input_hook(autoindent)

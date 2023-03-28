@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=GitHub Dash
+GenericName=PR dashboard for GitHub
+Exec=gh dash
+Icon=github
+Terminal=true

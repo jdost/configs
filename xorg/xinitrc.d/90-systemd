@@ -1,4 +1,4 @@
-systemctl --user import-environment DISPLAY XAUTHORITY
+systemctl --user import-environment DISPLAY XAUTHORITY PATH
 if which dbus-update-activation-environment &>/dev/null; then
     dbus-update-activation-environment DISPLAY XAUTHORITY
 fi

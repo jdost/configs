@@ -1,5 +1,7 @@
 from cfgtools.files import UserBin, XDGConfigFile, normalize
+from cfgtools.hooks import after
 from cfgtools.system.arch import AUR, Pacman
+from cfgtools.utils import hide_xdg_entry
 
 NAME = normalize(__name__)
 
@@ -10,3 +12,8 @@ files = [
     XDGConfigFile(f"{NAME}/themes/askpass.rasi"),
     UserBin(f"{NAME}/askpass.sh", "rofi-askpass"),
 ]
+
+
+@after
+def hide_unwanted_mpv_entries() -> None:
+    [hide_xdg_entry(e) for e in ["rofi", "rofi-theme-selector"]]

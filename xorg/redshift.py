@@ -3,6 +3,7 @@ from cfgtools.files import XDGConfigFile
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import UserService, ensure_service
+from cfgtools.utils import hide_xdg_entry
 
 packages = {Pacman("redshift")}
 files = [
@@ -30,3 +31,11 @@ def enable_redshift():
             )
         )
     ensure_service("redshift-gtk", user=True)
+
+
+@after
+def hide_unwanted_xdg_entries() -> None:
+    for entry in [
+        "geoclue-demo-agent", "geoclue-where-am-i", "redshift-gtk", "redshift"
+    ]:
+        hide_xdg_entry(entry)

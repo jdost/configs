@@ -1,8 +1,7 @@
 if has_key(g:plugs, 'lspkind-nvim')
   lua << EOF
-require('lspkind').init({
-  with_text = true,
-  preset = 'default',
+require('lspkind').init {
+  mode = 'symbol_text',
 
   symbol_map = {
     Text = "",
@@ -31,6 +30,6 @@ require('lspkind').init({
     Operator = "",
     TypeParameter = ""
   },
-})
+}
 EOF
 endif

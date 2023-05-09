@@ -37,11 +37,10 @@ let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_folding_disabled = 1
 
 " display stuff
-silent! if has_key(g:plugs, 'goyo.vim') && &filetype != 'markdown.lsp-hover'
-  :Goyo
-endif
-
 silent! if has_key(g:plugs, 'vim-pencil') && &filetype != 'markdown.lsp-hover'
-  :HardPencil
+  augroup pencil
+    autocmd!
+    autocmd FileType markdown,md call pencil#init({'wrap': 'hard'})
+  augroup END
   let g:pencil#autoformat = 0
 endif

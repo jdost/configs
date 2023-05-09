@@ -1,5 +1,9 @@
 export LESSHISTSIZE=0
 
+## 'nix*'
+[[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] && \
+    source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+
 # Shell Aliases
 ## 'grep'
 which rg &>/dev/null && \
@@ -21,8 +25,5 @@ alias ping="ping -c 5"
 ## 'xclip'
 which xclip &>/dev/null && \
     alias copy="xclip -in -selection clipboard"
-## 'nix*'
-[[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] && \
-    source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
 # vim: ft=zsh

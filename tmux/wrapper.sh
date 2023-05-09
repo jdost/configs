@@ -45,6 +45,9 @@ start() {
 
 attach() {
     local name=${1:-$DEFAULT_TMUX}
+    if [[ ! -z "$SSH_AUTH_SOCK" ]]; then
+        ln -sf $SSH_AUTH_SOCK $HOME/.ssh/tmux-$name.sock
+    fi
     _debug "Attaching to session: $name..."
     settitle "$name"
     exec $BIN -f $TMUX_CONF -L $name attach -t $name

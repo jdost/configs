@@ -11,12 +11,16 @@ autoload -U vcs_info && vcs_info
 zmodload zsh/complist
 zmodload zsh/terminfo
 
+# Pacman hook sends USR1 when usr/bin changes, this is then syncs with the new
+# contents
+TRAPUSR1() { rehash }
+
 DEBUG=${DEBUG:-0}
 
-for r in $HOME/.local/environment/*; do
+for r in $HOME/.local/profile.d/*; do
    [[ $DEBUG > 0 ]] && echo "zsh: sourcing $r"
    source $r
-done # }}}
+done
 
 # Plugin/Settings configs
 PLUGIN_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plugins
@@ -34,6 +38,7 @@ for r in $ZSH_SETTINGS_DIR/*.zsh; do
    [[ $DEBUG > 0 ]] && echo "zsh: sourcing $r"
    source $r
 done # }}}
+
 # set shell colors {{{
 if [ -f ${XDG_CONFIG_HOME:-$HOME/.config}/zsh/colors ]; then
    . ${XDG_CONFIG_HOME:-$HOME/.config}/zsh/colors

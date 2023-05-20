@@ -1,29 +1,2 @@
-export LESSHISTSIZE=0
-
-## 'nix*'
-[[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] && \
-    source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-
-# Shell Aliases
-## 'grep'
-which rg &>/dev/null && \
-    alias grep="rg" || \
-    alias grep="grep --color=auto"
-## 'ls'
-which exa &>/dev/null && \
-    alias ls="exa -l --git" || \
-    alias ls="ls -lFh --color=auto"
-## 'diff'
-which colordiff &>/dev/null && \
-    alias diff="colordiff"
-## 'df'
-alias df="df -h"
-## 'du'
-alias du="du -h"
-## 'ping'
-alias ping="ping -c 5"
-## 'xclip'
-which xclip &>/dev/null && \
-    alias copy="xclip -in -selection clipboard"
 
 # vim: ft=zsh

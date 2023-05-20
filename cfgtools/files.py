@@ -38,11 +38,20 @@ class RegisteredFileAction:
 
 
 class File(RegisteredFileAction):
+    """Basic symlinked file definition, you probably want one of the more 
+    specialized options defined in here.
+    """
     src: Path
     dst: Path
     force: bool = False
 
     def __init__(self, src: InputType, dst: InputType, force: bool = False):
+        """
+        Definition of the desired symlink:
+            {src} -> {dst}
+
+        and setting `force` will destroy the existing file if it exists.
+        """
         self.src = convert_loc(src)
         self.dst = convert_loc(dst)
         self.force = force
@@ -108,6 +117,9 @@ class File(RegisteredFileAction):
 
 
 class EnvironmentFile(File):
+    """User environment file, this file should set environment variables
+    for the user's session.
+    """
     def __init__(self, src_name: str, name: Optional[str] = None):
         dst_name = name if name else src_name
         super().__init__(
@@ -116,10 +128,28 @@ class EnvironmentFile(File):
         )
 
 
+class UserProfile(File):
+    """User profile module, this file will be loaded as part of the general
+    "profile" stage for shells/systems.
+    """
+    DIR = HOME / ".local/profile.d"
+    def __init__(self, src_name: str, name: Optional[str] = None):
+        dst_name = name if name else src_name
+        super().__init__(
+            src=(BASE / src_name / "profile"),
+            dst=(self.DIR / dst_name),
+        )
+
+
 class UserBin(File):
+    """User executable/bin definition, this file will end up in the user's
+    $PATH.
+    """
     DIR = HOME / ".local/bin"
 
     def __init__(self, src: InputType, name: str):
+        """Put the `{src}` file in the user's path under the {name} value.
+        """
         super().__init__(src=src, dst=(UserBin.DIR / name))
 
 

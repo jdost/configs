@@ -1,0 +1,7 @@
+export LESSHISTSIZE=0
+DEBUG=${DEBUG:-0}
+
+for r in $HOME/.local/environment/*; do
+   [[ $DEBUG > 0 ]] && echo "zsh: sourcing $r"
+   source $r
+done

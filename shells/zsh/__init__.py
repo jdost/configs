@@ -1,6 +1,6 @@
 import utils.bat
 from cfgtools.files import (HOME, EnvironmentFile, File, XDGConfigFile,
-                            normalize)
+                            UserProfile, normalize)
 from cfgtools.system.arch import AUR, Pacman
 from cfgtools.system.nix import NixPkgBin
 from cfgtools.system.ubuntu import Apt
@@ -17,6 +17,8 @@ packages = {
 }
 files = [
     File(f"{NAME}/zshrc", HOME / ".zshrc"),
+    File(f"{NAME}/zshenv", HOME / ".zshenv"),
     XDGConfigFile(f"{NAME}/settings", "zsh/settings"),
     EnvironmentFile(NAME, "zsh"),
+    UserProfile(NAME, "zsh"),
 ]

@@ -1,0 +1,4 @@
+configuration {
+    terminal: "wezterm";
+    run-shell-command: "{terminal} start {cmd}";
+}

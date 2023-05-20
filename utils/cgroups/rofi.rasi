@@ -1,0 +1,3 @@
+configuration {
+    run-command: "run-in-cgroup {cmd}";
+}

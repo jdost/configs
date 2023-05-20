@@ -55,7 +55,7 @@ set_rules 'chat' \
     'Discord' 'discord' 'android-messages-desktop' 'TelegramDesktop'
 
 # Floating by default
-for c in 'Peek' 'scrcpy' 'pinentry-qt' 'Zathura'; do
+for c in 'Peek' 'scrcpy' 'pinentry-qt' 'Zathura' 'opensnitch-ui'; do
     bspc rule -a "$c" state=floating focus=on
 done
 # Fixes

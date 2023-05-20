@@ -1,0 +1,10 @@
+[Unit]
+Description=Application Firewall Interface
+PartOf=xorg.target
+
+[Service]
+Environment="QT_SCALE_FACTOR=0.5"
+ExecStart=opensnitch-ui
+
+[Install]
+WantedBy=xorg.target

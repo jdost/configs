@@ -1,7 +1,7 @@
-from cfgtools.files import EnvironmentFile, normalize
+from cfgtools.files import UserProfile, normalize
 
 NAME = normalize(__name__)
 
 files = [
-    EnvironmentFile(NAME)
+    UserProfile(NAME)
 ]

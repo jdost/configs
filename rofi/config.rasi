@@ -1,4 +1,2 @@
-configuration {
-   terminal: "alacritty";
-}
 @theme "icons_launcher"
+@import "config.d"

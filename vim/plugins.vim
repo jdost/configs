@@ -44,6 +44,7 @@ if has('nvim') && ( executable('gcc') || executable('clang') )
   elseif has('nvim-0.5')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'branch': '0.5-compat' }
   endif
+  Plug 'gorbit99/codewindow.nvim'
 endif
 " }}}
 

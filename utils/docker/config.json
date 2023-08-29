@@ -1,0 +1,8 @@
+{
+    "psFormat": "table {{.ID}}\\t{{.Names}}\\t{{.Command}}\\t{{.Status}}\\t{{.Image}}\\t{{.Ports}}",
+    "imagesFormat": "table {{.ID}}\\t{{.Repository}}:{{.Tag}}\\t{{.CreatedSince}}\\t{{.Size}}",
+    "credHelpers": {
+        "gcr.io": "gcloud",
+        "us.gcr.io": "gcloud"
+    }
+}

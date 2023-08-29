@@ -14,21 +14,22 @@ else
    BIN=$(which $TARGET_BIN)
 fi
 
+export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
+
 clean() {
    # docker ps -- List all created containers (even those not running)
    #  grep -v -- remove the header line
    #  awk -- print the second column (the image name)
    #  sort+uniq -- trim to uniques
    local used_images=$(
-      $BIN ps -a \
-         | grep -v "CONTAINER_ID" \
-         | awk '{ print $2 }' \
+      $BIN ps --all --format=json \
+         | jq ".Image" \
          | sort | uniq
    )
    # Remove containers using the old images, i.e. have a `<none>` tag, meaning it
    # has been re-applied to a newer image
    #  docker images -a -- this includes intermediate images/layers
-   for image in $($BIN images -a | grep "<none>"); do
+   for image in $($BIN images --all --format=json | grep "<none>"); do
       # If the untagged image is still in use on created containers, these
       # containers need to be removed as well
       if echo "$used_images" | grep "$image" &>/dev/null; then
@@ -45,7 +46,7 @@ clean() {
    done
 
    # If there are any top level images that remain untagged, remove them
-   if $BIN images | grep "<none>"; then
+   if $BIN images | grep "<none>" &> /dev/null; then
       # docker images -- list images
       # grep -- filter only untagged images
       # awk -- get the image id (third column)

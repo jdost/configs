@@ -30,8 +30,7 @@ endif
 Plug 'airblade/vim-rooter'  " This updates the CWD to be the top level of a git repo
 Plug 'tpope/vim-vinegar'  " Updates and cleans up the netrw capabilities
 Plug 'google/vim-searchindex'
-Plug 'haya14busa/incsearch.vim'
-Plug 'haya14busa/incsearch-fuzzy.vim'
+Plug 'haya14busa/is.vim'
 Plug 'tpope/vim-surround'
 "Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'roxma/vim-paste-easy'  " Smart pasting detection

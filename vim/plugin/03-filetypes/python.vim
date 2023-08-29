@@ -1,3 +1,7 @@
+if !empty(glob($HOME.'/.local/python-code-tools'))
+  let $PATH .= ':'.$HOME.'/.local/python-code-tools/bin'
+endif
+
 if has_key(g:plugs, 'nvim-lspconfig')
   if has_key(g:plugs, 'ncm2')
     lua << EOF
@@ -6,9 +10,11 @@ if has_key(g:plugs, 'nvim-lspconfig')
       local ncm2 = require('ncm2')
 
       for _, server in ipairs(servers) do
-        lspconfig[server].setup {
-          on_init = ncm2.register_lsp_source
-        }
+        if vim.fn.executable(server) == 1 and lspconfig[server] == nil then
+          lspconfig[server].setup {
+            on_init = ncm2.register_lsp_source
+          }
+        end
       end
 EOF
   else
@@ -17,18 +23,20 @@ EOF
       local lspconfig = require('lspconfig')
 
       for _, server in ipairs(servers) do
-        lspconfig[server].setup {
-          on_attach = function(client, bufnr)
-            vim.api.nvim_exec([[
-              augroup lsp_document_highlight
-                autocmd! * <buffer>
-                "autocmd CursorHold <buffer> lua vim.lsp.buf.hover()
-                autocmd CursorHold <buffer> Lspsaga hover_doc
-              augroup END
-              set updatetime=1000
-            ]], false)
-          end,
-        }
+        if vim.fn.executable(server) == 1 and lspconfig[server] == nil then
+          lspconfig[server].setup {
+            on_attach = function(client, bufnr)
+              vim.api.nvim_exec([[
+                augroup lsp_document_highlight
+                  autocmd! * <buffer>
+                  "autocmd CursorHold <buffer> lua vim.lsp.buf.hover()
+                  autocmd CursorHold <buffer> Lspsaga hover_doc
+                augroup END
+                set updatetime=1000
+              ]], false)
+            end,
+          }
+        end
       end
 EOF
   endif

@@ -2,6 +2,7 @@ from cfgtools.files import DesktopEntry, UserBin, XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 
 import rofi
+import xorg.icons.papirus
 
 NAME = normalize(__name__)
 

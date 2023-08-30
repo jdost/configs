@@ -46,6 +46,7 @@ build() {
     msg "Building a new container image..."
     GID=$(id -g)
     cd $APP_DIR
+    export DOCKER_BUILDKIT=1
     if ! docker build \
         --force-rm \
         --build-arg UID=$UID \

@@ -1,39 +1,40 @@
 FROM ubuntu:20.04
 
-RUN apt-get update \
-   && apt-get install -y --no-install-recommends \
-      ca-certificates \
-      curl \
-      libegl1 \
-      libfontconfig1 \
-      libglx0 \
-      libnss3 \
-      libopengl0 \
-      libsm6 \
-      libx11-6 \
-      libxcb-icccm4 \
-      libxcb-image0 \
-      libxcb-keysyms1 \
-      libxcb-randr0 \
-      libxcb-render0 \
-      libxcb-render-util0 \
-      libxcb-shape0 \
-      libxcomposite1 \
-      libxdamage1 \
-      libxkbcommon-x11-0 \
-      libxkbfile1 \
-      libxrandr2 \
-      libxtst6 \
-      tar \
-      xdg-utils \
-      xz-utils \
-   && rm -rf /var/lib/apt/lists/* \
-      /var/cache/apt/* \
-      /var/log/* \
-      /usr/share/man \
-      /usr/share/doc
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+    apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        libegl1 \
+        libfontconfig1 \
+        libglx0 \
+        libnss3 \
+        libopengl0 \
+        libsm6 \
+        libx11-6 \
+        libxcb-icccm4 \
+        libxcb-image0 \
+        libxcb-keysyms1 \
+        libxcb-randr0 \
+        libxcb-render0 \
+        libxcb-render-util0 \
+        libxcb-shape0 \
+        libxcomposite1 \
+        libxdamage1 \
+        libxkbcommon-x11-0 \
+        libxkbfile1 \
+        libxrandr2 \
+        libxtst6 \
+        tar \
+        xdg-utils \
+        xz-utils \
+    && rm -rf /var/lib/apt/lists/* \
+        /var/log/* \
+        /usr/share/man \
+        /usr/share/doc
 
-ARG VERSION=6.8.0
+ARG VERSION=6.24.0
 
 RUN mkdir -p /opt/calibre \
     && curl \

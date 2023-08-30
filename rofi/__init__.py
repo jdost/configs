@@ -7,7 +7,6 @@ from cfgtools.system.arch import AUR, Pacman
 from cfgtools.utils import hide_xdg_entry
 
 NAME = normalize(__name__)
-SYSTEM_CONFIG = XDGConfigFile.DIR / "rofi/system.rasi"
 
 packages = {Pacman("rofi"), AUR("./aur/pkgs/ttf-hack-ext")}
 files = [
@@ -22,12 +21,6 @@ class RofiModule(File):
 
     def __init__(self, src: InputType, name: str):
         super().__init__(src=src, dst=RofiModule.config_dir / f"{name}.rasi")
-
-
-
-@after
-def ensure_system_exists() -> None:
-    SYSTEM_CONFIG.touch()
 
 
 @after

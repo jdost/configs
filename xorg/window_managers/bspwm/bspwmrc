@@ -48,7 +48,7 @@ set_rules() {
 set_rules 'web' \
     'Chromium' 'Google-chrome' 'firefox' 'qutebrowser'
 set_rules 'games' \
-    'Lutris' 'MultiMC5' 'Steam'
+    'Lutris' 'MultiMC5' 'Steam' 'MultiMC'
 set_rules 'video' \
     'mpv' 'streamlink-twitch-gui'
 set_rules 'chat' \
@@ -61,7 +61,7 @@ done
 # Fixes
 
 # Zathura wants to float by default, not desirable
-#bspc rule -a "Zathura" state=tiled
+bspc rule -a "Zathura" state=tiled
 
 EXTERNAL_RULES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/external_rules"
 if [[ -x $EXTERNAL_RULES_FILE ]]; then

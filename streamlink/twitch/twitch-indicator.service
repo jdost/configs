@@ -1,0 +1,12 @@
+[Unit]
+Description=Twitch Indicator - Twitch Live Tracker
+PartOf=xorg.target
+
+[Service]
+ExecStart=twitch-indicator
+Environment="BROWSER=$HOME/.local/bin/web-xdg-open"
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=xorg.target

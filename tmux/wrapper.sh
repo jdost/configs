@@ -45,9 +45,14 @@ start() {
 
 attach() {
     local name=${1:-$DEFAULT_TMUX}
-    if [[ ! -z "$SSH_AUTH_SOCK" ]]; then
-        ln -sf $SSH_AUTH_SOCK $HOME/.ssh/tmux-$name.sock
+    # Check if there is a tmux ssh socket, and it is broken, then replace it with
+    # the current ssh socket (often due to a broken session being re-attached to)
+    local tmux_auth_sock=$HOME/.ssh/tmux-$name.sock
+    if [[ -h "$tmux_auth_sock" ]]; then
+        _debug "The old ssh socket is broken, attempt to refresh..."
+        [[ ! -z "$SSH_AUTH_SOCK" ]] && ln -sf $SSH_AUTH_SOCK $tmux_auth_sock
     fi
+
     _debug "Attaching to session: $name..."
     settitle "$name"
     exec $BIN -f $TMUX_CONF -L $name attach -t $name

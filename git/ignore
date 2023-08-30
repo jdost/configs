@@ -23,6 +23,9 @@ venv
 .*.md
 /.local.vim
 
+# Local scratch
+tmp/*
+
 # Compiled files
 *.hi
 *.o

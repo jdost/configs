@@ -5,7 +5,9 @@ FROM ubuntu:20.04
 ARG VERSION=5.4.1
 ARG DEB_RELEASE_URI=https://github.com/OrangeDrangon/android-messages-desktop/releases/download
 
-RUN apt-get update \
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+    apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
         libasound2 \
@@ -18,7 +20,6 @@ RUN apt-get update \
     && apt install -y --no-install-recommends /tmp/android-messages.deb \
     && rm -rf /tmp/android-messages.deb \
         /var/lib/apt/lists/* \
-        /var/cache/apt/* \
         /var/log/* \
         /usr/share/man \
         /usr/share/doc

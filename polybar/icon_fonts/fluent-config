@@ -1,0 +1,7 @@
+[bar/main]
+font-3 = FluentSystemIcons\\-Regular:style=Regular:size=12;2
+
+[system-overrides]
+env-ICON_THEME = fluent
+
+; vim:ft=dosini

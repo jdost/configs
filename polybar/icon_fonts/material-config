@@ -1,0 +1,7 @@
+[bar/main]
+font-3 = Material Design Icons:style=Regular:size=12;2
+
+[system-overrides]
+env-ICON_THEME = material
+
+; vim:ft=dosini

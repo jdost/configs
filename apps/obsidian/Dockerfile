@@ -1,11 +1,14 @@
 from ubuntu:20.04
 
-ARG VERSION="1.1.8"
+ARG VERSION="1.1.16"
 ARG APPIMAGE_RELEASE_URI="https://github.com/obsidianmd/obsidian-releases/releases/download"
 
-RUN apt-get update \
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+    apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
+        fonts-noto-color-emoji \
         libasound2 \
         libgbm1 \
         libgtk-3-0 \
@@ -13,7 +16,6 @@ RUN apt-get update \
         libx11-xcb1 \
         wget \
     && rm -rf /var/lib/apt/lists/* \
-        /var/cache/apt/* \
         /var/log/* \
         /usr/share/man \
         /usr/share/doc

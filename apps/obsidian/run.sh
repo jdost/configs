@@ -47,6 +47,7 @@ msg() {
 build() {
     msg "Building a new container image..."
     GID=$(id -g)
+    export DOCKER_BUILDKIT=1
     cd $APP_DIR
     if ! docker build \
         --force-rm \

@@ -36,7 +36,7 @@ class ColoredPS:
     def __str__(self) -> str:
         fg = self.C_SEQ[self.count % len(self.C_SEQ)]
         self.count += 1
-        return f"{fg}{self.seq}{COLORS.RESET} "
+        return f"{fg.value}{self.seq}{COLORS.RESET.value} "
 
 
 def setup_tabcomplete() -> None:

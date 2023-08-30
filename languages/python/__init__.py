@@ -11,8 +11,8 @@ python_tools = [
     "ruff",
     "isort",
     "mypy",
-    "mypy-ls",
     "neovim",
+    "pylsp-mypy",
     "pynvim",
     "python-lsp-black",
     "python-lsp-ruff",
@@ -22,6 +22,7 @@ python_tools = [
 virtualenv = VirtualEnv("python-code-tools", *python_tools)
 packages = {
     Pacman("python"),
+    Pacman("python-pip"),
     Pacman("python-wheel"),
     Apt("python3"),
     Apt("python3-pip"),

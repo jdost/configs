@@ -1,9 +1,9 @@
-from cfgtools.files import EnvironmentFile, XDGConfigFile, HOME, normalize
-from cfgtools.system.arch import Pacman
-from cfgtools.system import GitRepository
-
 import dropbox
 import rofi
+from cfgtools.files import (HOME, EnvironmentFile, XDGConfigFile, XinitRC,
+                            normalize)
+from cfgtools.system import GitRepository
+from cfgtools.system.arch import Pacman
 
 NAME = normalize(__name__)
 
@@ -21,5 +21,6 @@ files = [
     XDGConfigFile(f"{NAME}/totp_rofi", "rofi/scripts/totp"),
     XDGConfigFile(f"{NAME}/pass_rofi", "rofi/scripts/pass"),
     XDGConfigFile(f"{NAME}/config.rasi", "rofi/themes/auth.rasi"),
+    XinitRC(NAME, priority=20),
     EnvironmentFile(NAME),
 ]

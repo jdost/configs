@@ -9,7 +9,7 @@ super + shift + q
 # Launching
 ## terminal emulator
 super + Return
-    alacritty
+    systemd-run --user --slice=shell.slice wezterm start --always-new-process
 ## launcher
 super + @p
     rofi -show combi
@@ -54,13 +54,15 @@ super + alt + {h,j,k,l}
     bspc node --resize $d1 $dx $dy || bspc node --resize $d2 $dx $dy
 super + r
     bspc node @parent -R 90
+super + f
+    bspc node --state \~floating
 
 # Layout Navigation
 ## focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
     bspc node -{f,s} {west,south,north,east}
 ## focus the next/previous window in the current desktop
-super + +{_,shift + }Tab
+super + {_,shift + }Tab
     bspc node -f {next,prev}.local.!hidden.window
 ## focus or send to the given desktop
 super + {_,shift + }{1-9,0}

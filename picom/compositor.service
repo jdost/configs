@@ -3,7 +3,7 @@ Description=picom - Graphical Compositor
 PartOf=xorg.target
 
 [Service]
-ExecStart=picom --experimental-backends
+ExecStart=picom
 Restart=on-failure
 
 [Install]

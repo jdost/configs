@@ -1,6 +1,6 @@
 from cfgtools.files import XDGConfigFile, normalize
 from cfgtools.hooks import after
-from cfgtools.system.arch import AUR
+from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import ensure_service, UserService
 from cfgtools.utils import hide_xdg_entry
 
@@ -8,7 +8,7 @@ import aur
 
 NAME = normalize(__name__)
 
-system_packages={AUR("picom-git")}
+system_packages={Pacman("picom")}
 files=[
     XDGConfigFile(f"{NAME}/picom.conf"),
     UserService(f"{NAME}/compositor.service"),

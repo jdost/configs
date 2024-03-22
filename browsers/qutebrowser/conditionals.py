@@ -1,7 +1,7 @@
 from shutil import which
 
 if which("streamlink"):
-    c.aliases["stream"] = "spawn streamlink {url}"
+    c.aliases["stream"] = "spawn xdg-open {url}"
 
 if which("wezterm"):
     c.editor.command = [

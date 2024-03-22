@@ -5,8 +5,8 @@ import dropbox
 
 NAME = normalize(__name__)
 
-packages={Pacman("qutebrowser"), Pacman("pdfjs"), Pacman("python-adblock")}
-files=[
+packages = {Pacman("qutebrowser"), Pacman("pdfjs"), Pacman("python-adblock")}
+files = [
     XDGConfigFile(f"{NAME}/config.py", "qutebrowser/config.py"),
     XDGConfigFile(
         dropbox.DROPBOX_DIR / "greasemonkey", "qutebrowser/greasemonkey"

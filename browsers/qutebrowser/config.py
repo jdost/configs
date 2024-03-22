@@ -10,13 +10,17 @@ c.auto_save.interval = 15000
 c.auto_save.session = True
 
 # Custom definitions
-c.url.searchengines = {
-    "DEFAULT": "https://google.com/search?hl=en&q={}",
+DEFAULT = "ddg"
+searchengines = {
     "g": "https://google.com/search?hl=en&q={}",
     "ddg": "https://duckduckgo.com/?q={}",
     "arch": "https://wiki.archlinux.org/?search={}",
     "archpkg": "https://archlinux.org/packages/?q={}",
     "aur": "https://aur.archlinux.org/packages/?O=0&K={}",
+}
+c.url.searchengines = {
+    "DEFAULT": searchengines[DEFAULT],
+    **searchengines,
 }
 
 # External opening behavior

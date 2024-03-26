@@ -1,10 +1,10 @@
 import apps.alacritty
 import rofi
-import sxhkd
 import xorg
 import xorg.deadd
 import xorg.picom
 import xorg.polybar
+import xorg.sxhkd
 from cfgtools.files import XDGConfigFile, XinitRC, normalize
 from cfgtools.system.arch import Pacman
 

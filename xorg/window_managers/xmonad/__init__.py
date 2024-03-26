@@ -1,9 +1,9 @@
 import apps.alacritty
 import deadd
-import picom
 import rofi
 import unclutter
 import xorg
+import xorg.picom
 import xorg.polybar
 from cfgtools.files import HOME, File, XDGConfigFile, XinitRC, normalize
 from cfgtools.system.arch import Pacman

@@ -11,14 +11,14 @@ NAME = normalize(__name__)
 system_packages={Pacman("picom")}
 files=[
     XDGConfigFile(f"{NAME}/picom.conf"),
-    UserService(f"{NAME}/compositor.service"),
+    UserService(f"{NAME}/picom.service"),
 ]
 unwanted_entries=["compton", "picom"]
 
 
 @after
 def start_compositor_service() -> None:
-    ensure_service("compositor", user=True)
+    ensure_service("picom", user=True)
 
 
 @after

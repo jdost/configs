@@ -1,3 +1,4 @@
+import apps.scrcpy
 import apps.streamlink
 import apps.zathura
 import aur
@@ -8,7 +9,6 @@ import dropbox
 import git
 import gpg
 import languages.python
-import scrcpy
 import shells.zsh
 import user_dirs
 import utils.cal

@@ -2,21 +2,22 @@ import subprocess
 
 from pathlib import Path
 
-from cfgtools.files import XDGConfigFile
+from cfgtools.files import XDGConfigFile, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import ensure_service
 
+NAME = normalize(__name__)
 
 packages = {Pacman("xdg-user-dirs")}
 files = [
-    XDGConfigFile("user_dirs/dirs", "user-dirs.dirs")
+    XDGConfigFile(f"{NAME}/dirs", "user-dirs.dirs")
 ]
 
 
 @after
 def ensure_user_dirs_exist() -> None:
-    with open("user_dirs/dirs", "r") as dirs_file:
+    with open(f"{NAME}/dirs", "r") as dirs_file:
         for line in dirs_file:
             if line.startswith("#"):
                 continue

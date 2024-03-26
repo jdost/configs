@@ -10,12 +10,12 @@ import git
 import gpg
 import languages.python
 import shells.zsh
-import user_dirs
 import utils.cal
 import utils.docker
 import utils.ssh
 import utils.tmux
 import utils.unclutter
+import utils.user_dirs
 import utils.wallpaper
 import vim.neovim
 import xorg.icons.papirus

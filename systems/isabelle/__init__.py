@@ -9,11 +9,11 @@ import networkmanager
 import python
 import screenlock
 import shells.zsh
-import user_dirs
 import utils.docker
 import utils.ssh
 import utils.tmux
 import utils.unclutter
+import utils.user_dirs
 import utils.wallpaper
 import vim
 import xorg.autorandr

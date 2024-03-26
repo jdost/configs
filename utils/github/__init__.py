@@ -6,7 +6,7 @@ from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.ubuntu import Deb
 from cfgtools.utils import run
-from dropbox import EncryptedFile
+from utils.dropbox import EncryptedFile
 
 NAME = normalize(__name__)
 

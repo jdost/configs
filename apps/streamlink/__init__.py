@@ -3,7 +3,7 @@ from cfgtools.system.arch import Pacman
 
 import apps.mpv
 import browsers.web_xdg_open
-import dropbox
+from utils import dropbox
 
 NAME = normalize(__name__)
 

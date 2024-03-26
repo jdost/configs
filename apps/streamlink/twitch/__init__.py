@@ -1,9 +1,9 @@
-import dropbox
 from cfgtools.files import XDG_CONFIG_HOME, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import AUR
 from cfgtools.system.systemd import UserService, ensure_service
 from cfgtools.utils import hide_xdg_entry
+from utils import dropbox
 
 NAME = normalize(__name__)
 

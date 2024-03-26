@@ -1,5 +1,5 @@
-import dropbox
 import rofi
+import utils.dropbox
 from cfgtools.files import (HOME, EnvironmentFile, XDGConfigFile, XinitRC,
                             normalize)
 from cfgtools.system import GitRepository

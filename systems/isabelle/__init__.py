@@ -2,7 +2,6 @@ import apps.alacritty
 import aur
 import auth
 import bat
-import dropbox
 import git
 import gpg
 import networkmanager
@@ -10,6 +9,7 @@ import python
 import screenlock
 import shells.zsh
 import utils.docker
+import utils.dropbox
 import utils.ssh
 import utils.tmux
 import utils.unclutter

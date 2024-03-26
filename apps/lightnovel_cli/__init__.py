@@ -1,6 +1,6 @@
-import dropbox
 from cfgtools.files import DesktopEntry, XDGConfigFile, normalize
 from cfgtools.system.arch import AUR
+from utils import dropbox
 
 NAME = normalize(__name__)
 

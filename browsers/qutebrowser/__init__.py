@@ -1,7 +1,7 @@
 from cfgtools.files import XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 
-import dropbox
+from utils import dropbox
 
 NAME = normalize(__name__)
 

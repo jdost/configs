@@ -2,8 +2,8 @@ from cfgtools.files import DesktopEntry, XDG_CONFIG_HOME, XDGConfigFile, UserBin
 from cfgtools.system.arch import AUR, Pacman
 
 import apps.alacritty
-import dropbox
 import utils.tmux
+from utils import dropbox
 
 NAME = normalize(__name__)
 

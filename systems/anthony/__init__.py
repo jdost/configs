@@ -3,7 +3,6 @@ import apps.streamlink
 import apps.zathura
 import aur
 import browsers.qutebrowser
-import dropbox
 import git
 import gpg
 import gtk
@@ -13,6 +12,7 @@ import shells.zsh
 import utils.bat
 import utils.cal
 import utils.docker
+import utils.dropbox
 import utils.maim
 import utils.opensnitch
 import utils.ssh

@@ -5,13 +5,13 @@ import aur
 import browsers.firefox
 import browsers.qutebrowser
 import browsers.web_xdg_open
-import dropbox
 import git
 import gpg
 import languages.python
 import shells.zsh
 import utils.cal
 import utils.docker
+import utils.dropbox
 import utils.ssh
 import utils.tmux
 import utils.unclutter

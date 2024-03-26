@@ -1,9 +1,9 @@
-import dropbox
 from cfgtools.files import XDGConfigFile
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import UserService, ensure_service
 from cfgtools.utils import hide_xdg_entry
+from utils import dropbox
 
 packages = {Pacman("redshift")}
 files = [

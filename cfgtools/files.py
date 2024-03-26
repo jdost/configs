@@ -22,6 +22,10 @@ def normalize(n: str) -> str:
     return n.replace(".", "/")
 
 
+def basename(n: str) -> str:
+    return n.split("/")[-1]
+
+
 class LocalConflict(Exception):
     def __init__(self, conflicting_path: Path):
         super().__init__(
@@ -121,7 +125,7 @@ class EnvironmentFile(File):
     for the user's session.
     """
     def __init__(self, src_name: str, name: Optional[str] = None):
-        dst_name = name if name else src_name
+        dst_name = name if name else basename(src_name)
         super().__init__(
             src=(BASE / src_name / "environment"),
             dst=(HOME / ".local/environment" / dst_name),

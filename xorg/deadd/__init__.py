@@ -9,7 +9,7 @@ NAME = normalize(__name__)
 packages={AUR("deadd-notification-center-bin")}
 files=[
     XDGConfigFile(f"{NAME}/deadd.conf"),
-    UserService(f"{NAME}/notifications.service"),
+    UserService(f"{NAME}/deadd.service"),
     UserBin(f"{NAME}/toggle-notifications.sh", "notifications-toggle"),
     DesktopEntry(f"{NAME}/notifications-toggle.desktop"),
 ]
@@ -17,7 +17,7 @@ files=[
 
 @after
 def start_notification_service() -> None:
-    ensure_service("notifications", user=True)
+    ensure_service("deadd", user=True)
 
 
 @after

@@ -1,8 +1,8 @@
 import apps.alacritty
-import deadd
 import rofi
 import sxhkd
 import xorg
+import xorg.deadd
 import xorg.picom
 import xorg.polybar
 from cfgtools.files import XDGConfigFile, XinitRC, normalize

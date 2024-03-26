@@ -1,9 +1,9 @@
 from cfgtools.files import DesktopEntry, UserBin, XDGConfigFile, XDG_CONFIG_HOME, normalize
 from cfgtools.system.arch import Pacman
 
+import apps.mpv
 import browsers.web_xdg_open
 import dropbox
-import mpv
 
 NAME = normalize(__name__)
 

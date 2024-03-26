@@ -4,7 +4,7 @@ from cfgtools.system.arch import Pacman
 from cfgtools.system.systemd import ensure_service, UserService
 from cfgtools.utils import hide_xdg_entry
 
-import mpv
+import apps.mpv
 
 NAME = normalize(__name__)
 

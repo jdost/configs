@@ -1,4 +1,4 @@
-import homebin
+import utils.homebin
 from cfgtools.files import UserBin, XDGConfigFile, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman

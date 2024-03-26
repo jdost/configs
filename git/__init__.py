@@ -2,7 +2,7 @@ from cfgtools.files import UserBin, XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 from cfgtools.system.ubuntu import Apt
 
-import homebin
+import utils.homebin
 
 NAME = normalize(__name__)
 

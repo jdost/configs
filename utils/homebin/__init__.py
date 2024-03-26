@@ -8,4 +8,5 @@ files = [
     UserBin(f"{NAME}/settitle.sh", "settitle"),
     UserBin(f"{NAME}/term_info.sh", "term-info"),
     UserBin(f"{NAME}/retry.sh", "retry"),
+    UserBin(f"{NAME}/reset.sh", "reset"),
 ]

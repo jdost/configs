@@ -1,4 +1,5 @@
 import apps.alacritty
+import apps.streamlink
 import apps.zathura
 import aur
 import browsers.qutebrowser
@@ -9,7 +10,6 @@ import gtk
 import languages.python
 import screenlock
 import shells.zsh
-import streamlink
 import tmux
 import user_dirs
 import utils.bat

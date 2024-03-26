@@ -1,3 +1,4 @@
+import apps.streamlink
 import apps.zathura
 import aur
 import browsers.firefox
@@ -9,7 +10,6 @@ import gpg
 import languages.python
 import scrcpy
 import shells.zsh
-import streamlink
 import tmux
 import user_dirs
 import utils.cal

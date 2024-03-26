@@ -52,15 +52,15 @@ endif
 Plug has('nvim-0.5') ? 'neovim/nvim-lspconfig' : 'prabirshrestha/vim-lsp'
 if has('nvim-0.5')
 " nvim-cmp (experimental) {{{
-  " Plug 'hrsh7th/cmp-nvim-lsp'
-  " Plug 'hrsh7th/cmp-buffer'
-  " Plug 'hrsh7th/cmp-path'
-  " Plug 'hrsh7th/nvim-cmp'
-  " Plug 'onsails/lspkind-nvim'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'onsails/lspkind-nvim'
 " }}}
 " nvim-compe {{{
-  Plug 'hrsh7th/nvim-compe'
-  Plug 'onsails/lspkind-nvim'
+  " Plug 'hrsh7th/nvim-compe'
+  " Plug 'onsails/lspkind-nvim'
 " }}}
 elseif has('nvim')
 " ncm2 {{{

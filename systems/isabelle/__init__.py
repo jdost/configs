@@ -6,7 +6,6 @@ import dropbox
 import git
 import gpg
 import networkmanager
-import polybar
 import python
 import screenlock
 import shells.zsh
@@ -19,6 +18,7 @@ import utils.wallpaper
 import vim
 import xorg.autorandr
 import xorg.icons.papirus
+import xorg.polybar
 import xorg.window_managers.bspwm
 from cfgtools.files import HOME, File, XinitRC
 from cfgtools.systems import set_default_shell

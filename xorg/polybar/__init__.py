@@ -16,7 +16,7 @@ packages={
 systemhud_repo = GitRepository("git@github.com:jdost/systemhud.git")
 systemhud_venv = VirtualEnv("systemhud")
 files=[
-    UserService("polybar/statusbar.service"),
+    UserService(f"{NAME}/polybar.service"),
     XDGConfigFile(f"{NAME}/config"),
     XDGConfigFile(f"{NAME}/modules"),
 ]
@@ -29,19 +29,23 @@ def set_icon_font(choice: str) -> None:
     ICON_FONT = choice
 
     from importlib import __import__
-    __import__(f"polybar.icon_fonts.{choice}")
+    __import__(f"{__name__}.icon_fonts.{choice}")
 
 
 @before
 def check_icon_font_set() -> None:
+
     global ICON_FONT
     if ICON_FONT is None:
+        # Don't set a default if one was set externally
+        if (XDGConfigFile.DIR / 'polybar/icon-font').exists():
+            return
         set_icon_font("material")
 
 
 @after
 def enable_statusbar_service() -> None:
-    ensure_service("statusbar", user=True)
+    ensure_service("polybar", user=True)
 
 
 @after

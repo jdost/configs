@@ -10,11 +10,11 @@ import gpg
 import languages.python
 import scrcpy
 import shells.zsh
-import tmux
 import user_dirs
 import utils.cal
 import utils.docker
 import utils.ssh
+import utils.tmux
 import utils.unclutter
 import utils.wallpaper
 import vim.neovim

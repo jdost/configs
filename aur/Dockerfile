@@ -3,6 +3,7 @@ FROM archlinux:base-devel
 RUN \
    --mount=type=cache,target=/var/cache/pacman/pkg/ \
    echo "ParallelDownloads=5" >> /etc/pacman.conf \
+   && pacman -Sy --noconfirm archlinux-keyring \
    && pacman -Syu --noconfirm \
       base-devel \
       git

@@ -4,20 +4,37 @@ set -euo pipefail
 
 BUILD_DIR=${BUILD_DIR:-/build}
 SHARE_DIR=${SHARE_DIR:-/src}
+interactive=0
 
 OUT=${OUT:-/pkgs}
 # update packages to avoid weird issues with version mismatches
 sudo pacman -Syu --noconfirm ${PKGS:-}
 
+interactive_fixer() {
+   echo ""
+   echo "Opening shell so that you may fix the cause of the above build failure"
+   echo "'exit' the shell once fixed and it will attempt to continue building."
+   bash
+}
+
 build_remote() {
    cd $BUILD_DIR
    local pkg=$1
 
-   echo "Building AUR pkg: $pkg..."
-   git clone "https://aur.archlinux.org/$pkg.git"
+   if [[ -d "$BUILD_DIR/$pkg" ]]; then
+      echo "Updating AUR pkg: $pkg..."
+      cd $pkg
+      git pull
+   else
+      echo "Building AUR pkg: $pkg..."
+      git clone "https://aur.archlinux.org/$pkg.git"
+      cd $pkg
+   fi
 
-   cd $pkg
-   makepkg --noconfirm --syncdeps --install --nocheck
+   if ! makepkg --noconfirm --syncdeps --install --nocheck; then
+      interactive_fixer
+      makepkg --noconfirm --syncdeps --install --nocheck
+   fi
 
    ls *.pkg.tar.xz &>/dev/null && cp *.pkg.tar.xz $OUT/
    ls *.pkg.tar.zst &>/dev/null && cp *.pkg.tar.zst $OUT/
@@ -37,16 +54,25 @@ build_local() {
    fi
 
    cd $dst
-   makepkg --noconfirm --syncdeps --install --nocheck
+   if ! makepkg --noconfirm --syncdeps --install --nocheck; then
+      interactive_fixer
+      makepkg --noconfirm --syncdeps --install --nocheck
+   fi
 
    ls *.pkg.tar.xz &>/dev/null && cp *.pkg.tar.xz $OUT/
    ls *.pkg.tar.zst &>/dev/null && cp *.pkg.tar.zst $OUT/
 }
 
 for pkg in "$@"; do
-   if [[ -e "$SHARE_DIR/$pkg" ]]; then
+   if [[ "$pkg" == "--interactive" ]]; then
+      interactive=1
+   elif [[ -e "$SHARE_DIR/$pkg" ]]; then
       build_local $pkg
    else
       build_remote $pkg
    fi
 done
+
+if [[ "$#" == "0" ]]; then
+   exec bash
+fi

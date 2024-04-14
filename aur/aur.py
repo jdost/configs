@@ -255,6 +255,7 @@ if __name__  == "__main__":
     rebuild = False
     force = False
     opts_next = False
+    interactive = False
 
     pkgs = []
     action = "install"
@@ -273,6 +274,8 @@ if __name__  == "__main__":
         elif opts_next:
             opts_next = False
             cmd += ["-e", f"PKGS={target}"]
+        elif target == "--interactive":
+            interactive = True
         else:
             pkg = Package.parse_arg(target)
             pkgs.append(pkg)
@@ -332,7 +335,10 @@ if __name__  == "__main__":
         else:
             build_image(rebuild, force)
 
-        cmds = cmd + [f"{IMAGE_NAME}:latest"] + to_be_built
+        cmd = cmd + [f"{IMAGE_NAME}:latest"]
+        if interactive:
+            cmd = cmd + ["--interactive"]
+        cmds = cmd + to_be_built
         print(f"$ {' '.join(cmds)}")
         subprocess.run(cmds, check=True, env={"DOCKER_BUILDKIT": "1"})
 

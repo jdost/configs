@@ -51,6 +51,7 @@ endif
 " Editting {{{
 Plug has('nvim-0.5') ? 'neovim/nvim-lspconfig' : 'prabirshrestha/vim-lsp'
 if has('nvim-0.5')
+  Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 " nvim-cmp (experimental) {{{
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'

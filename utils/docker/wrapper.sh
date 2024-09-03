@@ -53,7 +53,7 @@ clean() {
       # xargs docker rmi -- remove the image
       $BIN images \
          | grep "<none>" \
-         | awk '{ print $3 }' \
+         | awk '{ print $1 }' \
          | xargs $BIN rmi
    fi
 }

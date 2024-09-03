@@ -25,11 +25,12 @@ colors = {
 
 return {
     bold_brightens_ansi_colors = true,
+    enable_wayland = false,
     check_for_updates = false,
     colors = colors,
     enable_tab_bar = false,
     exit_behavior = "Close",
-    font = wezterm.font("Iosevka Term", {bold=false}),
+    font = wezterm.font("IosevkaTerm Nerd Font Mono", {bold=false}),
     font_size = 11.0,
     keys = {
         {key="x", mods="CTRL", action=wezterm.action{CopyTo="Clipboard"}},

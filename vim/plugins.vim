@@ -169,6 +169,7 @@ Plug 'dkarter/bullets.vim', { 'for': ['markdown', 'gitcommit'] }
 " --- Web Frontend stuff
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'jparise/vim-graphql', { 'for': ['gql', 'graphql'] }
 " --- Configs and such
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }

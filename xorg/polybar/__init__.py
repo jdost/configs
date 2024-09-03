@@ -1,11 +1,12 @@
 from typing import Optional
 
-from cfgtools.files import File, XDGConfigFile, XDG_CONFIG_HOME, UserBin, normalize
+from cfgtools.files import (XDG_CONFIG_HOME, File, UserBin, XDGConfigFile,
+                            normalize)
 from cfgtools.hooks import after, before
 from cfgtools.system import GitRepository
 from cfgtools.system.arch import AUR, Pacman
 from cfgtools.system.python import VirtualEnv
-from cfgtools.system.systemd import ensure_service, UserService
+from cfgtools.system.systemd import UserService, ensure_service
 
 NAME = normalize(__name__)
 
@@ -15,10 +16,10 @@ packages={
 }
 systemhud_repo = GitRepository("git@github.com:jdost/systemhud.git")
 systemhud_venv = VirtualEnv("systemhud")
-files=[
+files = [
     UserService(f"{NAME}/polybar.service"),
-    XDGConfigFile(f"{NAME}/config"),
-    XDGConfigFile(f"{NAME}/modules"),
+    XDGConfigFile(f"{NAME}/config", "polybar/config"),
+    XDGConfigFile(f"{NAME}/modules", "polybar/modules"),
 ]
 
 

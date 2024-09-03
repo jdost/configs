@@ -18,7 +18,7 @@ if not PKG_FOLDER.is_dir():
 
 def get_version_from_path(prefix: str, src: Path) -> str:
     match = re.compile(
-        f"{prefix}-(.+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$"
+        f"{prefix}-([0-9.-]+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$"
     ).match(src.name)
     if not match:
         return ""
@@ -138,7 +138,7 @@ class Package:
                 ["makepkg", "--printsrcinfo", "-p", self.name],
                 stdout=subprocess.PIPE,
                 cwd=self.path.parent if self.path else Path.cwd(),
-            ).stdout.decode("utf-8").split()
+            ).stdout.decode("utf-8").split("\n")
 
             info = {}
             for line in srcinfo:
@@ -234,6 +234,7 @@ Commands:
 Flags:
 \t--rebuild\tBuild a new docker building image if needed
 \t--force\tBuild a new docker building image regardless of state
+\t--interactive\tOpen shell in building container before build
 
 Package Syntax:
   By default, will just install the most recent package in the available cache,
@@ -276,6 +277,7 @@ if __name__  == "__main__":
             cmd += ["-e", f"PKGS={target}"]
         elif target == "--interactive":
             interactive = True
+            cmd += ["-e", "INTERACTIVE=y"]
         else:
             pkg = Package.parse_arg(target)
             pkgs.append(pkg)

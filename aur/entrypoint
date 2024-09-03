@@ -11,6 +11,9 @@ OUT=${OUT:-/pkgs}
 sudo pacman -Syu --noconfirm ${PKGS:-}
 
 interactive_fixer() {
+   if [[ "${INTERACTIVE:-}" != "y" ]]; then
+      return
+   fi
    echo ""
    echo "Opening shell so that you may fix the cause of the above build failure"
    echo "'exit' the shell once fixed and it will attempt to continue building."

@@ -12,6 +12,10 @@ which rg &>/dev/null && \
 which exa &>/dev/null && \
     alias ls="exa -l --git" || \
     alias ls="ls -lFh --color=auto"
+#### TODO: figure out where exa->eza rename is
+which eza &>/dev/null && \
+    alias ls="eza -l --git" || \
+    alias ls="ls -lFh --color=auto"
 ## 'diff'
 which colordiff &>/dev/null && \
     alias diff="colordiff"

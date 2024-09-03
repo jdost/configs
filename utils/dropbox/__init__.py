@@ -2,14 +2,15 @@ from cfgtools.files import (HOME, XDG_CONFIG_HOME, InputType,
                             RegisteredFileAction, UserBin, convert_loc,
                             normalize)
 from cfgtools.hooks import after
-from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
 from cfgtools.system.systemd import UserService, ensure_service
 from cfgtools.utils import run
 
 NAME = normalize(__name__)
 
-packages = {Pacman("qt5-base")}
+# NOTE: import the `xorg` or `wayland` submodules to get the correct
+# dependencies
+#packages = {Pacman("qt5-base")}
 virtualenv = VirtualEnv("maestral", "maestral", "maestral-qt")
 files = [
     UserBin(virtualenv.location / "bin/maestral", "maestral"),

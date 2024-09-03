@@ -11,7 +11,7 @@ import languages.python
 import shells.zsh
 import utils.cal
 import utils.docker
-import utils.dropbox
+import utils.dropbox.xorg
 import utils.ssh
 import utils.tmux
 import utils.unclutter

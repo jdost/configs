@@ -10,8 +10,8 @@ if &t_Co >= 256
   endif
   syntax on
 
-  hi Normal ctermbg=none
-  hi Nontext ctermbg=none
+  hi Normal ctermbg=none guibg=none
+  hi Nontext ctermbg=none guibg=none
 endif
 
 set synmaxcol=300

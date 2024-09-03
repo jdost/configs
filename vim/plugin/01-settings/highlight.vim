@@ -13,5 +13,5 @@ hi LspReferenceText ctermfg=211
 hi LspReferenceRead ctermfg=201
 hi LspReferenceWrite ctermfg=221
 
-hi FloatBorder ctermbg=None
+hi FloatBorder ctermbg=None guibg=None
 " }}}

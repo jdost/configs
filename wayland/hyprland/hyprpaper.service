@@ -1,0 +1,11 @@
+[Unit]
+Description=Wayland wallpaper display daemon
+PartOf=wayland.target
+
+[Service]
+ExecStart=hyprpaper
+ExecStartPost=%h/.local/bin/wallpaper
+Restart=always
+
+[Install]
+WantedBy=wayland.target

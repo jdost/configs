@@ -1,0 +1,257 @@
+button {
+    all: unset;
+    margin: 0;
+    padding: 0;
+}
+
+menuitem {
+    color: #FFFFFF;
+    border-radius: 0.5em;
+}
+
+menu {
+    background: rgba(0, 0, 0, 0.7);
+    font-size: 10px;
+    border-radius: 0.5em;
+    outline-width: 0;
+    border-width: 0;
+    padding: 0;
+}
+
+tooltip {
+    all: unset;
+    border-radius: 1em;
+    background: rgba(212, 212, 212, 0.65);
+    font-size: 0.7em;
+    padding: 4px;
+    margin: 5px;
+}
+
+tooltip * {
+    color: #111111;
+    padding: 0;
+    margin: 0;
+}
+
+.accent {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
+    min-height: 35px;
+}
+.accent * {
+    min-height: 35px;
+}
+
+.bar .left,
+.bar .right {
+    margin: 4px 8px 8px;
+    padding: 1px 4px;
+    border-radius: 20px;
+    background-color: rgba(34, 34, 34, 0.7);
+}
+
+.bar .left {
+    font-size: 1.0em;
+    min-height: 1.5em;
+    padding: 2px;
+}
+
+.bar .right {
+    font-size: 0.8em;
+    padding: 1px 8px;
+}
+
+.workspaces {
+    padding: 1px 4px;
+}
+
+.ws-button {
+    font-size: 1.1em;
+    font-family: "Hack Nerd Font Mono";
+    min-width: 10px;
+    border-radius: 4em;
+    margin: 2px 3px 2px 2px;
+    padding: 0 6px;
+    background-color: rgba(122, 122, 122, 0.3);
+    transition-timing-function: linear;
+}
+
+.ws-button.focused.occupied,
+.ws-button.focused.occupied:hover,
+.ws-button.focused,
+.ws-button.focused:hover {
+    background-color: rgba(200, 200, 200, 1.0);
+    color: #000000;
+}
+
+.ws-button.occupied {
+    background-color: rgba(34, 204, 221, 0.6);
+    color: #000000;
+}
+
+.ws-button.occupied:hover {
+    background-color: rgba(34, 204, 221, 1.0);
+    color: #000000;
+}
+
+.ws-button:hover {
+    background-color: rgba(100, 100, 100, 1.0);
+    color: #FFFFFF;
+}
+
+.right .clock {
+    font-family: monospace;
+    padding: 0 4px 0 8px;
+}
+
+.right .tray button {
+    margin: 0 1px;
+}
+.right .tray {
+    padding-left: 4px;
+}
+
+.right .icons {
+    background-color: rgba(100, 100, 100, 0.7);
+    border-radius: 35px;
+    min-width: 10px;
+    margin: 4px 0 3px 8px;
+    padding: 0 8px;
+    font-size: 1.2em;
+}
+
+.network label {
+    font-size: 1.7em;
+    margin: -4px 0;
+}
+.network .badge {
+    font-size: 5px;
+    margin: 10px 0 0 10px;
+}
+
+.cpu label,
+.memory label {
+    font-size: 1.5em;
+    margin: -4px 0;
+}
+
+.bluetooth label {
+    color: rgb(153, 153, 153);
+}
+.bluetooth label.enabled {
+    color: rgb(255, 255, 255);
+}
+.bluetooth label.enabled.connected {
+    color: rgb(85, 170, 255);
+}
+
+.bluetooth-connections > box {
+    background-color: rgba(34, 34, 34, 0.5);
+    border-radius: 15px;
+    padding: 8px;
+    margin: 5px 10px;
+}
+.bluetooth-connections box button {
+    border-radius: 5px;
+    background-color: rgba(34, 34, 34, 0.05);
+    margin: 0 1px;
+    padding: 4px;
+    font-size: 0.6em;
+}
+.bluetooth-connections button.connected,
+.bluetooth-connections button:checked {
+    background: rgba(120, 120, 120, 0.8);
+}
+.bluetooth-connections button:hover {
+    background: rgba(185, 185, 185, 0.8);
+    color: rgb(34, 34, 34);
+}
+
+.notifications {
+    min-width: 1px;
+    min-height: 1px;
+}
+.notification {
+    min-width: 250px;
+    background-color: rgba(60, 60, 60, 0.3);
+    padding: 1em;
+    border-radius: 0.75em;
+    margin: 2px 8px;
+}
+.notification .icon .image {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.notification .icon,
+.notification .icon box {
+    min-width: 38px;
+    min-height: 38px;
+    font-size: 38px;
+    padding: 0 10px 0 0;
+}
+.notification .title {
+    font-weight: bold;
+}
+
+.leveldot {
+    margin: 0;
+}
+.leveldot:nth-child(2) label {
+    margin-left: -0.3em;
+    margin-right: -0.2em;
+}
+
+.leveldot label:nth-child(1) {
+    color: rgb(102, 102, 102);
+    letter-spacing: -4px;
+}
+.leveldot label:nth-child(2) {
+    color: rgb(255, 0, 0);
+}
+.leveldot label:nth-child(3) {
+    color: rgb(255, 102, 0);
+}
+.leveldot label:nth-child(4) {
+    color: rgb(255, 255, 0);
+}
+.leveldot label:nth-child(5) {
+    color: rgb(0, 255, 0);
+}
+
+#ags\.osd {
+    background-color: transparent;
+    font-size: 2em;
+}
+
+.osd {
+    background-color: transparent;
+    margin-bottom: 1.5em;
+}
+.osd box {
+    border-radius: 1.1em;
+    padding: 0.5em 1em;
+    background-color: rgba(34, 34, 34, 0.6);
+    color: #FFFFFF;
+}
+.osd levelbar,
+.osd levelbar trough {
+    background-color: transparent;
+    border: 0;
+}
+.osd levelbar .filled {
+    margin: 5px;
+    min-height: 6px;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+.osd levelbar.muted .filled {
+    background-color: rgba(34, 34, 34, 0.75);
+}
+.osd levelbar .empty {
+    margin: 3px;
+    background-color: rgba(125, 125, 125, 0.6);
+}
+.osd levelbar .empty,
+.osd levelbar .filled {
+    border-radius: 2em;
+    border: 0;
+}

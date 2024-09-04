@@ -1,0 +1,9 @@
+[Unit]
+Description=Extensible status bar and notifications
+PartOf=wayland.target
+
+[Service]
+ExecStart=ags
+
+[Install]
+WantedBy=wayland.target

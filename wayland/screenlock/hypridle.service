@@ -1,0 +1,9 @@
+[Unit]
+Description=Wayland screenlock manager
+PartOf=wayland.target
+
+[Service]
+ExecStart=hypridle
+
+[Install]
+WantedBy=wayland.target

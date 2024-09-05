@@ -1,27 +1,19 @@
+// Setting loading, defaults w/ configured overrides
+import defaultSettings from "./defaultSettings.js";
+const loadedSettings = JSON.parse(
+  Utils.readFile(`${App.configDir}/settings.json`) || "{}",
+);
+const settings = { ...defaultSettings, ...loadedSettings };
+
+import accent from "./widgets/accent.js";
 import bar from "./widgets/bar.js";
 import notifications from "./widgets/notifications.js";
 import osd from "./widgets/osd.js";
-import "./modules/hyprland.js";
-import "./modules/audio.js";
-import "./modules/bluetooth.js";
-import "./modules/battery.js";
-import "./modules/network.js";
-import "./modules/cpu.js";
-import "./modules/memory.js";
-import "./modules/systray.js";
-import "./modules/clock.js";
 
-const accent = Widget.Window({
-  name: "ags.accent",
-  class_name: "accent",
-  exclusivity: "ignore",
-  anchor: ["top", "left", "right"],
-  child: Widget.CenterBox({
-    center_widget: Widget.Box({
-      children: [],
-    }),
-  }),
-});
+// Dynamically load the modules based on config
+for (const module of settings.widgets) {
+  await import(`./modules/${module}.js`);
+}
 
 App.resetCss();
 Utils.monitorFile(`${App.configDir}/style.css`, function () {
@@ -32,5 +24,10 @@ Utils.monitorFile(`${App.configDir}/style.css`, function () {
 App.config({
   style: "./style.css",
   iconTheme: "Papirus",
-  windows: [accent, bar(0), osd(0), notifications()],
+  windows:
+    [
+      bar(settings.monitor),
+      osd(settings.monitor),
+      notifications(settings.monitor),
+    ] + (settings.accent ? [accent(settings.monitor)] : []),
 });

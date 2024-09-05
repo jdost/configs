@@ -93,7 +93,7 @@ function NotificationPopup(notification) {
   });
 }
 
-export default function setup_notifications() {
+export default function setup_notifications(monitor = 0) {
   const notificationList = Widget.Box({
     class_name: "notifications",
     vertical: true,
@@ -133,6 +133,7 @@ export default function setup_notifications() {
   return Widget.Window({
     name: "ags.notifications",
     class_name: "notification-popups",
+    monitor,
     anchor: ["top", "right"],
     child: notificationList,
     css: "min-height: 2px; min-width: 2px;",

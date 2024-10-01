@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN \
     --mount=type=cache,target=/var/cache/apt \
@@ -6,6 +6,7 @@ RUN \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
+        libdeflate0 \
         libegl1 \
         libfontconfig1 \
         libglx0 \
@@ -13,6 +14,7 @@ RUN \
         libopengl0 \
         libsm6 \
         libx11-6 \
+        libxcb-cursor0 \
         libxcb-icccm4 \
         libxcb-image0 \
         libxcb-keysyms1 \
@@ -26,6 +28,7 @@ RUN \
         libxkbfile1 \
         libxrandr2 \
         libxtst6 \
+        locales \
         tar \
         xdg-utils \
         xz-utils \
@@ -34,7 +37,7 @@ RUN \
         /usr/share/man \
         /usr/share/doc
 
-ARG VERSION=6.24.0
+ARG VERSION=7.17.0
 
 RUN mkdir -p /opt/calibre \
     && curl \

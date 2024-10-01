@@ -27,7 +27,7 @@ const memoryInterval = Utils.interval(1000, function () {
 add_icon(
   Widget.EventBox({
     class_name: "memory",
-    child: GradientIcon("", memoryUsage.bind()),
+    child: GradientIcon("", "Memory", memoryUsage.bind()),
     on_primary_click: function (_) {
       console.log(`Memory: ${memoryUsage.value}`);
     },

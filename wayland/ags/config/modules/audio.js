@@ -41,7 +41,6 @@ add_icon(
         children: [sources],
       });
       menu.popup_at_pointer(e);
-      console.log("test");
     },
   }),
   10,
@@ -63,9 +62,6 @@ register_hook({
       current_state[1] === last_state[1]
     ) {
       return false;
-    } else {
-      console.log("Before", last_state);
-      console.log("After", current_state);
     }
 
     last_state = current_state;
@@ -95,8 +91,6 @@ register_hook({
       return false;
     }
 
-    console.log("Before", last_state);
-    console.log("After", current_state);
     last_state = current_state;
     return true;
   },

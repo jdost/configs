@@ -26,7 +26,7 @@ const cpuInterval = Utils.interval(1000, function () {
 add_icon(
   Widget.EventBox({
     class_name: "cpu",
-    child: GradientIcon("", cpuUsage.bind()),
+    child: GradientIcon("", "CPU", cpuUsage.bind()),
     on_primary_click: function (_) {
       console.log(cpuUsage.value);
     },

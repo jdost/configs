@@ -35,17 +35,17 @@ tooltip * {
 
 .accent {
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    min-height: 35px;
+    min-height: 2em;
 }
 .accent * {
-    min-height: 35px;
+    min-height: 2em;
 }
 
 .bar .left,
 .bar .right {
     margin: 4px 8px 8px;
     padding: 1px 4px;
-    border-radius: 20px;
+    border-radius: 1.2em;
     background-color: rgba(34, 34, 34, 0.7);
 }
 
@@ -67,61 +67,64 @@ tooltip * {
 .ws-button {
     font-size: 1.1em;
     font-family: "Hack Nerd Font Mono";
-    min-width: 10px;
+    min-width: 1.1em;
     border-radius: 4em;
-    margin: 2px 3px 2px 2px;
-    padding: 0 6px;
-    background-color: rgba(122, 122, 122, 0.3);
+    margin: 2px;
+    padding: 0 0.1em;
+    background-color: rgba(122, 122, 122, 0.2);
+    color: #999999;
     transition-timing-function: linear;
 }
 
-.ws-button.focused.occupied,
-.ws-button.focused.occupied:hover,
-.ws-button.focused,
-.ws-button.focused:hover {
-    background-color: rgba(200, 200, 200, 1.0);
-    color: #000000;
-}
-
+.ws-button:hover,
 .ws-button.occupied {
-    background-color: rgba(34, 204, 221, 0.6);
-    color: #000000;
-}
-
-.ws-button.occupied:hover {
-    background-color: rgba(34, 204, 221, 1.0);
-    color: #000000;
-}
-
-.ws-button:hover {
     background-color: rgba(100, 100, 100, 1.0);
     color: #FFFFFF;
 }
 
+.ws-button.visible.occupied,
+.ws-button.visible.occupied:hover,
+.ws-button.visible,
+.ws-button.visible:hover {
+    background-color: rgba(200, 200, 200, 1.0);
+    color: #000000;
+}
+
+.ws-button.focused {
+    background-color: rgba(34, 204, 221, 0.6);
+    color: #000000;
+}
+
+.ws-button.focused:hover {
+    background-color: rgba(34, 204, 221, 1.0);
+    color: #000000;
+}
+
 .right .clock {
     font-family: monospace;
-    padding: 0 4px 0 8px;
+    padding: 0 0.3em 0 0.6em;
+    letter-spacing: -0.1em;
 }
 
 .right .tray button {
-    margin: 0 1px;
+    margin: 0 0.25em;
 }
 .right .tray {
-    padding-left: 4px;
+    padding-left: 0.3em;
 }
 
 .right .icons {
     background-color: rgba(100, 100, 100, 0.7);
-    border-radius: 35px;
-    min-width: 10px;
-    margin: 4px 0 3px 8px;
-    padding: 0 8px;
+    border-radius: 3em;
+    min-width: 1.2em;
+    margin: 0.3em 0 0.2em 0.6em;
+    padding: 0 0.5em;
     font-size: 1.2em;
 }
 
 .network label {
     font-size: 1.7em;
-    margin: -4px 0;
+    margin: -0.3em 0;
 }
 .network .badge {
     font-size: 5px;
@@ -131,7 +134,7 @@ tooltip * {
 .cpu label,
 .memory label {
     font-size: 1.5em;
-    margin: -4px 0;
+    margin: -0.3em 0;
 }
 
 .bluetooth label {
@@ -167,15 +170,15 @@ tooltip * {
 }
 
 .notifications {
-    min-width: 1px;
-    min-height: 1px;
+    padding: 0 .5em;
 }
 .notification {
-    min-width: 250px;
-    background-color: rgba(60, 60, 60, 0.3);
+    min-width: 16em;
+    background-color: rgba(120, 120, 120, 0.3);
     padding: 1em;
     border-radius: 0.75em;
-    margin: 2px 8px;
+    margin: .5em;
+    color: #FEFEFE;
 }
 .notification .icon .image {
     background-size: contain;
@@ -191,6 +194,32 @@ tooltip * {
 }
 .notification .title {
     font-weight: bold;
+    margin-bottom: 0.2em;
+    margin-left: 0.1em;
+}
+.notification .text {
+    min-width: 12.5em;
+    margin-left: -0.1em;
+}
+.notification .actions {
+    min-height: 1px;
+}
+.notification .actions .action {
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 0.2em;
+    border-width: 1px;
+    border-color: #FFFFFF;
+    margin: 0.4em 0.4em -0.4em;
+    padding: 0.3em 0.6em;
+}
+.notification .actions .action:hover {
+    background-color: rgba(200, 200, 200, 0.7);
+}
+.notification .actions .action:first-child {
+    margin-left: 0;
+}
+.notification .actions .action:last-child {
+    margin-right: 0;
 }
 
 .leveldot {

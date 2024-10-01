@@ -44,9 +44,13 @@ function to_color([r, g, b]) {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-export const GradientIcon = function (label, levelBinding) {
+export const GradientIcon = function (label, name, levelBinding) {
   return Widget.Label({
+    class_name: name,
     label: label,
+    tooltip_text: levelBinding.as(function (level) {
+      return `${name}: ${level.toFixed(2)}%`;
+    }),
     css: levelBinding.as(function (level) {
       if (level === NaN) {
         return;

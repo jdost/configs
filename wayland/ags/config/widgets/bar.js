@@ -31,6 +31,7 @@ export default function build_bar(monitor = 0) {
     monitor,
     anchor: ["top", "left", "right"],
     exclusivity: "exclusive",
+    cursor: "default",
     child: Widget.CenterBox({
       start_widget: Widget.Box({
         hpack: "start",

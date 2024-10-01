@@ -15,9 +15,17 @@ for (const module of settings.widgets) {
   await import(`./modules/${module}.js`);
 }
 
+function apply_font_size() {
+  App.applyCss(`
+  window {
+    font-size: ${settings.fontSize}px;
+  }`)
+}
 App.resetCss();
+apply_font_size()
 Utils.monitorFile(`${App.configDir}/style.css`, function () {
   App.resetCss();
+  apply_font_size();
   App.applyCss(`${App.configDir}/style.css`);
 });
 
@@ -25,9 +33,9 @@ App.config({
   style: "./style.css",
   iconTheme: "Papirus",
   windows:
-    [
+    (settings.accent ? [accent(settings.monitor)] : []) + [
       bar(settings.monitor),
       osd(settings.monitor),
       notifications(settings.monitor),
-    ] + (settings.accent ? [accent(settings.monitor)] : []),
+    ],
 });

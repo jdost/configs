@@ -26,7 +26,18 @@ add_left((function Workspaces() {
                 attribute: workspace.id,
                 setup: function (self) {
                     self.hook(hyprland, function () {
-                        self.toggleClassName('focused', hyprland.active.workspace.id === workspace.id);
+                        var visible = false;
+                        hyprland.monitors.forEach(function (monitor) {
+                            if (monitor.activeWorkspace.id === workspace.id) {
+                                self.toggleClassName('focused', monitor.focused);
+                                self.toggleClassName('visible', !monitor.focused);
+                                visible = true;
+                            }
+                        });
+                        if (!visible) {
+                            self.toggleClassName('focused', false);
+                            self.toggleClassName('visible', false);
+                        }
                         self.toggleClassName('occupied', hyprland.getWorkspace(workspace.id)?.windows > 0);
                     });
                 },

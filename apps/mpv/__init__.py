@@ -16,4 +16,4 @@ files=[
 
 @after
 def hide_unwanted_mpv_entries() -> None:
-    [hide_xdg_entry(e) for e in ["lstopo", "qvidcap", "qv4l2"]]
+    [hide_xdg_entry(e) for e in ["qvidcap", "qv4l2"]]

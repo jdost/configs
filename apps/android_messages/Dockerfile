@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 # The installer is sourced from the project's github release page, so we can define
 #   the target version via an arg
-ARG VERSION=5.4.1
+ARG VERSION=5.4.5
 ARG DEB_RELEASE_URI=https://github.com/OrangeDrangon/android-messages-desktop/releases/download
 
 RUN \

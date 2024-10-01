@@ -75,6 +75,7 @@ exec docker run \
     --name $NAME \
     --volume $CONFIG_DIR:/config \
     --volume $DATA_DIR:/data \
+    --memory=256m \
     "${DOCKER_FLAGS_BASE[@]}" \
     "${DOCKER_FLAGS_X[@]}" \
     $IMAGE

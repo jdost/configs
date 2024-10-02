@@ -1,12 +1,11 @@
+import rofi
+import utils.icons.papirus
 from cfgtools.files import DesktopEntry, UserBin, XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
 
-import rofi
-import xorg.icons.papirus
-
 NAME = normalize(__name__)
 
-packages = {Pacman("maim"),Pacman("which"),Pacman("xclip")}
+packages = {Pacman("which")}
 files = [
     UserBin(f"{NAME}/screencap-menu.sh", "rofi-screencap"),
     XDGConfigFile(f"{NAME}/config.rasi", "rofi/themes/screencap.rasi"),

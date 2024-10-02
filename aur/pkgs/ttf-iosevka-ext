@@ -1,22 +1,22 @@
-_pkgver_major=2
-_pkgver_minor=1
-_pkgver_patch=0
+_pkgver_major=3
+_pkgver_minor=2
+_pkgver_patch=1
 
 pkgname="ttf-iosevka-ext"
 pkgver=${_pkgver_major}.${_pkgver_minor}.${_pkgver_patch}
-pkgrel=3
+pkgrel=0
 pkgdesc='Extended version of the ttf-iosevka font with additional glyphs'
 arch=('any')
 license=()
 url="https://github.com/ryanoasis/nerd-fonts"
 provides=('ttf-iosevka')
-source=("https://github.com/ryanoasis/nerd-fonts/releases/download/v${pkgver}/Iosevka.zip")
-sha256sums=('6bd29ef886b808d1d76dd85f82b8823452265fda582801734aab6f9460270de3')
+source=("https://github.com/ryanoasis/nerd-fonts/releases/download/v${pkgver}/IosevkaTerm.zip")
+sha256sums=('4d2c7fc44f215cd762ceab5167aa13285f179e83f36d56a1129c2871b9552080')
 
 package() {
    install -d "$pkgdir/usr/share/fonts/TTF/"
-   install -m644 "$srcdir/Iosevka Term Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Mono.ttf"
-   install -m644 "$srcdir/Iosevka Term Bold Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Bold Mono.ttf"
-   install -m644 "$srcdir/Iosevka Term Italic Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Italic Mono.ttf"
-   install -m644 "$srcdir/Iosevka Term Bold Italic Nerd Font Complete Mono.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Italic Bold Mono.ttf"
+   install -m644 "$srcdir/IosevkaTermNerdFontMono-Regular.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Mono.ttf"
+   install -m644 "$srcdir/IosevkaTermNerdFontMono-Bold.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Bold Mono.ttf"
+   install -m644 "$srcdir/IosevkaTermNerdFontMono-Italic.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Italic Mono.ttf"
+   install -m644 "$srcdir/IosevkaTermNerdFontMono-BoldItalic.ttf" "$pkgdir/usr/share/fonts/TTF/Iosevka Term Italic Bold Mono.ttf"
 }

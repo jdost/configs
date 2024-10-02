@@ -23,7 +23,7 @@ EOF
       local lspconfig = require('lspconfig')
 
       for _, server in ipairs(servers) do
-        if vim.fn.executable(server) == 1 and lspconfig[server] == nil then
+        if vim.fn.executable(server) == 1 then
           lspconfig[server].setup {
             on_attach = function(client, bufnr)
               vim.api.nvim_exec([[

@@ -1,7 +1,8 @@
+import json
 import shutil
 import subprocess
 from pathlib import Path
-from typing import List, Optional, Sequence, Set
+from typing import Dict, List, Optional, Sequence, Set
 
 from cfgtools.system import SystemPackage
 from cfgtools.utils import cmd_output
@@ -46,6 +47,8 @@ class Pacman(SystemPackage):
 
 class AUR(SystemPackage):
     PRIORITY = 2
+    LOOKUP_CACHE_FILE = (Path(__file__) / "../.aur_cache.json").resolve()
+    lookup_cache: Dict[str, str] = {}
 
     def __init__(self, name: str, pkgs: Optional[Sequence[str]] = None):
         self.is_local = False
@@ -67,8 +70,12 @@ class AUR(SystemPackage):
     @property
     def name(self) -> str:
         if not hasattr(self, "__name"):
+            if self.LOOKUP_CACHE_FILE.exists():
+                AUR.lookup_cache = json.loads(self.LOOKUP_CACHE_FILE.read_text())
             name = self._name
             if name.startswith("./"):
+                if name in AUR.lookup_cache:
+                    return AUR.lookup_cache[name]
                 # if the name is defined as a relative path, we need to do some
                 # parsing
                 pkgbuild = Path(name)
@@ -80,6 +87,8 @@ class AUR(SystemPackage):
                     pkgbuild = pkgbuild / "PKGBUILD"
 
                 self.__name = AUR.parse_name_pkgbuild(pkgbuild)
+                AUR.lookup_cache[name] = self.__name
+                self.LOOKUP_CACHE_FILE.write_text(json.dumps(AUR.lookup_cache))
             else:
                 self.__name = name
         return self.__name

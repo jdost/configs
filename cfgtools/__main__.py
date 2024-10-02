@@ -1,8 +1,7 @@
 import sys
 from importlib import __import__
 
-from cfgtools import files, system, hooks
-
+from cfgtools import files, hooks, system
 
 if __name__ == "__main__":
     dry_run = False

@@ -5,6 +5,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Optional, Sequence
 
+from cfgtools.files import InputType
+
 _SUDO_CHSH = False
 registered_packages = defaultdict(set)
 
@@ -34,19 +36,23 @@ class GitRepository(SystemPackage):
     PRIORITY = 10
     BASE_DIR = Path.home() / "src"
 
-    def __init__(self, remote: str, name: Optional[str] = None):
-        self.remote = remote
+    def __init__(self, remote: InputType, name: Optional[InputType] = None):
+        self.remote = str(remote)
         if not name:
-            _, name = remote.rsplit("/", 1)
+            _, name = self.remote.rsplit("/", 1)
             if name.endswith(".git"):
                 name = name[:-4]
 
-        self.name = name
+            self.name = self.BASE_DIR / name
+        elif isinstance(name, Path):
+            self.name = name
+        else:
+            self.name = self.BASE_DIR / name
         super().__init__()
 
     @property
     def local_path(self) -> Path:
-        return GitRepository.BASE_DIR / self.name
+        return self.name
 
     @classmethod
     def dry_run(cls, *repos: "GitRepository") -> None:

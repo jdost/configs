@@ -7,13 +7,15 @@ from cfgtools.system import SystemPackage
 
 
 def installed_pkgs() -> Set[str]:
-    return set(json.loads(
-            subprocess.run(
-                ["npm", "-g", "list", "--json"],
-                stdout=subprocess.PIPE,
-            ).stdout.decode("utf-8")
-        )["dependencies"].keys()
+    npm_output = json.loads(
+        subprocess.run(
+            ["npm", "-g", "list", "--json"],
+            stdout=subprocess.PIPE,
+        ).stdout.decode("utf-8")
     )
+    if "dependencies" not in npm_output:
+        return set()
+    return set(npm_output["dependencies"].keys())
 
 
 class NodePackage(SystemPackage):

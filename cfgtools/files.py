@@ -42,7 +42,7 @@ class RegisteredFileAction:
 
 
 class File(RegisteredFileAction):
-    """Basic symlinked file definition, you probably want one of the more 
+    """Basic symlinked file definition, you probably want one of the more
     specialized options defined in here.
     """
     src: Path

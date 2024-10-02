@@ -54,27 +54,35 @@ class AUR(SystemPackage):
         if not IS_ARCH:
             return
 
+        self._name = name
         if name.startswith("./"):
-            # if the name is defined as a relative path, we need to do some
-            # parsing
-            pkgbuild = Path(name)
-            if not pkgbuild.exists():
-                raise FileNotFoundError(pkgbuild)
-            if pkgbuild.is_dir():
-                if not (pkgbuild / "PKGBUILD").exists():
-                    raise FileNotFoundError(pkgbuild / "PKGBUILD")
-                pkgbuild = pkgbuild / "PKGBUILD"
-
-            self.name = AUR.parse_name_pkgbuild(pkgbuild)
             self.local_path = name
             self.is_local = True
-        else:
-            self.name = name
 
         super().__init__()
 
     def __repr__(self):
         return f"{self.__class__} {self.name}"
+
+    @property
+    def name(self) -> str:
+        if not hasattr(self, "__name"):
+            name = self._name
+            if name.startswith("./"):
+                # if the name is defined as a relative path, we need to do some
+                # parsing
+                pkgbuild = Path(name)
+                if not pkgbuild.exists():
+                    raise FileNotFoundError(pkgbuild)
+                if pkgbuild.is_dir():
+                    if not (pkgbuild / "PKGBUILD").exists():
+                        raise FileNotFoundError(pkgbuild / "PKGBUILD")
+                    pkgbuild = pkgbuild / "PKGBUILD"
+
+                self.__name = AUR.parse_name_pkgbuild(pkgbuild)
+            else:
+                self.__name = name
+        return self.__name
 
     @staticmethod
     def parse_name_pkgbuild(src: Path) -> str:

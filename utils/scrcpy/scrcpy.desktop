@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=scrcpy
+GenericName=Screen Mirroring of connected Android device
+Comment=Android device mirroring via adb
+Exec=scrcpy
+Icon=phone
+Terminal=false
+Categories=
+Keywords=Android

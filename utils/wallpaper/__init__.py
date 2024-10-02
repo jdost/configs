@@ -5,9 +5,9 @@ from cfgtools.system.systemd import ensure_service, UserService
 
 NAME = normalize(__name__)
 
-packages = {Pacman("feh"), Pacman("curl"), Pacman("which")}
+packages = {Pacman("curl"), Pacman("which")}
 files = [
-    UserBin(f"{NAME}/wallpaper.sh", "wallpaper"),
+    UserBin(f"{NAME}/wallpaper.py", "wallpaper"),
     UserService(f"{NAME}/wallpaper.service"),
     UserService(f"{NAME}/wallpaper.timer"),
     XinitRC(NAME, priority=90),

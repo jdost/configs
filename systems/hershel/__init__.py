@@ -1,33 +1,59 @@
-import apps.scrcpy
+import apps.android_messages
+import apps.calibre
+import apps.obsidian
 import apps.streamlink
+import apps.wezterm
 import apps.zathura
 import aur
+import auth.wayland
 import browsers.firefox
 import browsers.qutebrowser
-import browsers.web_xdg_open
+import browsers.web_xdg_open as web_xdg_open
 import git
 import gpg
+import languages.nodejs
 import languages.python
+import rofi.wayland
 import shells.zsh
-import utils.cal
+import utils.cgroups
 import utils.docker
-import utils.dropbox.xorg
+import utils.dropbox.wayland
+import utils.icons.papirus
+import utils.kubernetes
+import utils.scrcpy
+import utils.screenshot.wayland
 import utils.ssh
+import utils.streamdeck
 import utils.tmux
-import utils.unclutter
 import utils.user_dirs
 import utils.wallpaper
-import vim.neovim
-import xorg.icons.papirus
-import xorg.window_managers.bspwm
-from cfgtools.files import XDG_CONFIG_HOME, File, XinitRC
+import vim
+import wayland.ags
+import wayland.hyprland as hyprland
+from cfgtools.hooks import after
 from cfgtools.system import set_default_shell
+from cfgtools.system.arch import Pacman
+from cfgtools.utils import hide_xdg_entry
 
-browsers.web_xdg_open.set_default("firefox")
-
-File("systems/hershel/polybar", XDG_CONFIG_HOME / "polybar/system")
-File("systems/hershel/bspwmrc", XDG_CONFIG_HOME / "bspwm/system")
-File("systems/hershel/bspwm_external_rules.sh", XDG_CONFIG_HOME / "bspwm/external_rules")
-File("systems/hershel/sxhkdrc", XDG_CONFIG_HOME / "sxhkd/system")
-XinitRC("systems/hershel", priority=40)
 set_default_shell(shells.zsh.BIN)
+web_xdg_open.set_default("qutebrowser")
+configs = {
+    hyprland.HyprlandSettings("systems/hershel/hyprland.conf", "system", priority=90)
+}
+pkgs = {
+    Pacman("darktable"), Pacman("shotwell"), Pacman("luminancehdr"),  # Photography
+    Pacman("cifs-utils"),  # SMB mount
+    Pacman("imv"),  # Image Viewer
+}
+
+@after
+def hide_unwanted_xdg_entries() -> None:
+    """Try and move these as close to the source as possible, only system specific
+    packages should be addressed in here."""
+    for entry in [
+        "avahi-discover", "bssh", "bvnc", # avahi
+        "qv4l2", "qvidcap", # v4l/obs
+        "lstopo", # hwloc, transient from darktable
+        "electron32",  # electron, transient from webcord
+    ]:
+        hide_xdg_entry(entry)

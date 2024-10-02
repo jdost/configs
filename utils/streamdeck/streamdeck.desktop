@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Streamdeck
+GenericName=Streamdeck configuration
+Comment=Streamdeck configuration
+Exec=streamdeck
+Icon=input-dialpad
+Terminal=false
+Categories=Settings;HardwareSettings;
+Keywords=Input Streamdeck Customization

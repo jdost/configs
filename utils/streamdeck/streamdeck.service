@@ -1,0 +1,12 @@
+[Unit]
+Description=Streamdeck management daemon
+PartOf=xorg.target wayland.target
+
+[Service]
+Type=simple
+Environment="STREAMDECK_UI_CONFIG=%h/.config/streamdeck/streamdeck_ui.json"
+ExecStart=%h/.local/streamdeck/bin/streamdeck -n
+Restart=on-failure
+
+[Install]
+WantedBy=xorg.target wayland.target

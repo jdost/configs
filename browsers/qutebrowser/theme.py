@@ -1,5 +1,7 @@
 c.scrolling.bar = "when-searching"
 c.colors.webpage.darkmode.enabled = False
+# This is the hint given to websites for preferred scheme
+c.colors.webpage.preferred_color_scheme = "dark"
 
 # Color Scheme, dracula based
 c.colors.completion.category.bg = "#282A36"

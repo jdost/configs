@@ -31,3 +31,4 @@ c.new_instance_open_target_window = "last-focused"
 c.changelog_after_upgrade = "major"
 c.content.fullscreen.window = True
 c.tabs.mousewheel_switching = False
+c.tabs.select_on_remove = "last-used"

@@ -41,6 +41,7 @@ def set_default(browser: str) -> None:
         @after
         def register_default_browser() -> None:
             target = Path(which(browser))
+            DEFAULT_BROWSER.parent.mkdir(parents=True, exist_ok=True)
             # symlink DEFAULT_BROWSER -> target
             DEFAULT_BROWSER.symlink_to(target)
     elif DEFAULT_BROWSER.is_symlink():

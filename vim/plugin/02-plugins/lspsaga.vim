@@ -8,4 +8,6 @@ if has_key(g:plugs, 'lspsaga.nvim')
       }
     })
 EOF
+
+  hi HoverNormal ctermbg=None guibg=None
 endif

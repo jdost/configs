@@ -31,29 +31,52 @@ get() {  # retrieve the stored password as passed in
     local target=${1:-}
     [ -z "$target" ] && fail 'Need a password to retrieve' 7
     local output=${2:-xclip}
+    # Lazy attempt at differentiating x and wayland
+    if which xclip &>/dev/null; then
+        local is_xorg=1
+    else
+        local is_xorg=
+    fi
 
     # temporarily populate the clipboard with the value
     if [[ "$output" == "xclip" ]]; then
-        local prvs=$(xclip -selection 'clipboard' -out)
+        if [[ ! -z $is_xorg ]]; then
+            local prvs=$(xclip -selection 'clipboard' -out)
+        else
+            local prvs=$(wc-paste)
+        fi
         coproc (
             # generates the password and redirects into the clipboard
-            pass show "$target" 2>/dev/null \
-                | head -n1 | xclip -in -selection 'clipboard'
+            if [[ ! -z $is_xorg ]]; then
+                pass show "$target" 2>/dev/null \
+                    | head -n1 | xclip -in -selection 'clipboard'
+            else
+                pass show "$target" 2>/dev/null \
+                    | head -n1 | wl-copy
+            fi
             # after 30 seconds, restore to the old contentsb  b
             sleep 30
-            echo "$prvs" | xclip -in -selection 'clipboard'
+            if [[ ! -z $is_xorg ]]; then
+                echo "$prvs" | xclip -in -selection 'clipboard'
+            else
+                echo "$prvs" | wl-copy
+            fi
         )
     elif [[ "$output" == "xdotool" ]]; then
         coproc (
             # use a 0 second sleep to background this to allow rofi to close
             sleep 0
             # outputs the password into the active window
-            xdotool type --clearmodifiers --window $(
-                xdotool getactivewindow
-            ) --delay 5 $(
-                pass show "$target" 2>/dev/null \
-                    | head -n1
-            )
+            if [[ ! -z $is_xorg ]]; then
+                xdotool type --clearmodifiers --window $(
+                    xdotool getactivewindow
+                ) --delay 5 $(
+                    pass show "$target" 2>/dev/null \
+                        | head -n1
+                )
+            else
+                wtype -d 5 $(pass show "$target" 2> /dev/null | head -n1)
+            fi
         )
     else
         exit 6

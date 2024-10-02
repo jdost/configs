@@ -1,0 +1,5 @@
+if [[ ! -z "${PASSWORD_STORE_DIR:-}" ]]; then
+    systemctl --user import-environment PASSWORD_STORE_DIR
+fi
+
+# vim: ft=bash

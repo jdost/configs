@@ -42,25 +42,48 @@ copy() {  # temporarily populate the clipboard with the value
     local value=${1:-}
     [ -z "$value" ] && fail 'Nothing to copy'
     local time_window=${2:-30}
-    local prvs=$(xclip -selection 'clipboard' -out)
+    # Lazy attempt at differentiating x and wayland
+    if which xclip &>/dev/null; then
+        local is_xorg=1
+        local prvs=$(xclip -selection 'clipboard' -out)
+    else
+        local is_xorg=
+        local prvs=$(wc-paste)
+    fi
 
     coproc (
-        echo "$value" \
-            | xclip -in -selection 'clipboard'
+        if [[ ! -z $is_xorg ]]; then
+            echo "$value" | xclip -in -selection 'clipboard'
+        else
+            echo "$value" | wl-copy
+        fi
         sleep $time_window
-        echo "$prvs" \
-            | xclip -in -selection 'clipboard'
+        if [[ ! -z $is_xorg ]]; then
+            echo "$prvs" | xclip -in -selection 'clipboard'
+        else
+            echo "$prvs" | wl-copy
+        fi
     )
 }
 output() {  # output a value to the display after a short wait
     local value=${1:-}
     [ -z "$value" ] && fail 'Nothing to output'
     local time_window=${2:-1}
+    # Lazy attempt at differentiating x and wayland
+    if which xclip &>/dev/null; then
+        local is_xorg=1
+    else
+        local is_xorg=
+    fi
 
     coproc (
         sleep $time_window
-        local windowid=$(xdotool getactivewindow)
-        xdotool type --clearmodifiers --window $windowid --delay 5 -- $value
+        if [[ ! -z $is_xorg ]]; then
+            local windowid=$(xdotool getactivewindow)
+            xdotool type --clearmodifiers --window $windowid --delay 5 -- $value
+        else
+            wtype -d 5 $value
+        fi
     )
 }
 

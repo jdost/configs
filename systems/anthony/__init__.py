@@ -7,14 +7,14 @@ import git
 import gpg
 import gtk
 import languages.python
-import screenlock
 import shells.zsh
 import utils.bat
 import utils.cal
 import utils.docker
 import utils.dropbox.wayland
-import utils.maim
+import utils.icons.papirus
 import utils.opensnitch
+import utils.screenshot.wayland
 import utils.ssh
 import utils.tmux
 import utils.unclutter
@@ -22,8 +22,8 @@ import utils.user_dirs
 import utils.wallpaper
 import vim
 import xorg.autorandr
-import xorg.icons.papirus
 import xorg.polybar
+import xorg.screenlock
 import xorg.window_managers.bspwm
 from cfgtools.files import HOME, XDG_CONFIG_HOME, File, XinitRC
 from cfgtools.system import set_default_shell

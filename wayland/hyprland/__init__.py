@@ -1,7 +1,9 @@
 from pathlib import Path
 
+import wayland.hyprland.hypridle
 from cfgtools.files import File, InputType, XDGConfigFile, normalize
 from cfgtools.system.arch import Pacman
+from wayland import WaylandRC
 
 NAME = normalize(__name__)
 
@@ -14,9 +16,10 @@ class HyprlandSettings(File):
 
 
 packages = {
-    Pacman("hyprland"),
+    Pacman("hyprland"), Pacman("xdg-desktop-portal-hyprland"),
 }
 files = {
     XDGConfigFile(f"{NAME}/hyprland.conf", "hypr/hyprland.conf"),
     HyprlandSettings(f"{NAME}/hyprland.keys.conf", "keys"),
+    WaylandRC(f"{NAME}/waylandrc", "hyprland", priority=1),
 }

@@ -7,7 +7,7 @@ from utils import dropbox
 
 NAME = normalize(__name__)
 
-packages={Pacman("streamlink"), Pacman("xclip")}
+packages={Pacman("streamlink")}
 files=[
     XDGConfigFile(f"{NAME}/config", "streamlink/config"),
     DesktopEntry(f"{NAME}/streamlink.desktop"),

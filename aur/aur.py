@@ -11,6 +11,7 @@ from typing import Any, Dict, Sequence
 IMAGE_NAME = "aur_builder"
 PKG_FOLDER = Path(os.environ.get("AURHOME", Path.home() / ".local/aur"))
 DROPBOX_REPO = Path.home() / ".local/dropbox/aur"
+PACMAN_CACHE_VOLUME = "aur-pacman-cache"
 
 if not PKG_FOLDER.is_dir():
     PKG_FOLDER.mkdir(parents=True)
@@ -312,6 +313,30 @@ if __name__  == "__main__":
 
     to_be_built = [pkg.name for pkg in pkgs if pkg.needs_build]
     if to_be_built:
+        # get/create cache volume
+        volume_ls_raw = subprocess.run(
+            ["docker", "volume", "ls", "--format=json"], 
+            stdout=subprocess.PIPE,
+        ).stdout.decode("utf-8")
+        volume_exists = False
+        for volume_ls in volume_ls_raw.split("\n"):
+            if volume_ls == "":  # If *no* volumes exist, you get an empty line
+                continue
+
+            volume_name = json.loads(volume_ls).get("Name")
+            assert isinstance(volume_name, str)
+            if volume_name == PACMAN_CACHE_VOLUME:
+                volume_exists = True
+
+        if not volume_exists:
+            if subprocess.run(
+                ["docker", "volume", "create", PACMAN_CACHE_VOLUME], 
+                stdout=subprocess.PIPE,
+            ).returncode != 0:
+                print("ERROR: The caching volume failed to create.")
+                sys.exit(1)
+
+        cmd = cmd + ["-v", f"{PACMAN_CACHE_VOLUME}:/var/cache/pacman"]
         # checks if docker is running and attempts to start it if it isn't
         if subprocess.run(
             ["systemctl", "status", "docker"], stdout=subprocess.PIPE

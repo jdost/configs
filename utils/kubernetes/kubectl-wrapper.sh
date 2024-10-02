@@ -10,6 +10,9 @@ else
     BIN=$(which $TARGET_BIN)
 fi
 
-export KUBECONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/kubernetes/config
+# Allow for user to override this
+if [[ -z "${KUBECONFIG:-}" ]]; then
+    export KUBECONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/kubernetes/config
+fi
 
 exec $BIN "$@"

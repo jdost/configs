@@ -2,15 +2,17 @@ from pathlib import Path
 
 from cfgtools.files import DesktopEntry, File, normalize
 from cfgtools.hooks import after
-from cfgtools.system.arch import Pacman
+from cfgtools.system.arch import AUR, Pacman
 
 NAME = normalize(__name__)
 
 packages = {
     Pacman("firefox"),
     Pacman("firefox-decentraleyes"),
-    Pacman("firefox-extension-privacybadger"),
+    #AUR("firefox-extension-privacybadger"),
     Pacman("firefox-ublock-origin"),
+    Pacman("noto-fonts"),
+    Pacman("noto-fonts-emoji"),
 }
 files = [
     DesktopEntry(f"{NAME}/private.desktop", "firefox-private.desktop"),

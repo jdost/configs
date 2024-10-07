@@ -28,7 +28,7 @@ import utils.tmux
 import utils.user_dirs
 import utils.wallpaper
 import vim
-import wayland.ags
+import wayland.ags as ags
 import wayland.hyprland as hyprland
 from cfgtools.hooks import after
 from cfgtools.system import set_default_shell
@@ -38,12 +38,14 @@ from cfgtools.utils import hide_xdg_entry
 set_default_shell(shells.zsh.BIN)
 web_xdg_open.set_default("qutebrowser")
 configs = {
-    hyprland.HyprlandSettings("systems/hershel/hyprland.conf", "system", priority=90)
+    hyprland.HyprlandSettings("systems/hershel/hyprland.conf", "system", priority=90),
+    ags.AgsSettings("systems/hershel/ags_settings.json"),
 }
 pkgs = {
     Pacman("darktable"), Pacman("shotwell"), Pacman("luminancehdr"),  # Photography
     Pacman("cifs-utils"),  # SMB mount
     Pacman("imv"),  # Image Viewer
+    Pacman("gnome-bluetooth-3.0"),  # Bluetooth
 }
 
 @after

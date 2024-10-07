@@ -1,0 +1,5 @@
+{
+    "widgets": [
+        "hyprland", "audio", "cpu", "memory", "bluetooth", "systray", "clock"
+    ]
+}

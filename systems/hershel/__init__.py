@@ -33,6 +33,7 @@ import wayland.hyprland as hyprland
 from cfgtools.hooks import after
 from cfgtools.system import set_default_shell
 from cfgtools.system.arch import Pacman
+from cfgtools.system.systemd import ensure_service
 from cfgtools.utils import hide_xdg_entry
 
 set_default_shell(shells.zsh.BIN)
@@ -45,7 +46,7 @@ pkgs = {
     Pacman("darktable"), Pacman("shotwell"), Pacman("luminancehdr"),  # Photography
     Pacman("cifs-utils"),  # SMB mount
     Pacman("imv"),  # Image Viewer
-    Pacman("gnome-bluetooth-3.0"),  # Bluetooth
+    Pacman("gnome-bluetooth-3.0"), Pacman("bluez-utils"), # Bluetooth
 }
 
 @after
@@ -59,3 +60,9 @@ def hide_unwanted_xdg_entries() -> None:
         "electron32",  # electron, transient from webcord
     ]:
         hide_xdg_entry(entry)
+
+
+@after
+def enable_services() -> None:
+    """Enable services installed in here."""
+    ensure_service("bluetooth") 

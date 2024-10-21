@@ -14,7 +14,11 @@ msg() {
     fi
 }
 
-TARGET=$(xclip -out -selection clipboard)
+if which xclip &>/dev/null; then
+    TARGET=$(xclip -out -selection clipboard)
+else
+    TARGET=$(wl-paste)
+fi
 HANDLER="streamlink"
 
 if [[ -z "$TARGET" ]]; then
@@ -24,7 +28,7 @@ fi
 
 if [[ "$TARGET" =~ .*youtube\.com.* ]]; then
     # For youtube, try to use mpv directly since streamlink will refuse some videos
-    HANDLER="mpv"
+    HANDLER="mpv --quiet"
 fi
 
 if ! streamlink --can-handle-url "$TARGET"; then

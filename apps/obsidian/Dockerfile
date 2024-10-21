@@ -1,4 +1,4 @@
-from ubuntu:20.04
+FROM ubuntu:20.04
 
 ARG VERSION="1.6.7"
 ARG APPIMAGE_RELEASE_URI="https://github.com/obsidianmd/obsidian-releases/releases/download"

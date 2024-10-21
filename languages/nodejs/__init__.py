@@ -1,4 +1,5 @@
-from cfgtools.files import Folder, HOME, UserBin, XDGConfigFile, normalize
+from cfgtools.files import (HOME, EnvironmentFile, Folder, UserBin,
+                            XDGConfigFile, normalize)
 from cfgtools.system.arch import Pacman
 from cfgtools.system.node import NodePackage
 
@@ -16,4 +17,5 @@ files=[
     XDGConfigFile(f"{NAME}/npmrc", "npm/npmrc"),
     UserBin(f"{NAME}/wrapper.sh", "npm"),
     Folder(HOME / ".local/nodejs/lib"),
+    EnvironmentFile(NAME),
 ]

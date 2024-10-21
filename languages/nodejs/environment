@@ -1,0 +1,6 @@
+NPM_PREFIX=$(npm get prefix)
+if [[ "$PATH" != *$NPM_PREFIX/bin* ]]; then
+   export PATH="$NPM_PREFIX/bin:$PATH"
+fi
+
+# vim: ft=zsh

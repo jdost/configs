@@ -27,7 +27,7 @@ XDG_CACHE_HOME = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
 XDG_DATA_HOME = Path(
     os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")
 )
-SYSTEMD_RUN = "MANAGERPID" in os.environ
+SYSTEMD_RUN = sys.stdin.isatty()
 
 
 class CalEvent:

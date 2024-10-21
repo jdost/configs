@@ -14,9 +14,14 @@ from urllib.parse import urlparse
 from urllib.request import urlopen
 
 CACHED_PROP_KEY = "__cached"
+LOCK_FILE = Path(f"/run/user/{os.geteuid()}/wallpaper.lock")
 
 
 def is_wayland() -> bool:
+    """Detect whether being run in a wayland environment.
+
+    NOTE: this is really just detecting hyprland, will need to re-adjust if ever
+    used with a different WM."""
     if hasattr(is_wayland, CACHED_PROP_KEY):
         cached_prop = getattr(is_wayland, CACHED_PROP_KEY)
         assert isinstance(cached_prop, bool)
@@ -28,6 +33,14 @@ def is_wayland() -> bool:
 
 
 def calc_humanreadable_size(total_bytes: int) -> str:
+    """Convert a raw byte count into a human readable size w/ scaled prefixes
+
+    ex.
+    >>> calc_humanreadable_size(1024)
+    "1 KB"
+    >>> calc_humanreadable_size(102400)
+    "100 KB"
+    """
     PREFIXES = ["", "K", "M", "G", "T"]
     byte_size = float(total_bytes)
     for p in PREFIXES:
@@ -36,6 +49,24 @@ def calc_humanreadable_size(total_bytes: int) -> str:
         byte_size = byte_size / 1024
 
     return ""
+
+
+def is_locked() -> bool:
+    """Checks whether wallpaper change locking is enabled."""
+    return LOCK_FILE.exists()
+
+
+def toggle_lock(state: Optional[bool] = None) -> bool:
+    """Toggle the wallpaper change locking, explicit state if defined."""
+    if state is None:
+        state = not is_locked()
+
+    if state:
+        LOCK_FILE.touch()
+    elif LOCK_FILE.exists():
+        LOCK_FILE.unlink()
+
+    return LOCK_FILE.exists()
 
 
 class WallpaperSetter(ABC):
@@ -135,6 +166,9 @@ class WallpaperSet:
 
 
 def update_wallpaper(setter: HyprlandWallpaperSetter, wallpapers: WallpaperSet) -> None:
+    if is_locked():
+        print("Wallpaper changing locked, unlock with `wallpaper unlock`")
+        return
     wallpaper_updates: Dict[str, Path] = {}
     for monitor in setter.get_monitors():
         wallpaper = Path(f"/tmp/wallpaper.{monitor}")
@@ -187,10 +221,10 @@ def get_wallpaper(url: str) -> Optional[Path]:
 
 parser = argparse.ArgumentParser(description="Wallpaper managing script.")
 parser.add_argument(
-    "command", 
-    nargs="?", 
-    choices=["set", "upload", "info"], 
-    default="set", 
+    "command",
+    nargs="?",
+    choices=["set", "upload", "info", "lock", "unlock", "toggle"],
+    default="set",
     help="Subcommand to run. (default: %(default)s)",
 )
 
@@ -206,3 +240,9 @@ if __name__ == "__main__":
         wallpapers.print_info()
     elif args.command == "upload":
         upload_wallpapers(wallpapers)
+    elif args.command == "toggle":
+        toggle_lock()
+    elif args.command == "lock":
+        toggle_lock(True)
+    elif args.command == "unlock":
+        toggle_lock(False)

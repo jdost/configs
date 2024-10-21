@@ -23,6 +23,8 @@ virtualenv = VirtualEnv("python-code-tools", *python_tools)
 packages = {
     Pacman("python"),
     Pacman("python-pip"),
+    Pacman("python-pipx"),
+    Pacman("python-poetry"),
     Pacman("python-wheel"),
     Apt("python3"),
     Apt("python3-pip"),

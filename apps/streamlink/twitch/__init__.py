@@ -25,4 +25,3 @@ def enable_twitch_service() -> None:
 @after
 def hide_unwanted_xdg_entries() -> None:
     hide_xdg_entry("twitch-indicator")
-    hide_xdg_entry("twitch-indicator-auth")

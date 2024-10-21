@@ -3,8 +3,4 @@ player-args=--cache 2048
 title={author} - {title}
 player-continuous-http
 default-stream=best
-hls-segment-threads=3
-
-twitch-disable-ads
-twitch-disable-hosting
-twitch-disable-reruns
+stream-segment-threads=3

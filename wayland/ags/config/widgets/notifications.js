@@ -46,7 +46,7 @@ function NotificationPopup(notification) {
   });
 
   const body = Widget.Box({
-    vpack: 'start',
+    vpack: "start",
     hexpand: true,
     vexpand: true,
     children: [
@@ -94,20 +94,20 @@ function NotificationPopup(notification) {
       child: Widget.Box({
         class_name: `notification ${notification.urgency}`,
         vertical: true,
-        vpack: 'start',
+        vpack: "start",
         hexpand: true,
         vexpand: true,
         children: [
           Widget.Box({
             vexpand: true,
-            vpack: 'start',
+            vpack: "start",
             children: [
               icon,
               Widget.Box({
                 orientation: 1,
                 hexpand: true,
-                vpack: 'start',
-                class_name: 'text',
+                vpack: "start",
+                class_name: "text",
                 children: [title, body],
               }),
             ],
@@ -118,7 +118,6 @@ function NotificationPopup(notification) {
     }),
   });
 }
-
 
 export default function setup_notifications(monitor = 0) {
   const notificationList = Widget.Box({
@@ -131,13 +130,15 @@ export default function setup_notifications(monitor = 0) {
     function (_, id) {
       const notification = notifications.getNotification(id);
       if (notification) {
-        const notificationPopup = NotificationPopup(notification)
+        const notificationPopup = NotificationPopup(notification);
         notificationList.children = [
           notificationPopup,
           ...notificationList.children,
-        ]
+        ];
         Utils.timeout(notification.timeout + 5, notification.dismiss);
-        Utils.timeout(5, function () { notificationPopup.reveal_child = true; });
+        Utils.timeout(5, function () {
+          notificationPopup.reveal_child = true;
+        });
       }
     },
     "notified",
@@ -147,9 +148,8 @@ export default function setup_notifications(monitor = 0) {
     function (_, id) {
       notificationList.children
         .find(function (popup) {
-          if (!popup.attribute) { return; }
-          if (popup.attribute.id === id)  // TODO remove
-            console.log(`Dismissing: ${id}`);
+          if (!popup.attribute)
+            return;
           return popup.attribute.id === id;
         })
         ?.destroy();

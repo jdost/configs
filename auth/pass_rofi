@@ -43,7 +43,7 @@ get() {  # retrieve the stored password as passed in
         if [[ ! -z $is_xorg ]]; then
             local prvs=$(xclip -selection 'clipboard' -out)
         else
-            local prvs=$(wc-paste)
+            local prvs=$(wl-paste)
         fi
         coproc (
             # generates the password and redirects into the clipboard

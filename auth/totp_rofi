@@ -48,7 +48,7 @@ copy() {  # temporarily populate the clipboard with the value
         local prvs=$(xclip -selection 'clipboard' -out)
     else
         local is_xorg=
-        local prvs=$(wc-paste)
+        local prvs=$(wl-paste)
     fi
 
     coproc (

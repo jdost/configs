@@ -76,6 +76,13 @@ tooltip * {
     transition-timing-function: linear;
 }
 
+.workspaces .ws-button.monitor-1:first-child,
+.workspaces .ws-button.monitor-2:first-child,
+.workspaces .ws-button.monitor-3:first-child,
+.workspaces .ws-button.monitor-4:first-child {
+    margin-left: 12px;
+}
+
 .ws-button:hover,
 .ws-button.occupied {
     background-color: rgba(100, 100, 100, 1.0);

@@ -17,14 +17,19 @@ const default_icon = "";
 add_left(
   (function Workspaces() {
     const activeId = hyprland.active.workspace.bind("id");
+    var monitorID = "";
     const workspaces = hyprland.bind("workspaces").as((workspaces) =>
-      workspaces.map(function (workspace) {
+      workspaces.map(function (workspace, index) {
+        const newMonitor =
+          index > 0 ? monitorID !== workspace.monitorID : false;
+        monitorID = workspace.monitorID;
         var button = Widget.Button({
           on_primary_click: () =>
             hyprland.messageAsync(`dispatch workspace ${workspace.id}`),
           cursor: "pointer",
           child: Widget.Label(name_icons[workspace.name] || default_icon),
-          class_name: "ws-button",
+          class_names: ["ws-button", `monitor-${workspace.monitorID}`],
+          css: newMonitor ? "margin-left: 12px" : "",
           attribute: workspace.id,
           setup: function (self) {
             self.hook(hyprland, function () {

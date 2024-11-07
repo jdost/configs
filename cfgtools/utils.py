@@ -44,6 +44,10 @@ def hide_xdg_entry(entry: str) -> None:
     src_entry = Path(f"/usr/share/applications/{entry}.desktop")
     hidden_entry = Path.home() / f".local/share/applications/{entry}.desktop"
 
+    if not src_entry.exists():
+        print(f"Target entry ({src_entry}) doesn't exist, skipping...")
+        return None
+
     if hidden_entry.exists():
         return None
 

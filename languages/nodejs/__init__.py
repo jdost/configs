@@ -16,6 +16,7 @@ packages={
 files=[
     XDGConfigFile(f"{NAME}/npmrc", "npm/npmrc"),
     UserBin(f"{NAME}/wrapper.sh", "npm"),
+    UserBin(f"{NAME}/wrapper.sh", "npx"),
     Folder(HOME / ".local/nodejs/lib"),
     EnvironmentFile(NAME),
 ]

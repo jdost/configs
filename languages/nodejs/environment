@@ -1,4 +1,4 @@
-NPM_PREFIX=$(npm get prefix)
+NPM_PREFIX=$(npm get prefix 2>/dev/null)
 if [[ "$PATH" != *$NPM_PREFIX/bin* ]]; then
    export PATH="$NPM_PREFIX/bin:$PATH"
 fi

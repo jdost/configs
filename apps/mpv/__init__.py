@@ -10,6 +10,7 @@ NAME = normalize(__name__)
 packages={Pacman("mpv"), Pacman("yt-dlp")}
 files=[
     XDGConfigFile(f"{NAME}/mpv.conf"),
+    XDGConfigFile(f"{NAME}/yt-dlp", "yt-dlp/config"),
     browsers.web_xdg_open.SettingsFile(f"{NAME}/web-xdg-open", "mpv"),
 ]
 

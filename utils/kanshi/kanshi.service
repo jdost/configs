@@ -1,0 +1,9 @@
+[Unit]
+Description=Wayland adaptive displays
+PartOf=Wayland.target
+
+[Service]
+ExecStart=kanshi
+
+[Install]
+WantedBy=wayland.target

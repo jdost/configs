@@ -40,7 +40,7 @@ add_icon(
           network.bind("vpn"),
         ],
         function (primary, wired, wifi, vpn) {
-          if (wired.state === "connected") {
+          if (wired.state === "connected" || wired.state === "activated") {
             icon.label = "";
             self.tooltip_text = `Ethernet - ${wired.state}`;
           } else if (wifi.state === "connected" || wifi.state === "activated") {

@@ -15,6 +15,9 @@
 [pull]
     ff = only
 
+[help]
+    autocorrect = immediate
+
 [diff]
     renameLimit = 10240
 

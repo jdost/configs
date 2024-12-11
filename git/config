@@ -58,4 +58,8 @@
     changed = green
     untracked = cyan
 
+# Allow for local aliasing/replacement rules to be set without diffing this file
+[include]
+    path = ~/.config/git/replacements
+
 # vim: ft=gitconfig

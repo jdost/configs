@@ -1,5 +1,5 @@
 # General
-set sandbox normal  # strict hangs
+#set sandbox normal  # strict hangs
 set selection-clipboard clipboard
 set adjust-open best-fit  # options: best-fit width
 set dbus-service false  # enable for stuff like `SyncTeX`

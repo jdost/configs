@@ -1,5 +1,7 @@
-from cfgtools.files import XDGConfigFile
-from cfgtools.system.arch import Pacman, AUR
+from cfgtools.files import UserProfile, XDGConfigFile, normalize
+from cfgtools.system.arch import AUR, Pacman
+
+NAME = normalize(__name__)
 
 system_packages = {
     Pacman("zathura"), Pacman("zathura-pdf-mupdf"),
@@ -7,4 +9,5 @@ system_packages = {
 }
 files = [
     XDGConfigFile("apps/zathura/zathurarc", "zathura/zathurarc"),
+    UserProfile(NAME, "zathura"),
 ]

@@ -1,0 +1,5 @@
+## alias 'zathura' to be sandboxed
+which zathura-sandbox &>/dev/null && \
+    alias zathura="zathura-sandbox"
+
+# vim: ft=zsh

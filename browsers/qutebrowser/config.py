@@ -17,6 +17,7 @@ searchengines = {
     "arch": "https://wiki.archlinux.org/?search={}",
     "archpkg": "https://archlinux.org/packages/?q={}",
     "aur": "https://aur.archlinux.org/packages/?O=0&K={}",
+    "apt": "https://packages.ubuntu.com/search?keywords={}&searchon=names",
 }
 c.url.searchengines = {
     "DEFAULT": searchengines[DEFAULT],

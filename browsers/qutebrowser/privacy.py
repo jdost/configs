@@ -5,6 +5,10 @@ c.content.blocking.adblock.lists = [
     "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt",
     "https://easylist.to/easylist/fanboy-social.txt",
     "https://secure.fanboy.co.nz/fanboy-annoyance.txt",
+    # uBlock Origin
+    "https://github.com/uBlockOrigin/uAssets/raw/refs/heads/master/filters/legacy.txt",
+    "https://github.com/uBlockOrigin/uAssets/raw/refs/heads/master/filters/privacy.txt",
+    "https://github.com/uBlockOrigin/uAssets/raw/refs/heads/master/filters/filters.txt",
 ]
 c.content.blocking.enabled = True
 c.content.blocking.method = "auto"

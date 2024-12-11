@@ -1,8 +1,8 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # The installer is sourced from the project's github release page, so we can define
 #   the target version via an arg
-ARG VERSION=5.4.5
+ARG VERSION=5.6.0
 ARG DEB_RELEASE_URI=https://github.com/OrangeDrangon/android-messages-desktop/releases/download
 
 RUN \
@@ -10,19 +10,28 @@ RUN \
     apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
+        libappindicator3-1 \
         libasound2 \
         libdrm2 \
         libgbm1 \
+        libgtk-3-0 \
+        libnotify4 \
+        libnss3 \
+        libsecret-1-0 \
         libx11-xcb1 \
+        libxss1 \
+        libxtst6 \
         wget \
         xclip \
-    && wget --quiet -O /tmp/android-messages.deb $DEB_RELEASE_URI/v${VERSION}/Android.Messages-v${VERSION}-linux-amd64.deb \
-    && apt install -y --no-install-recommends /tmp/android-messages.deb \
-    && rm -rf /tmp/android-messages.deb \
-        /var/lib/apt/lists/* \
+        xdg-utils \
+    && rm -rf /var/lib/apt/lists/* \
         /var/log/* \
         /usr/share/man \
         /usr/share/doc
+
+RUN wget --quiet -O /tmp/android-messages.deb $DEB_RELEASE_URI/v${VERSION}/Android-Messages-v${VERSION}-linux-amd64.deb \
+    && apt install -y --no-install-recommends /tmp/android-messages.deb \
+    && rm -rf /tmp/android-messages.deb
 
 # Because we use volume mounting, we want to keep the runtime UID and GID the same
 #   as on the host

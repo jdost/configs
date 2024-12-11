@@ -37,7 +37,7 @@ RUN \
         /usr/share/man \
         /usr/share/doc
 
-ARG VERSION=7.17.0
+ARG VERSION=7.22.0
 
 RUN mkdir -p /opt/calibre \
     && curl \

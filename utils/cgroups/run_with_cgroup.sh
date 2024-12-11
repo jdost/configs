@@ -24,8 +24,6 @@ lookup_cgroup() {
         if grep "^$cmd " $map >&/dev/null; then
             echo $(grep "^$cmd " $map | cut -d' ' -f2)
             return 0
-        else
-            echo "$cmd" >> $HOME/tmp/cgroups.log
         fi
     fi
     echo ""

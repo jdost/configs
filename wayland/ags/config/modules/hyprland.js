@@ -23,6 +23,9 @@ add_left(
         const newMonitor =
           index > 0 ? monitorID !== workspace.monitorID : false;
         monitorID = workspace.monitorID;
+        if (workspace.id < 0) {
+          return;
+        }
         var button = Widget.Button({
           on_primary_click: () =>
             hyprland.messageAsync(`dispatch workspace ${workspace.id}`),

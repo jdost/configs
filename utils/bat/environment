@@ -1,6 +1,5 @@
 # Shell Alias: 'cat'
 which bat &>/dev/null && \
-    alias cat="bat --paging=never" && \
-    export MANPAGER="sh -c 'col -bx | bat -l man -p --paging auto'"
+    alias cat="bat --paging=never"
 
 # vim: ft=zsh

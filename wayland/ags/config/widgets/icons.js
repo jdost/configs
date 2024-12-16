@@ -60,8 +60,8 @@ export const GradientIcon = function (label, name, levelBinding) {
         return `color: ${to_color(GRADIENT[gradientLevel])};`;
       }
 
-      const low = GRADIENT[Math.floor(gradientLevel)];
-      const high = GRADIENT[Math.ceil(gradientLevel)];
+      const low = GRADIENT[Math.floor(gradientLevel)] || GRADIENT[0];
+      const high = GRADIENT[Math.ceil(gradientLevel)] || GRADIENT[GRADIENT.length - 1];
       var color = [
         Math.round(low[0] + (high[0] - low[0]) * (gradientLevel % 1)),
         Math.round(low[1] + (high[1] - low[1]) * (gradientLevel % 1)),

@@ -9,6 +9,7 @@ const popup = Popup({
     window.class_names.push("bluetooth-connections");
 
     var popupButtons = bluetooth.devices.map(function (dev) {
+      if (!dev.paired) return;
       return Widget.Button({
         class_name: dev.connected ? "connected" : "",
         cursor: "pointer",
@@ -54,7 +55,6 @@ const popup = Popup({
   },
 });
 
-
 add_icon(
   Widget.EventBox({
     class_name: "bluetooth",
@@ -71,10 +71,13 @@ add_icon(
 
             if (!enabled) {
               self.label = "󰂲";
+              self.tooltip_text = "Controller: Off";
             } else if (devices.length > 0) {
               self.label = "󰂱";
+              self.tooltip_text = `Connected: {devices.length} device(s)`;
             } else {
               self.label = "󰂯";
+              self.tooltip_text = "Controller: On";
             }
           },
         );

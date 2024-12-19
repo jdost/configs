@@ -34,7 +34,11 @@ time_alias() { sed 's# week\(s*\),#w#; s# day\(s*\),#d#; s# hour\(s*\),#h#; s# m
 echo ''
 #  User: $USER   Host: $HOST   Directory: $PWD
 echo -en "  $(light_green 'User:') $(blue $USER)"
-echo -en "\t$(light_green 'Host:') $(blue $(cat /proc/sys/kernel/hostname))"
+if which hostname &>/dev/null; then
+    echo -en "\t$(light_green 'Host:') $(blue $(hostname))"
+else
+    echo -en "\t$(light_green 'Host:') $(blue $(cat /proc/sys/kernel/hostname))"
+fi
 echo -en "\t$(light_green 'Directory:') $(blue $(echo $PWD | sed "s#$HOME#\~#"))"
 echo ''
 #   TTY: $TTY   Jobs: #JOBS    Shell: $SHELL
@@ -76,8 +80,8 @@ if [[ ! -z "${VIRTUAL_ENV:-}" ]]; then
     secho "  $(brown 'Virtual Environment:') $(white $(basename ${VIRTUAL_ENV}))"
 fi
 if [[ ! -z "${SSH_CONNECTION:-}" ]]; then
-    ssh_client=$(echo $SSH_CONNECTION | cut -d' ' -f1-2 --output-delimiter=':')
-    ssh_host=$(echo $SSH_CONNECTION | cut -d' ' -f3-4 --output-delimiter=':')
+    ssh_client=$(echo $SSH_CONNECTION | awk '{ print $1":"$2 }')
+    ssh_host=$(echo $SSH_CONNECTION | awk '{ print $3":"$4 }')
     secho "  $(brown 'SSH:') $(white $ssh_client)$(yellow '->')$(white $ssh_host)"
 fi
 if [[ ! -z "${TMUX:-}" ]]; then

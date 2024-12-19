@@ -1,4 +1,5 @@
-if [[ "$PATH" != *$HOME/.local/bin* ]]; then
+# Always ensure this takes precedence
+if [[ "$PATH" != $HOME/.local/bin* ]]; then
    export PATH="$HOME/.local/bin:$PATH"
 fi
 

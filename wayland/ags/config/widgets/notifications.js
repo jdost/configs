@@ -34,7 +34,7 @@ function NotificationPopup(notification) {
   });
 
   const title = Widget.Label({
-    class_name: "title",
+    class_name: "summary",
     xalign: 0,
     justification: "left",
     hexpand: true,
@@ -75,6 +75,9 @@ function NotificationPopup(notification) {
         cursor: "pointer",
         hexpand: true,
         on_clicked: function (_) {
+          // If you are not getting actions invoked from notifications, it probably
+          //   means the launching program isn't registered correctly on dbus/with
+          //   gtk
           console.log(`Invoking ${action.id} for ${notification.id}`);
           notification.invoke(action.id);
           notification.dismiss();
@@ -148,8 +151,7 @@ export default function setup_notifications(monitor = 0) {
     function (_, id) {
       notificationList.children
         .find(function (popup) {
-          if (!popup.attribute)
-            return;
+          if (!popup.attribute) return;
           return popup.attribute.id === id;
         })
         ?.destroy();

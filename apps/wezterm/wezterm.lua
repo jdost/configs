@@ -25,7 +25,7 @@ colors = {
 
 return {
     bold_brightens_ansi_colors = true,
-    enable_wayland = false,
+    enable_wayland = true,
     check_for_updates = false,
     colors = colors,
     enable_tab_bar = false,

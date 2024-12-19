@@ -1,0 +1,7 @@
+[Unit]
+Description=spotify daemon
+
+[Service]
+ExecStart=%h/.local/bin/_spotifyd-wrapper
+Restart=on-failure
+RestartSec=30

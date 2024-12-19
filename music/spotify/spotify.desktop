@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Spotify
+GenericName=Low Resource Spotify Client
+Exec=spotify
+Icon=spotify
+Terminal=true

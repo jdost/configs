@@ -40,9 +40,33 @@ const GRADIENT = [
   [255, 0, 0],
 ];
 
-function to_color([r, g, b]) {
+function toColor([r, g, b]) {
   return `rgb(${r}, ${g}, ${b})`;
 }
+
+export const calcGradientColor = function (gradient, value) {
+  if (value > 1.1) {
+    console.log(
+      "ERROR: calcGradientColor only takes floating point between 0.0 and 1.0",
+    );
+    return;
+  }
+  const gradientLevel = value * (gradient.length - 1);
+  if (gradientLevel / 1 === 0) {
+    return toColor(gradient[gradientLevel]);
+  }
+
+  const low = gradient[Math.floor(gradientLevel)] || gradient[0];
+  const high =
+    gradient[Math.ceil(gradientLevel)] || gradient[gradient.length - 1];
+  var color = [
+    Math.round(low[0] + (high[0] - low[0]) * (gradientLevel % 1)),
+    Math.round(low[1] + (high[1] - low[1]) * (gradientLevel % 1)),
+    Math.round(low[2] + (high[2] - low[2]) * (gradientLevel % 1)),
+  ];
+
+  return toColor(color);
+};
 
 export const GradientIcon = function (label, name, levelBinding) {
   return Widget.Label({
@@ -55,20 +79,8 @@ export const GradientIcon = function (label, name, levelBinding) {
       if (level === NaN) {
         return;
       }
-      const gradientLevel = (level / 100) * (GRADIENT.length - 1);
-      if (gradientLevel / 1 === 0) {
-        return `color: ${to_color(GRADIENT[gradientLevel])};`;
-      }
 
-      const low = GRADIENT[Math.floor(gradientLevel)] || GRADIENT[0];
-      const high = GRADIENT[Math.ceil(gradientLevel)] || GRADIENT[GRADIENT.length - 1];
-      var color = [
-        Math.round(low[0] + (high[0] - low[0]) * (gradientLevel % 1)),
-        Math.round(low[1] + (high[1] - low[1]) * (gradientLevel % 1)),
-        Math.round(low[2] + (high[2] - low[2]) * (gradientLevel % 1)),
-      ];
-
-      return `color: ${to_color(color)};`;
+      return `color: ${calcGradientColor(GRADIENT, level / 100)};`;
     }),
   });
 };

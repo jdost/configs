@@ -344,3 +344,28 @@ tooltip * {
     border-radius: 2em;
     border: 0;
 }
+
+.nag.teatimer {
+    background-color: rgba(196, 196, 196, 0.6);
+    color: rgb(0, 0, 0);
+    border-radius: 1.1em;
+
+}
+.nag.teatimer box {
+    padding: 2em 2em 1em;
+}
+.nag.teatimer box > label {
+    font-size: 15em;
+    margin: -0.4em 0.1em -0.3em;
+    padding: 0;
+}
+.nag.teatimer button {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    padding: 0.2em;
+    color: #FFFFFF;
+}
+.nag.teatimer button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #000000;
+}

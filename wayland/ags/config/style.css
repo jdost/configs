@@ -153,17 +153,20 @@ tooltip * {
     color: rgb(153, 153, 153);
 }
 
-.popup.mpris > box {
+.popup > box {
     background-color: rgba(34, 34, 34, 0.5);
     border-radius: 15px;
     padding: 8px;
     margin: 5px 10px;
-    min-width: 450px;
+}
+
+.popup.mpris > box {
+    min-width: 22em;
     font-size: 0.8em;
 }
 .popup.mpris .cover-art {
-    min-width: 100px;
-    min-height: 100px;
+    min-width: 72px;
+    min-height: 72px;
     background-size: cover;
     background-position: center;
     border-radius: 13px;
@@ -190,8 +193,7 @@ tooltip * {
     min-height: 2em;
 }
 .popup.mpris button:hover {
-    background: rgba(185, 185, 185, 0.8);
-    color: rgb(34, 34, 34);
+    background: rgba(185, 185, 185, 0.2);
 }
 .popup.mpris button.play-pause {
     margin: 0 .6em;
@@ -207,24 +209,18 @@ tooltip * {
     color: rgb(85, 170, 255);
 }
 
-.bluetooth-connections > box {
-    background-color: rgba(34, 34, 34, 0.5);
-    border-radius: 15px;
-    padding: 8px;
-    margin: 5px 10px;
-}
-.bluetooth-connections box button {
+.popup.bluetooth box button {
     border-radius: 5px;
     background-color: rgba(34, 34, 34, 0.05);
     margin: 0 1px;
     padding: 4px;
     font-size: 0.6em;
 }
-.bluetooth-connections button.connected,
-.bluetooth-connections button:checked {
+.popup.bluetooth button.connected,
+.popup.bluetooth button:checked {
     background: rgba(120, 120, 120, 0.8);
 }
-.bluetooth-connections button:hover {
+.popup.bluetooth button:hover {
     background: rgba(185, 185, 185, 0.8);
     color: rgb(34, 34, 34);
 }

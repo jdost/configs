@@ -7,42 +7,41 @@ const name_icons = {
   spotifyd: ["󰓇", "rgb(30, 215, 96)"],
   firefox: ["󰈹", "rgb(230, 96, 0)"],
   chromium: ["", "rgb(0, 136, 247)"],
-  mpv: ["󰐌", "rgb(160, 60, 210)"],
+  mpv: ["󰐌", "rgb(200, 100, 255)"],
 };
 const default_icon = "󰝚";
 let tracking_file = "";
-const bus_offset = "org.mpris.MediaPlayer2.".length
-Utils.execAsync(["id", "-u"])
-  .then(function (output) {
-    tracking_file = `/run/user/${output}/mpris-tracker`
-    Utils.execAsync(["touch", tracking_file]);
-  });
+const bus_offset = "org.mpris.MediaPlayer2.".length;
+const NOT_PLAYING_COLOR = "rgb(153, 153, 153)";
+Utils.execAsync(["id", "-u"]).then(function (output) {
+  tracking_file = `/run/user/${output}/mpris-tracker`;
+  Utils.execAsync(["touch", tracking_file]);
+});
 
 const player_tracker = {
   players: {},
   active: undefined,
   icon: undefined,
 
-  _update () {
-    if (this.icon === undefined)
-      return;
+  _update() {
+    if (this.icon === undefined) return;
 
     let playing = [];
     let latest_non_player = undefined;
     for (const bus_name in this.players) {
       const player = this.players[bus_name];
-      if (player.playback_status() === "playing")
-        playing.push(player);
-      else if (latest_non_player === undefined)
-        latest_non_player = player;
+      if (player.playback_status() === "playing") playing.push(player);
+      else if (latest_non_player === undefined) latest_non_player = player;
       else if (latest_non_player.last_update < player.last_update)
         latest_non_player = player;
     }
     this.icon.toggleClassName("not-playing", playing.length === 0);
     if (playing.length > 1) {
-      playing.sort(function (a, b) { return b.last_update - a.last_update; });
+      playing.sort(function (a, b) {
+        return b.last_update - a.last_update;
+      });
       this.active = playing[0];
-      for (i = 1; i < playing.length; i++) {
+      for (var i = 1; i < playing.length; i++) {
         console.log("would pause:", playing[1].toString());
       }
     } else if (playing.length === 1) {
@@ -56,86 +55,92 @@ const player_tracker = {
     }
 
     this.icon.label = this.active.icon();
-    if (this.active.playback_status() === "playing")
-      this.icon.css = `color: ${playing[0].color()}`;
-    else
-      this.icon.css = "";
+    this.icon.css =
+      this.active.playback_status() === "playing"
+        ? `color: ${playing[0].color()}`
+        : `color: ${NOT_PLAYING_COLOR}`;
+    this.icon.tooltip_text = this.active.tooltip();
     if (tracking_file)
       Utils.writeFile(this.active.instance_name, tracking_file);
   },
 
-  add (bus_name) {
-    if (bus_name == undefined)
-      return "undefined";
+  add(bus_name) {
+    if (bus_name == undefined) return "undefined";
     // This is likely impossible... but be defensive
-    if (this.players[bus_name])
-      return this.players[bus_name];
+    if (this.players[bus_name]) return this.players[bus_name];
     this.players[bus_name] = new Player(bus_name);
     this._update();
+    console.log(`Player Added: ${this.players[bus_name].toString()}`);
     return this.players[bus_name];
   },
 
-  update (bus_name) {
-    if (bus_name == undefined)
-      return "undefined";
-    if (this.players[bus_name] === undefined)
-      return `doesnt exist ${bus_name}`;
-    this.players[bus_name].update();
+  update(bus_name) {
+    if (bus_name == undefined) return "undefined";
+    if (this.players[bus_name] === undefined) return `doesnt exist ${bus_name}`;
+    if (this.players[bus_name].update())
+      console.log(`Player Updated: ${this.players[bus_name].toString()}`);
+
     this._update();
     return this.players[bus_name];
   },
 
-  remove (bus_name) {
-    if (this.players[bus_name])
-      delete this.players[bus_name];
+  remove(bus_name) {
+    if (bus_name == undefined) return;
+    if (this.players[bus_name]) delete this.players[bus_name];
 
+    console.log(`Player Removed: ${bus_name}`);
     this._update();
-  }
+  },
 };
 
-
 class Player {
-  constructor (bus_name) {
+  constructor(bus_name) {
     this.bus_name = bus_name;
     this.instance_name = bus_name.substring(bus_offset);
-    this.last_update = (new Date()).valueOf();
+    this.last_update = new Date().valueOf();
     this.last_status = this.playback_status();
   }
 
-  update () {
+  update() {
     // If the playback status doesn't change, don't consider it an update
-    if (this.last_status === this.playback_status())
-      return;
+    if (this.last_status === this.playback_status()) return false;
     this.last_status = this.playback_status();
-    this.last_update = (new Date()).valueOf();
+    this.last_update = new Date().valueOf();
+    return true;
   }
 
-  toString () {
+  toString() {
     const player = this.getPlayer();
-    return `Player<${this.instance_name}> - ${player.name}: ${player.play_back_status}`
+    return `Player<${this.instance_name}> - ${player.name}: ${player.play_back_status}`;
   }
 
-  playback_status () {
+  playback_status() {
     return this.getPlayer().play_back_status.toLowerCase();
   }
 
-  getPlayer () {
+  getPlayer() {
     return mpris.getPlayer(this.bus_name);
   }
 
-  icon () {
+  icon() {
     const name = this.getPlayer().name;
     return name_icons[name][0] || default_icon;
   }
 
-  color () {
+  color() {
     const name = this.getPlayer().name;
     return name_icons[name][1] || "rgb(255, 255, 255)";
+  }
+
+  tooltip() {
+    const player = this.getPlayer();
+    return `${player.name} - ${player.play_back_status}`;
   }
 }
 
 const popup = Popup({
   name: "mpris",
+  timeout: 5000,
   setup: function (window) {
     const player = player_tracker.active.getPlayer();
     if (player === undefined) {
@@ -155,7 +160,9 @@ const popup = Popup({
       class_name: "artist",
       truncate: "end",
       hpack: "start",
-      label: player.bind("track_artists").transform(function (a) { return a.join(", "); }),
+      label: player.bind("track_artists").transform(function (a) {
+        return a.join(", ");
+      }),
     });
 
     window.child = Widget.Box({
@@ -181,28 +188,38 @@ const popup = Popup({
               center_widget: Widget.Box({
                 children: [
                   Widget.Button({
-                    on_clicked: function (_) { player.previous(); },
+                    on_clicked: function (_) {
+                      player.previous();
+                    },
                     visible: player.bind("can_go_prev"),
                     cursor: "pointer",
                     child: Widget.Icon("media-skip-backward-symbolic"),
                   }),
                   Widget.Button({
                     class_name: "play-pause",
-                    on_clicked: function (_) { console.log("pp triggered"); player.playPause(); },
+                    on_clicked: function (_) {
+                      player.playPause();
+                    },
                     visible: player.bind("can_play"),
                     cursor: "pointer",
                     child: Widget.Icon({
-                      icon: player.bind("play_back_status").transform(function (s) {
-                        switch (s) {
-                          case "Playing": return "media-playback-pause-symbolic";
-                          case "Paused":
-                          case "Stopped": return "media-playback-start-symbolic";
-                        }
-                      }),
+                      icon: player
+                        .bind("play_back_status")
+                        .transform(function (s) {
+                          switch (s) {
+                            case "Playing":
+                              return "media-playback-pause-symbolic";
+                            case "Paused":
+                            case "Stopped":
+                              return "media-playback-start-symbolic";
+                          }
+                        }),
                     }),
                   }),
                   Widget.Button({
-                    on_clicked: function (_) { player.next(); },
+                    on_clicked: function (_) {
+                      player.next();
+                    },
                     visible: player.bind("can_go_next"),
                     cursor: "pointer",
                     child: Widget.Icon("media-skip-forward-symbolic"),
@@ -226,16 +243,27 @@ add_icon(
     child: Widget.Label({
       setup: function (icon) {
         player_tracker.icon = icon;
-        icon.hook(mpris, function (self, player) {
-          console.log("new", player_tracker.add(player).toString());
-        }, "player-added");
-        icon.hook(mpris, function (self, player) {
-          player_tracker.remove(player);
-          console.log("rm", player);
-        }, "player-closed");
-        icon.hook(mpris, function (self, player) {
-          console.log("update", player_tracker.update(player).toString());
-        }, "player-changed");
+        icon.hook(
+          mpris,
+          function (self, player) {
+            player_tracker.add(player);
+          },
+          "player-added",
+        );
+        icon.hook(
+          mpris,
+          function (self, player) {
+            player_tracker.remove(player);
+          },
+          "player-closed",
+        );
+        icon.hook(
+          mpris,
+          function (self, player) {
+            player_tracker.update(player);
+          },
+          "player-changed",
+        );
       },
     }),
   }),

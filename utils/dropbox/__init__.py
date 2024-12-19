@@ -10,7 +10,7 @@ NAME = normalize(__name__)
 
 # NOTE: import the `xorg` or `wayland` submodules to get the correct
 # dependencies
-#packages = {Pacman("qt5-base")}
+# packages = {Pacman("qt5-base")}
 virtualenv = VirtualEnv("maestral", "maestral", "maestral-qt")
 files = [
     UserBin(virtualenv.location / "bin/maestral", "maestral"),
@@ -28,6 +28,7 @@ class EncryptedFile(RegisteredFileAction):
           --recipient <GPG EMAIL> \
           <dst>
     """
+
     DROPBOX_BASE = DROPBOX_DIR
     U_RO = 0o400
 
@@ -74,6 +75,9 @@ def setup_initial_config() -> None:
     # another time
     if config_file.exists():
         return
+
+    config_file.parent.mkdir(parents=True, exist_ok=True)
+    DROPBOX_DIR.mkdir(parents=True, exist_ok=True)
 
     from configparser import ConfigParser
 

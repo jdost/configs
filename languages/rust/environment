@@ -3,4 +3,8 @@ if [[ "$PATH" != *$CARGO_HOME/bin* ]]; then
    export PATH="$CARGO_HOME/bin:$PATH"
 fi
 
+if [[ -f "$CARGO_HOME/env" ]]; then
+    source "$CARGO_HOME/env"
+fi
+
 # vim: ft=zsh

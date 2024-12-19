@@ -27,6 +27,14 @@ class HypridleConfig(XDGConfigFile):
 def ensure_configured() -> None:
     if HypridleConfig.num_defined == 0:
         HypridleConfig(f"{NAME}/default.conf")
+    # If running with an override, blow away the fallback default
+    elif (XDGConfigFile.DIR / HypridleConfig.DST).exists():
+        from pathlib import Path
+
+        target = XDGConfigFile.DIR / HypridleConfig.DST
+        default = Path(__file__).parent / "default.conf"
+        if target.resolve() == default:
+            target.unlink()
 
 
 @after

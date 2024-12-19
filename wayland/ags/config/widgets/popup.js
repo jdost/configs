@@ -1,4 +1,4 @@
-import GLib from 'gi://GLib'
+import GLib from "gi://GLib";
 
 export function Popup(obj) {
   if (!obj.setup) {
@@ -19,8 +19,7 @@ export function Popup(obj) {
   };
 
   function close_popup() {
-    if (self.widget === null)
-      return
+    if (self.widget === null) return;
 
     if (timeout_handler !== null) {
       GLib.source_remove(timeout_handler);
@@ -30,7 +29,7 @@ export function Popup(obj) {
     self.widget.close();
     self.widget = null;
     return;
-  };
+  }
 
   self.toggle = function () {
     if (self.widget !== null) {
@@ -53,4 +52,4 @@ export function Popup(obj) {
   };
 
   return self;
-};
+}

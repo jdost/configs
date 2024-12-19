@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Lock Screen
+GenericName=Activate user's screen lock
+Exec=loginctl lock-session
+Icon=system-lock-screen
+Terminal=false

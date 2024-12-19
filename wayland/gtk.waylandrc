@@ -1,0 +1,6 @@
+export GDK_BACKEND="wayland,x11,*"
+
+systemctl --user import-environment GDK_BACKEND
+dbus-update-activation-environment --systemd GDK_BACKEND
+
+# vim: ft=bash

@@ -1,0 +1,10 @@
+export QT_QPA_PLATFORM=wayland
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export QT_QPA_PLATFORMTHEME=qt5ct
+
+systemctl --user import-environment \
+    QT_QPA_PLATFORM QT_WAYLAND_DISABLE_WINDOWDECORATION QT_QPA_PLATFORMTHEME
+dbus-update-activation-environment --systemd \
+    QT_QPA_PLATFORM QT_WAYLAND_DISABLE_WINDOWDECORATION QT_QPA_PLATFORMTHEME
+
+# vim: ft=bash

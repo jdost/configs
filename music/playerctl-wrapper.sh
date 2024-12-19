@@ -10,7 +10,14 @@ else
    BIN=$(which $WRAPPED_BIN)
 fi
 
+TRACKING_FILE="/run/user/$UID/mpris-tracker"
+
 current_playing() {
+    if [[ -e "$TRACKING_FILE" ]]; then
+        cat $TRACKING_FILE
+        return
+    fi
+
     local players=$(
         $BIN metadata -a --format "{{lc(status)}},{{playerName}}" 2>/dev/null
     )
@@ -21,7 +28,7 @@ current_playing() {
     fi
 }
 
-if [[ "$1" == "--current" ]]; then
+if [[ "${1:-}" == "--current" ]]; then
     shift
     exec $BIN --player=$(current_playing) "$@"
 fi

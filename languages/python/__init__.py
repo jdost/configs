@@ -35,7 +35,7 @@ files = [
     XDGConfigFile(f"{NAME}/pip.conf", "pip/pip.conf"),
     EnvironmentFile(NAME, "python"),
     XDGConfigFile(f"{NAME}/python_startup.py", "python/startup.py"),
-    XDGConfigFile(f"{NAME}/black.toml", "black"),
+    XDGConfigFile(f"{NAME}/black.toml", "black/pyproject.toml"),
     XDGConfigFile(f"{NAME}/isort.cfg", "isort.cfg"),
 ]
 

@@ -2,6 +2,8 @@
 let mapleader = ','
 " backspace behavior
 set backspace=indent,eol,start
+" disable mouse
+set mouse=
 
 " tab controls
 map <F4> :tabnext<cr>

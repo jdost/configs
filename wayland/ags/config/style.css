@@ -129,26 +129,27 @@ tooltip * {
     font-size: 1.2em;
 }
 
-.network label {
+.icon.network label {
     font-size: 1.7em;
     margin: -0.3em 0;
 }
-.network .badge {
+.icon.network .badge {
     font-size: 5px;
     margin: 10px 0 0 10px;
 }
 
-.cpu label,
-.memory label {
+.icon.cpu label,
+.icon.memory label,
+.icon.tea label {
     font-size: 1.5em;
     margin: -0.3em 0;
 }
 
-.icons .mpris label {
+.icon.mpris label {
     font-size: 1.5em;
     margin: -0.3em 0;
 }
-.icons .mpris label.not-playing {
+.icon.mpris label.not-playing {
     color: rgb(153, 153, 153);
 }
 
@@ -196,13 +197,13 @@ tooltip * {
     margin: 0 .6em;
 }
 
-.bluetooth label {
+.icon.bluetooth label {
     color: rgb(153, 153, 153);
 }
-.bluetooth label.enabled {
+.icon.bluetooth label.enabled {
     color: rgb(255, 255, 255);
 }
-.bluetooth label.enabled.connected {
+.icon.bluetooth label.enabled.connected {
     color: rgb(85, 170, 255);
 }
 

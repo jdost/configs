@@ -18,6 +18,7 @@ export function add_right(widget, before_icons) {
 }
 
 export function add_icon(icon, priority = 0) {
+  icon.toggleClassName("icon", true);
   Object.assign(icon, {
     priority: priority,
   });

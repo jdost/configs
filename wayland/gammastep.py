@@ -4,7 +4,8 @@ from cfgtools.system.systemd import UserService
 from utils import dropbox
 
 packages = {
-    Pacman("gammastep"), Pacman("libappindicator-gtk3"),
+    Pacman("gammastep"),
+    Pacman("libappindicator-gtk3"), Pacman("gtk3"), Pacman("python-gobject"),  # For systray icon
 }
 files = [
     XDGConfigFile(

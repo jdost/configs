@@ -2,6 +2,7 @@ const audio = await Service.import("audio");
 import { LevelDots } from "../widgets/icons.js";
 import { add_icon } from "../widgets/bar.js";
 import { register_hook } from "../widgets/osd.js";
+import { Popup } from "../widgets/popup.js";
 
 // these are lower threshold and value, threshold max is 1 less than next level
 const level_thresholds = [
@@ -17,6 +18,87 @@ function volume_to_icon_level(volume) {
   })?.[1];
 }
 
+const popup = Popup({
+  name: "audio",
+  timeout: 10000,
+  setup: function (window) {
+    function StreamSlider(stream) {
+      const button = Widget.Button({
+        cursor: "pointer",
+        tooltip_text: stream.bind("is_muted") ? "Unmute" : "Mute",
+        child: Widget.Icon({
+          icon: stream.bind("volume").as(function (v) {
+            if (v > 0.66) return "audio-volume-high-symbolic";
+            else if (v > 0.33) return "audio-volume-medium-symbolic";
+            else if (v > 0) return "audio-volume-low-symbolic";
+            return "audio-volume-muted-symbolic";
+          }),
+        }),
+        class_name: stream.is_muted ? "" : "active",
+        onClicked: function (e) {
+          stream.is_muted = !stream.is_muted;
+          button.toggleClassName("active");
+        },
+      });
+      const label = stream.stream.port
+        ? stream.description
+        : `${stream.stream.name}: ${stream.stream.description}`;
+      return Widget.Box({
+        name: `audio.slider.${stream.name}`,
+        class_name: stream.stream.port
+          ? "audio-slider device"
+          : "audio-slider app",
+        children: [
+          button,
+          Widget.Box({
+            vertical: true,
+            children: [
+              Widget.Box({
+                children: [
+                  Widget.Label({
+                    class_name: "name",
+                    hexpand: true,
+                    truncate: "end",
+                    hpack: "start",
+                    label: label,
+                  }),
+                  Widget.Label({
+                    class_name: "volume",
+                    label: stream.bind("volume").as(function (v) {
+                      return `${Math.trunc(v * 100)}%`;
+                    }),
+                  }),
+                ],
+              }),
+              Widget.Slider({
+                hexpand: true,
+                drawValue: false,
+                cursor: "pointer",
+                onChange: function (slider) {
+                  stream.volume = slider.value;
+                },
+                value: stream.bind("volume"),
+              }),
+            ],
+          }),
+        ],
+      });
+    }
+    let sliders = [
+      Widget.Label({ class_name: "header", label: "Volume Controls" }),
+      StreamSlider(audio.speaker),
+    ];
+    audio.apps.forEach(function (app) {
+      sliders.push(StreamSlider(app));
+    });
+
+    window.child = Widget.Box({
+      vertical: true,
+      children: sliders,
+    });
+  },
+});
+
 add_icon(
   Widget.EventBox({
     child: Widget.Box({
@@ -24,6 +106,9 @@ add_icon(
       spacing: 0,
       children: [LevelDots(audio.speaker), LevelDots(audio.microphone)],
     }),
+    on_primary_click: function (_, e) {
+      popup.toggle();
+    },
     on_secondary_click: function (_, e) {
       let sources = Widget.MenuItem({
         child: Widget.Label("sources"),

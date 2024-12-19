@@ -160,6 +160,50 @@ tooltip * {
     margin: 5px 10px;
 }
 
+.popup.audio box {
+    min-width: 12em;
+}
+.popup.audio label {
+    font-size: 0.7em;
+}
+.popup.audio label.header {
+    opacity: 0.6;
+    font-size: 0.6em;
+    border-bottom: 1px solid @theme_fg_color;
+    margin: 0 1.5em;
+}
+.popup.audio scale {
+    padding: 0;
+    margin-bottom: .3em;
+}
+.popup.audio scale trough {
+    min-height: 8px;
+}
+.popup.audio scale highlight {
+    background-color: @theme_fg_color;
+}
+.popup.audio scale slider {
+    all: unset;
+}
+.popup.audio .audio-slider {
+    padding: 0.4em 0.2em;
+}
+.popup.audio .audio-slider.app {
+    padding-left: 0.4em;
+}
+.popup.audio button {
+    background-color: rgba(128, 128, 128, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    min-width: 1.8em;
+    border-radius: 3px;
+    margin-right: 0.1em;
+}
+.popup.audio button:hover,
+.popup.audio button.active {
+    background-color: rgba(128, 128, 128, 0.8);
+    color: rgba(255, 255, 255, 1.0);
+}
+
 .popup.mpris > box {
     min-width: 22em;
     font-size: 0.8em;
@@ -322,6 +366,7 @@ tooltip * {
 .osd levelbar trough {
     background-color: transparent;
     border: 0;
+    min-width: 15em;
 }
 .osd levelbar .filled {
     margin: 5px;

@@ -115,7 +115,7 @@ class Player {
   }
 
   playback_status() {
-    return this.getPlayer().play_back_status.toLowerCase();
+    return (this.getPlayer().play_back_status || "stopped").toLowerCase();
   }
 
   getPlayer() {

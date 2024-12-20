@@ -9,6 +9,7 @@ from cfgtools.files import BASE
 
 
 def run(cmd: str) -> bool:
+    """Run a command."""
     resolved_cmd = shlex.split(cmd)
 
     return subprocess.run(
@@ -19,6 +20,7 @@ def run(cmd: str) -> bool:
 
 
 def cmd_output(cmd: str) -> Sequence[str]:
+    """Capture output of a run command."""
     resolved_cmd = shlex.split(cmd)
 
     return subprocess.run(
@@ -29,6 +31,7 @@ def cmd_output(cmd: str) -> Sequence[str]:
 
 
 def add_group(group: str) -> None:
+    """Add your current user to a group."""
     groups = subprocess.run(
         ["groups"], stdout=subprocess.PIPE
     ).stdout.decode("utf-8").strip().split(" ")
@@ -41,6 +44,7 @@ def add_group(group: str) -> None:
 
 
 def hide_xdg_entry(entry: str) -> None:
+    """Marks this xdg desktop entry as hidden from stuff like rofi."""
     src_entry = Path(f"/usr/share/applications/{entry}.desktop")
     hidden_entry = Path.home() / f".local/share/applications/{entry}.desktop"
 
@@ -61,6 +65,7 @@ def hide_xdg_entry(entry: str) -> None:
 
 
 def bins() -> Set[str]:
+    """Return set of all binaries in the current PATH."""
     bins = set()
     for p in os.environ["PATH"].split(":"):
         path_dir = Path(p)
@@ -71,10 +76,19 @@ def bins() -> Set[str]:
 
 
 def xdg_settings_get(key: str) -> str:
+    """Lookup xdg-settings value."""
     cmd = subprocess.run(["xdg-settings", "get", key], stdout=subprocess.PIPE)
     assert cmd.returncode == 0, f"Command `xdg-settings get {key}` failed."
     return cmd.stdout.decode().strip()
 
 
 def xdg_settings_set(key: str, val: str) -> None:
-    subprocess.run(["xdg-settings", "set", key, val], check=True)
+    """Set xdg-settings."""
+    subprocess.run(
+        ["xdg-settings", "set", key, val],
+        env={
+            "PATH": f"{Path.home()}/.local/bin:{os.environ.get("PATH", "")}",
+            **os.environ,
+        },
+        check=True,
+    )

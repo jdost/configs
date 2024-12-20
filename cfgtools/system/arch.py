@@ -67,6 +67,9 @@ class AUR(SystemPackage):
     def __repr__(self):
         return f"{self.__class__} {self.name}"
 
+    def __str__(self):
+        return self.name
+
     @property
     def name(self) -> str:
         if not hasattr(self, "__name"):

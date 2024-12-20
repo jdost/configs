@@ -1,1 +1,2 @@
---buffer-size 64K
+--buffer-size 4M
+--concurrent-fragments 4

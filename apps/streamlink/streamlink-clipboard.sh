@@ -28,7 +28,7 @@ fi
 
 if [[ "$TARGET" =~ .*youtube\.com.* ]]; then
     # For youtube, try to use mpv directly since streamlink will refuse some videos
-    HANDLER="mpv --quiet"
+    HANDLER="mpv --quiet --profile=youtube"
 fi
 
 if ! streamlink --can-handle-url "$TARGET"; then

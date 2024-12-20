@@ -50,7 +50,8 @@ const player_tracker = {
       this.active = latest_non_player;
     } else {
       this.active = undefined;
-      this.icon.label = "?";
+      this.icon.label = default_icon;
+      this.icon.css = "color: #999999;";
       return;
     }
 
@@ -142,6 +143,8 @@ const popup = Popup({
   name: "mpris",
   timeout: 5000,
   setup: function (window) {
+    if (player_tracker.active === undefined)
+      return false;
     const player = player_tracker.active.getPlayer();
     if (player === undefined) {
       console.log("No active player...");
@@ -243,6 +246,7 @@ add_icon(
     child: Widget.Label({
       setup: function (icon) {
         player_tracker.icon = icon;
+        icon.label = default_icon;  // Give something on launch before anything starts
         icon.hook(
           mpris,
           function (self, player) {

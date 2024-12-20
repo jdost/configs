@@ -276,7 +276,7 @@ if __name__  == "__main__":
         elif opts_next:
             opts_next = False
             cmd += ["-e", f"PKGS={target}"]
-        elif target == "--interactive":
+        elif target in {"--interactive", "-i"}:
             interactive = True
             cmd += ["-e", "INTERACTIVE=y"]
         else:
@@ -315,7 +315,7 @@ if __name__  == "__main__":
     if to_be_built:
         # get/create cache volume
         volume_ls_raw = subprocess.run(
-            ["docker", "volume", "ls", "--format=json"], 
+            ["docker", "volume", "ls", "--format=json"],
             stdout=subprocess.PIPE,
         ).stdout.decode("utf-8")
         volume_exists = False
@@ -330,7 +330,7 @@ if __name__  == "__main__":
 
         if not volume_exists:
             if subprocess.run(
-                ["docker", "volume", "create", PACMAN_CACHE_VOLUME], 
+                ["docker", "volume", "create", PACMAN_CACHE_VOLUME],
                 stdout=subprocess.PIPE,
             ).returncode != 0:
                 print("ERROR: The caching volume failed to create.")

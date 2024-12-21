@@ -92,7 +92,7 @@ function NotificationPopup(notification) {
     transitionDuration: 150,
     attribute: { id: notification.id },
     child: Widget.EventBox({
-      on_primary_click: notification.dismiss,
+      on_secondary_click: notification.dismiss,
       hexpand: true,
       child: Widget.Box({
         class_name: `notification ${notification.urgency}`,

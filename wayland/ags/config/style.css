@@ -410,3 +410,7 @@ tooltip * {
     background-color: rgba(255, 255, 255, 0.4);
     color: #000000;
 }
+
+.popup.teatimer box {
+    min-width: 12em;
+}

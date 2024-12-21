@@ -18,7 +18,7 @@ export function Popup(obj) {
     timeout: obj.timeout,
   };
 
-  function close_popup() {
+  self.close = function () {
     if (self.widget === null) return;
 
     if (timeout_handler !== null) {
@@ -29,11 +29,11 @@ export function Popup(obj) {
     self.widget.close();
     self.widget = null;
     return;
-  }
+  };
 
   self.toggle = function () {
     if (self.widget !== null) {
-      return close_popup();
+      return self.close();
     }
 
     self.widget = Widget.Window({
@@ -45,10 +45,20 @@ export function Popup(obj) {
 
     // If a timeout is specified, auto close the popup after it's elapsed
     if (self.timeout !== undefined) {
-      timeout_handler = Utils.timeout(self.timeout, close_popup);
+      timeout_handler = Utils.timeout(self.timeout, self.close);
     }
 
     return self.widget;
+  };
+
+  self.refresh = function () {
+    // If a timeout is specified, auto close the popup after it's elapsed
+    if (self.timeout === undefined) {
+      return;
+    }
+
+    GLib.source_remove(timeout_handler);
+    timeout_handler = Utils.timeout(self.timeout, self.close);
   };
 
   return self;

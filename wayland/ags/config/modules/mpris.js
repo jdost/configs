@@ -89,8 +89,10 @@ const player_tracker = {
     if (bus_name == undefined) return;
     if (this.players[bus_name]) delete this.players[bus_name];
 
-    console.log(`Player Removed: ${bus_name}`);
     this._update();
+    console.log(
+      `Player Removed: ${bus_name}, active: ${this.active.toString()}`,
+    );
   },
 };
 
@@ -102,10 +104,12 @@ class Player {
     this.last_status = this.playback_status();
   }
 
-  update() {
-    // If the playback status doesn't change, don't consider it an update
-    if (this.last_status === this.playback_status()) return false;
-    this.last_status = this.playback_status();
+  update(force) {
+    if (!force) {
+      // If the playback status doesn't change, don't consider it an update
+      if (this.last_status === this.playback_status()) return false;
+      this.last_status = this.playback_status();
+    }
     this.last_update = new Date().valueOf();
     return true;
   }
@@ -137,14 +141,17 @@ class Player {
     const player = this.getPlayer();
     return `${player.name} - ${player.play_back_status}`;
   }
+
+  name() {
+    return this.getPlayer().name;
+  }
 }
 
 const popup = Popup({
   name: "mpris",
   timeout: 5000,
   setup: function (window) {
-    if (player_tracker.active === undefined)
-      return false;
+    if (player_tracker.active === undefined) return false;
     const player = player_tracker.active.getPlayer();
     if (player === undefined) {
       console.log("No active player...");
@@ -243,10 +250,47 @@ add_icon(
     on_primary_click: function (_, e) {
       return popup.toggle();
     },
+    on_secondary_click: function (_, e) {
+      var items = [];
+      const self = player_tracker; // Alias `this` to avoid conflict in callbacks
+
+      for (const bus_name in self.players) {
+        items.push(
+          Widget.MenuItem({
+            on_activate: function () {
+              self.players[bus_name].update(true);
+              self._update();
+              items.map(function (i) {
+                i.destroy();
+              });
+            },
+            child: Widget.Label({
+              justification: "left",
+              xalign: 0,
+              label: self.players[bus_name].name(),
+            }),
+          }),
+        );
+      }
+
+      const menu = Widget.Menu({
+        class_name: "mpris-select",
+        children: items,
+      });
+
+      // AGS doesn't auto set this up, so hook the deactivate, which is triggered
+      //  when you click out of the menu and it goes away, so destroy the objects
+      menu.connect("deactivate", function (e) {
+        menu.destroy();
+      });
+
+      menu.popup_at_pointer(e);
+    },
     child: Widget.Label({
+      label: default_icon,
+      css: "color: #999999;",
       setup: function (icon) {
         player_tracker.icon = icon;
-        icon.label = default_icon;  // Give something on launch before anything starts
         icon.hook(
           mpris,
           function (self, player) {

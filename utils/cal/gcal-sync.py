@@ -1,25 +1,19 @@
 #!/usr/bin/env python3
 
-"""
-TODO
-- Add some helper args to allow a simple auth call to generate the token file
-"""
-
-import datetime
+import hashlib
 import json
 import os
-import signal
-import sys
+import urllib.request
+
+import icalendar
+
+from contextlib import contextmanager
+from datetime import datetime, timedelta, UTC
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Set
+from typing import Any, Dict, Optional
+from zoneinfo import ZoneInfo
 
-import pytz
-from gcsa.event import Event as GcsaEvent
-from gcsa.google_calendar import GoogleCalendar
-from google.auth.exceptions import RefreshError
-
-DEFAULT_TZ = pytz.timezone("US/Pacific")
-WINDOW = datetime.timedelta(days=90)
 XDG_CONFIG_HOME = Path(
     os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")
 )
@@ -27,233 +21,214 @@ XDG_CACHE_HOME = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
 XDG_DATA_HOME = Path(
     os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")
 )
-SYSTEMD_RUN = sys.stdin.isatty()
+MIN_DATE = datetime.now(UTC) - timedelta(days=365)
+LOCALTZ = ZoneInfo.from_file(Path("/etc/localtime").open("rb"))  # get local tz from system
 
 
-class CalEvent:
-    _id: str
+@dataclass
+class Event:
+    start: datetime
+    end: datetime
+    uid: str
     summary: str
-    start: datetime.datetime
-    end: datetime.datetime
-    calendar: str
+    description: Optional[str]
 
-    def __init__(
-        self,
-        calendar: str = "",
-        gcsa_src: Optional[GcsaEvent] = None,
-        json_src: Optional[str] = None,
-    ):
-        if gcsa_src is not None:
-            self.calendar = calendar
-            self._load_gcsa(gcsa_src)
-        elif json_src is not None:
-            self._load_json(json_src)
-        else:
-            raise ValueError(
-                "Needs either a JSON based declaration or a GCSA Event"
-            )
+    @classmethod
+    def from_ical(cls, event: icalendar.Event) -> "Event":
+        return cls(
+            start=(
+                event.start if isinstance(event.start, datetime)
+                else datetime(event.start.year, event.start.month, event.start.day)
+            ).astimezone(UTC),
+            end=(
+                event.end if isinstance(event.end, datetime)
+                else datetime(event.end.year, event.end.month, event.end.day)
+            ).astimezone(UTC),
+            uid=event.get('UID'),
+            summary=event.get('SUMMARY'),
+            description=event.get('DESCRIPTION'),
+        )
 
-    def _load_gcsa(self, src) -> None:
-        self._id = src.event_id
-        self.summary = src.summary
-        if not isinstance(src.start, datetime.datetime):
-            src.start = datetime.datetime.combine(
-                src.start, datetime.time.min, tzinfo=DEFAULT_TZ
-            )
-        self.start = src.start
-        if not isinstance(src.end, datetime.datetime):
-            src.end = datetime.datetime.combine(
-                src.end, datetime.time.min, tzinfo=DEFAULT_TZ
-            )
-        self.end = src.end
+    @classmethod
+    def from_json(cls, serialization: Dict[str, Any]) -> "Event":
+        for k in ["start", "end", "uid", "summary"]:
+            assert k in serialization and isinstance(serialization[k], str), f"{k} missing"
 
-    def _load_json(self, src) -> None:
-        self._id = src["id"]
-        self.summary = src["summary"]
-        self.start = datetime.datetime.fromisoformat(src["start"])
-        self.end = datetime.datetime.fromisoformat(src["end"])
-        self.calendar = src["calendar"]
+        return cls(
+            start=datetime.fromisoformat(serialization["start"]).astimezone(UTC),
+            end=datetime.fromisoformat(serialization["end"]).astimezone(UTC),
+            uid=serialization["uid"],
+            summary=serialization["summary"],
+            description=serialization.get("description"),
+        )
 
     @property
     def fingerprint(self) -> str:
-        return hash(json.dumps(self.__json__()))
-
-    @staticmethod
-    def datetime_to_apt(src: datetime.datetime) -> str:
-        return src.strftime("%m/%d/%Y @ %H:%M")
-
-    def to_apt(self) -> str:
-        return (
-            f"{self.datetime_to_apt(self.start)} -> "
-            f"{self.datetime_to_apt(self.end)}|{self.summary}"
-        )
+        return hashlib.sha256((
+            f"{self.uid}{self.start.isoformat()}{self.end.isoformat()}{self.summary}"
+        ).encode()).hexdigest()
 
     def __repr__(self) -> str:
         return (
-            f"<{self.__class__.__name__}({self._id}): {self.summary}"
-            f"({self.start}-{self.end})>"
+            f"<Event: {self.start.strftime('%Y-%M-%d %H:%M')} "
+            f"- {self.summary}>"
         )
 
-    def __str__(self) -> str:
-        return f"{self.summary} ({self.start})"
-
-    @classmethod
-    def from_json(cls, src: str) -> "CalEvent":
-        return cls(json_src=src)
-
-    def __json__(self) -> Dict[str, str]:
+    def to_json(self) -> Dict[str, Any]:
         return {
-            "id": str(self._id),
-            "summary": self.summary,
             "start": self.start.isoformat(),
             "end": self.end.isoformat(),
-            "calendar": self.calendar,
+            "uid": self.uid,
+            "summary": self.summary,
+            "description": self.description,
         }
+
+
+class RemoteCalendar:
+    def __init__(self, url: str):
+        self.remote_url = url
+        self._events: Dict[str, Event] = {}
+        self._loaded = False
+
+    @contextmanager
+    def calendar(self):
+        with urllib.request.urlopen(self.remote_url) as ics_file:
+            yield icalendar.Calendar.from_ical(ics_file.read())
+
+    def load(self) -> None:
+        with self.calendar() as cal:
+            for ics_event in cal.walk('VEVENT'):
+                # Just filter out anything older than a year
+                if isinstance(ics_event.start, datetime):
+                    if ics_event.start < MIN_DATE:
+                        continue
+                elif ics_event.start < MIN_DATE.date():
+                    continue
+                event = Event.from_ical(ics_event)
+                self._events[event.uid] = event
+
+        self._loaded = True
+
+    @property
+    def events(self) -> Dict[str, Event]:
+        if not self._loaded:
+            self.load()
+        return self._events
 
 
 class LocalCache:
     FILE: Path = XDG_CACHE_HOME / "calcurse-gcal.json"
 
-    def __init__(self):
-        self._events: Dict[str, CalEvent] = {}
-        now = datetime.datetime.now(tz=DEFAULT_TZ)
+    def __init__(self, remote_url: str):
+        self.events: Dict[str, Event] = {}
+        self._key = remote_url
 
         if self.FILE.exists():
-            for raw_event in json.load(self.FILE.open()):
-                event = CalEvent.from_json(raw_event)
-                if event.end >= now:
-                    self._events[event._id] = event
+            calendars = json.load(self.FILE.open())
+            for serialized_event in calendars.get(self._key, []):
+                event = Event.from_json(serialized_event)
+                if event.start >= MIN_DATE:
+                    self.events[event.uid] = event
+        else:
+            self.FILE.write_text("{}")
 
-    @property
-    def events(self) -> Set[str]:
-        return set(self._events.keys())
+    def update(self, replacement: Dict[str, Event]) -> None:
+        base = json.load(self.FILE.open())
+        base[self._key] = [event.to_json() for event in replacement.values()]
+        json.dump(base, self.FILE.open("w"))
 
-    def __getitem__(self, key: str) -> CalEvent:
-        return self._events[key]
 
-    def __json__(self) -> Sequence[Dict[str, str]]:
-        return [evt.__json__() for evt in self._events.values()]
+class CalCurseCalendar:
+    DIR: Path = XDG_DATA_HOME / "calcurse"
+    STRFTIME = "%m/%d/%Y @ %H:%M"
 
-    def remove(self, key: str) -> None:
-        del self._events[key]
+    def __init__(self):
+        self.load()
 
-    def update(self, new_events: Sequence[CalEvent]) -> None:
-        json.dump(
-            [evt.__json__() for evt in to_be_added.values()] + self.__json__(),
-            self.FILE.open("w"),
+    def load(self) -> None:
+        self.dirty = False
+        apts_file = self.DIR / "apts"
+        if apts_file.exists():
+            self.apts = set(
+                (self.DIR / "apts").read_text().strip().split("\n")
+            )
+        else:
+            apts_file.touch()
+            self.apts = set()
+
+    def save(self) -> None:
+        # Skip saving if nothing has changed
+        if not self.dirty:
+            return
+
+        self.dirty = False
+        (self.DIR / "apts").write_text("\n".join(sorted(list(self.apts))))
+
+    def add(self, event: Event) -> None:
+        apt = (
+            f"{event.start.astimezone(LOCALTZ).strftime(self.STRFTIME)} -> "
+            f"{event.end.astimezone(LOCALTZ).strftime(self.STRFTIME)}"
         )
+        if event.description:
+            note_fingerprint = hashlib.sha1(event.description.encode()).hexdigest()
+            (self.DIR / f"notes/{note_fingerprint}").write_text(event.description)
+            apt += f">{note_fingerprint} "
+        apt += f"|{event.summary}"
+
+        self.dirty = True
+        self.apts.add(apt)
+
+    def remove(self, event: Event) -> None:
+        apt = (
+            f"{event.start.astimezone(LOCALTZ).strftime(self.STRFTIME)} -> "
+            f"{event.end.astimezone(LOCALTZ).strftime(self.STRFTIME)}"
+        )
+        if event.description:
+            note_fingerprint = hashlib.sha1(event.description.encode()).hexdigest()
+            note_file = self.DIR / f"notes/{note_fingerprint}"
+            if note_file.exists():
+                note_file.unlink()
+            apt += f">{note_fingerprint} "
+        apt += f"|{event.summary}"
+
+        self.dirty = True
+        self.apts.remove(apt)
 
 
 if __name__ == "__main__":
-    # If this is triggered by the systemd timer before the user has done the
-    # auth flow to get the token, error out quickly and provide a log line
-    if (
-        SYSTEMD_RUN and
-        not (XDG_CONFIG_HOME / "calcurse/token.pickle").exists()
-    ):
-        print("Please run this from your terminal to perform the initial auth")
-        sys.exit(1)
-    elif SYSTEMD_RUN:
-        import webbrowser
-
-        def fake_register_standard_browsers():
-            import subprocess
-
-            res = subprocess.run([
-                "notify-send",
-                "--icon",
-                "calendar",
-                "--app-name",
-                "gcal-sync",
-                "--expire-time",
-                str(1000 * 30),
-                "GCal Sync Failed",
-                "Token probably expired, run manually to refresh"
-            ], check=True)
-            raise ImportError("webbrowser doesn't work in a headless setting.")
-
-        webbrowser.register_standard_browsers = fake_register_standard_browsers
-
     calendar_file = XDG_CONFIG_HOME / "calcurse/calendars.txt"
     if not calendar_file.exists():
         calendar_file.touch()
         calendar_file.chmod(0o400)
 
-    local_cache = LocalCache()
-    to_be_added: Dict[str, CalEvent] = {}
-    to_be_removed: List[CalEvent] = []
-    now = datetime.datetime.now(datetime.timezone.utc)
-
-    # ingest the remote events from the Google Calendars
-    for calendar in calendar_file.read_text().strip().split("\n"):
-        if not calendar:
+    calcurse = CalCurseCalendar()
+    for url in calendar_file.read_text().strip().split("\n"):
+        if not url:
             continue
 
-        try:
-            cal = GoogleCalendar(
-                calendar,
-                credentials_path=XDG_CONFIG_HOME / "calcurse/credentials.json",
-                read_only=True,
-            )
-        except RefreshError:
-            token = XDG_CONFIG_HOME / "calcurse/token.pickle"
-            if token.exists():
-                token.unlink()
-            print("Token expired.  Re-auth manually...")
-            sys.exit(1)
+        # Load remote and local, get uid sets from each and compare with:
+        remote = RemoteCalendar(url)
+        local = LocalCache(url)
 
-        for raw_event in cal.get_events(
-            now, now + WINDOW, single_events=True, order_by="startTime"
-        ):
-            event = CalEvent(calendar, raw_event)
-            to_be_added[event._id] = event
+        # - overlap, check each to see if the fingerprint changed, update
+        #   any fingerprint mismatches as they have changed
+        for key in remote.events.keys() & local.events.keys():
+            if remote.events[key] != local.events[key]:
+                # find local.event in calendar, remove and add remote.event
+                print(f"Event updated: {local.events[key]} -> {remote.events[key]}")
+                calcurse.remove(local.events[key])
+                calcurse.add(remote.events[key])
 
-    # Collect anything that *was* on the remote previously but is no longer
-    for key in local_cache.events - set(to_be_added.keys()):
-        to_be_removed.append(local_cache[key])
-        local_cache.remove(key)
+        # - missing from the local, add the events
+        for key in remote.events.keys() - local.events.keys():
+            print(f"New Event: {remote.events[key]}")
+            calcurse.add(remote.events[key])
 
-    # Check all events that were previously added
-    for key in local_cache.events & set(to_be_added.keys()):
-        # check if the event was updated on the remote, if it is, remove the
-        # old and re-add the updated event
-        if local_cache[key].fingerprint != to_be_added[key].fingerprint:
-            to_be_removed.append(local_cache[key])
-            local_cache.remove(key)
-        else:  # otherwise don't add an identical event
-            del to_be_added[key]
+        # - missing from remote, delete the events
+        for key in local.events.keys() - remote.events.keys():
+            print(f"Old Event: {local.events[key]}")
+            calcurse.remove(local.events[key])
 
-    # If we have any changes to make, update the appointments file
-    if len(to_be_removed) or len(to_be_added):
-        if len(to_be_added):
-            print(f"Adding {len(to_be_added)}...")
-            for apt in to_be_added.values():
-                print(apt)
-        if len(to_be_removed):
-            print(f"Removing {len(to_be_removed)}...")
-            for apt in to_be_removed:
-                print(apt)
-        # Start with the existing appointments
-        calcurse_apts = set(
-            (XDG_DATA_HOME / "calcurse/apts").read_text().strip().split("\n")
-        )
-        # Remove anything to be pruned and add anything to be added
-        (XDG_DATA_HOME / "calcurse/apts").write_text(
-            "\n".join(
-                sorted(
-                    list(
-                        calcurse_apts - set([e.to_apt() for e in to_be_removed])
-                        | set([e.to_apt() for e in to_be_added.values()])
-                    )
-                )
-            )
-        )
-        # If there is a running calcurse, send an update
-        if (XDG_DATA_HOME / "calcurse/.calcurse.pid").exists():
-            print("updating")
-            os.kill(
-                int((XDG_DATA_HOME / "calcurse/.calcurse.pid").read_text()),
-                signal.SIGUSR1,
-            )
+        local.update(remote.events)
 
-    local_cache.update(to_be_added.values())
+    calcurse.save()

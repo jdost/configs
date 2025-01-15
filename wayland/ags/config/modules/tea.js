@@ -10,7 +10,7 @@ const INTERVAL_PERIOD = 5;
 const DEFAULT_COLOR = "rgb(190, 190, 190)";
 const GRADIENT = [
   [255, 255, 255],
-  [155, 80, 0],
+  [255, 160, 40],
 ];
 const icon = Widget.Label({
   label: "󰶞",

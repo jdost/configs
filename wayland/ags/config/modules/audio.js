@@ -3,6 +3,7 @@ import { LevelDots } from "../widgets/icons.js";
 import { add_icon } from "../widgets/bar.js";
 import { register_hook } from "../widgets/osd.js";
 import { Popup } from "../widgets/popup.js";
+import { addToggle } from "../widgets/sidebar.js";
 
 // these are lower threshold and value, threshold max is 1 less than next level
 const level_thresholds = [
@@ -101,8 +102,8 @@ const popup = Popup({
 
 add_icon(
   Widget.EventBox({
+    class_name: "audio",
     child: Widget.Box({
-      class_name: "audio",
       spacing: 0,
       children: [LevelDots(audio.speaker), LevelDots(audio.microphone)],
     }),
@@ -110,21 +111,72 @@ add_icon(
       popup.toggle();
     },
     on_secondary_click: function (_, e) {
-      let sources = Widget.MenuItem({
-        child: Widget.Label("sources"),
-      });
-      sources.set_submenu(
-        Widget.Menu({
-          children: [
-            Widget.MenuItem({ child: Widget.Label("A") }),
-            Widget.MenuItem({ child: Widget.Label("B") }),
-            Widget.MenuItem({ child: Widget.Label("C") }),
-          ],
+      const sources = Widget.MenuItem({
+        child: Widget.Label({
+          hpack: "start",
+          label: "Inputs",
         }),
-      );
-      let menu = Widget.Menu({
-        children: [sources],
       });
+      const sourcesMenu = Widget.Menu({
+        class_name: "audio-select",
+        reserve_toggle_size: false,
+        children: audio.microphones.map(function (source) {
+          return Widget.MenuItem({
+            on_activate: function () {
+              console.log(`Changing ${source.description} to default input`);
+              audio.microphone = source;
+            },
+            class_name: source.id === audio.microphone.id ? "active" : "",
+            child: Widget.Label({
+              hpack: "start",
+              label: source.description,
+            }),
+          });
+        }),
+      });
+      sources.set_submenu(sourcesMenu);
+
+      const sinks = Widget.MenuItem({
+        child: Widget.Label({
+          hpack: "start",
+          label: "Outputs",
+        }),
+      });
+      const sinksMenu = Widget.Menu({
+        class_name: "audio-select",
+        reserve_toggle_size: false,
+        children: audio.speakers.map(function (sink) {
+          return Widget.MenuItem({
+            on_activate: function () {
+              console.log(`Changing ${sink.description} to default output`);
+              audio.speaker = sink;
+            },
+            class_name: sink.id === audio.speaker.id ? "active" : "",
+            child: Widget.Label({
+              hpack: "start",
+              label: sink.description,
+            }),
+          });
+        }),
+      });
+      sinks.set_submenu(sinksMenu);
+
+      const menu = Widget.Menu({
+        class_name: "audio-select",
+        reserve_toggle_size: false,
+        children: [sinks, sources],
+      });
+
+      // AGS doesn't auto set this up, so hook the deactivate, which is triggered
+      //  when you click out of the menu and it goes away, so destroy the objects
+      menu.connect("deactivate", function (e) {
+        // Set the destroy on a timeout since this triggers before the menu item's
+        //   activate event, making the actual selection never happen
+        setTimeout(function () {
+          menu.destroy();
+        }, 10);
+      });
+
       menu.popup_at_pointer(e);
     },
   }),
@@ -178,5 +230,20 @@ register_hook({
 
     last_state = current_state;
     return true;
+  },
+});
+
+addToggle({
+  icon: audio.microphone.bind("is_muted").as(function (muted) {
+    return muted ? "󰍭" : "󰍬";
+  }),
+  tooltip: audio.microphone.bind("is_muted").as(function (muted) {
+    return muted ? "Unmute Microphone" : "Mute Microphone";
+  }),
+  get_state: function () {
+    return audio.microphone.is_muted;
+  },
+  set_state: function (s) {
+    audio.microphone.is_muted = s;
   },
 });

@@ -9,7 +9,7 @@ export function add_left(widget) {
   LeftWidgets.push(widget);
 }
 
-export function add_right(widget, before_icons) {
+export function addRight(widget, before_icons) {
   if (before_icons) {
     RightWidgets.before.push(widget);
   } else {

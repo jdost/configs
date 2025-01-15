@@ -1,5 +1,5 @@
 const systemtray = await Service.import("systemtray");
-import { add_right } from "../widgets/bar.js";
+import { addRight } from "../widgets/bar.js";
 
 function SysTrayIcon(item) {
   return Widget.Button({
@@ -18,7 +18,7 @@ function SysTrayIcon(item) {
   });
 }
 
-add_right(
+addRight(
   Widget.Box({
     children: systemtray.bind("items").as((items) => items.map(SysTrayIcon)),
     class_name: "tray",

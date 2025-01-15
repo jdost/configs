@@ -257,13 +257,13 @@ add_icon(
       for (const bus_name in self.players) {
         items.push(
           Widget.MenuItem({
+            class_name: self.players[bus_name] === self.active ? "active" : "",
             on_activate: function () {
+              console.log(`Bumping ${bus_name} to active`);
               self.players[bus_name].update(true);
               self._update();
-              items.map(function (i) {
-                i.destroy();
-              });
             },
+            cursor: "pointer",
             child: Widget.Label({
               justification: "left",
               xalign: 0,
@@ -276,12 +276,17 @@ add_icon(
       const menu = Widget.Menu({
         class_name: "mpris-select",
         children: items,
+        reserve_toggle_size: false,
       });
 
       // AGS doesn't auto set this up, so hook the deactivate, which is triggered
       //  when you click out of the menu and it goes away, so destroy the objects
       menu.connect("deactivate", function (e) {
-        menu.destroy();
+        // Set the destroy on a timeout since this triggers before the menu item's
+        //   activate event, making the actual selection never happen
+        setTimeout(function () {
+          menu.destroy();
+        }, 10);
       });
 
       menu.popup_at_pointer(e);

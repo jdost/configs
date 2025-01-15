@@ -1,9 +1,4 @@
-// Setting loading, defaults w/ configured overrides
-import defaultSettings from "./defaultSettings.js";
-const loadedSettings = JSON.parse(
-  Utils.readFile(`${App.configDir}/settings.json`) || "{}",
-);
-const settings = { ...defaultSettings, ...loadedSettings };
+import settings from "./settings.js";
 
 import accent from "./widgets/accent.js";
 import bar from "./widgets/bar.js";
@@ -19,10 +14,10 @@ function apply_font_size() {
   App.applyCss(`
   window {
     font-size: ${settings.fontSize}px;
-  }`)
+  }`);
 }
 App.resetCss();
-apply_font_size()
+apply_font_size();
 Utils.monitorFile(`${App.configDir}/style.css`, function () {
   App.resetCss();
   apply_font_size();
@@ -33,7 +28,8 @@ App.config({
   style: "./style.css",
   iconTheme: "Papirus",
   windows:
-    (settings.accent ? [accent(settings.monitor)] : []) + [
+    (settings.accent ? [accent(settings.monitor)] : []) +
+    [
       bar(settings.monitor),
       osd(settings.monitor),
       notifications(settings.monitor),

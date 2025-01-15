@@ -1,6 +1,7 @@
 const bluetooth = await Service.import("bluetooth");
 import { add_icon } from "../widgets/bar.js";
 import { Popup } from "../widgets/popup.js";
+import { addToggle } from "../widgets/sidebar.js";
 
 const popup = Popup({
   name: "bluetooth",
@@ -26,32 +27,30 @@ const popup = Popup({
         }),
       });
     });
-    popupButtons.splice(
-      0,
-      0,
-      Widget.ToggleButton({
-        cursor: "pointer",
-        child: Widget.Box({
-          vertical: true,
-          children: [
-            Widget.Icon({ icon: "bluetooth", size: 48 }),
-            Widget.Label({ label: "Controller" }),
-          ],
-        }),
-        onToggled: function (_) {
-          bluetooth.toggle();
-          popup_close();
-        },
-        active: bluetooth.enabled,
-      }),
-    );
 
     window.child = Widget.Box({
       spacing: 2,
+      homogeneous: true,
       children: popupButtons,
     });
 
     return;
+  },
+});
+
+addToggle({
+  icon: bluetooth.bind("enabled").as(function (en) {
+    return en ? "󰂯" : "󰂲";
+  }),
+  tooltip: bluetooth.bind("enabled").as(function (en) {
+    return en ? "Turn off Bluetooth" : "Turn on Bluetooth";
+  }),
+  get_state: function () {
+    return bluetooth.enabled;
+  },
+  set_state: function (s) {
+    if (s && !bluetooth.enabled) bluetooth.toggle();
+    else if (!s && bluetooth.enabled) bluetooth.toggle();
   },
 });
 

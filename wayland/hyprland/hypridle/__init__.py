@@ -25,6 +25,9 @@ class HypridleConfig(XDGConfigFile):
 
 @before
 def ensure_configured() -> None:
+    # If there is already a file and none are defined, don't default
+    if (XDGConfigFile.DIR / HypridleConfig.DST).exists():
+        return
     if HypridleConfig.num_defined == 0:
         HypridleConfig(f"{NAME}/default.conf")
     # If running with an override, blow away the fallback default

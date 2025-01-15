@@ -1,5 +1,5 @@
 import { GradientIcon } from "../widgets/icons.js";
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 
 const memoryUsage = Variable(0);
 const memoryInterval = Utils.interval(1000, function () {
@@ -24,7 +24,7 @@ const memoryInterval = Utils.interval(1000, function () {
   });
 });
 
-add_icon(
+addIcon(
   Widget.EventBox({
     class_name: "memory",
     child: GradientIcon("", "Memory", memoryUsage.bind()),

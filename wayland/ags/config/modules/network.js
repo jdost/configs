@@ -6,7 +6,7 @@
 
 const network = await Service.import("network");
 const PHONE_WIFI_PREFIX = "Pixel_";
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 
 const wifiStrength = [..."󰤟󰤢󰤥󰤨"];
 const vpnIcons = {
@@ -16,7 +16,7 @@ const vpnIcons = {
   disconnecting: "󰫝",
 };
 
-add_icon(
+addIcon(
   Widget.Overlay({
     class_name: "network",
     pass_through: true,

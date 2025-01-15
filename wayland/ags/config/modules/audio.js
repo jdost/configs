@@ -1,6 +1,6 @@
 const audio = await Service.import("audio");
 import { LevelDots } from "../widgets/icons.js";
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 import { register_hook } from "../widgets/osd.js";
 import { Popup } from "../widgets/popup.js";
 import { addToggle } from "../widgets/sidebar.js";
@@ -100,7 +100,7 @@ const popup = Popup({
   },
 });
 
-add_icon(
+addIcon(
   Widget.EventBox({
     class_name: "audio",
     child: Widget.Box({

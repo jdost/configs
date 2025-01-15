@@ -1,11 +1,11 @@
 const battery = await Service.import("battery");
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 
 const verticalBatteryIcons = [..."󰂎󰁺󰁻󰁼󰁽󰁾󰁿󰂀󰂁󰂂󰁹"];
 const horizontalBatteryIcons = [...""];
 const batteryLevelIcons = verticalBatteryIcons;
 
-add_icon(
+addIcon(
   Widget.Label({
     class_name: "battery",
     attribute: battery.bind("percent"),

@@ -1,5 +1,5 @@
 const bluetooth = await Service.import("bluetooth");
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 import { Popup } from "../widgets/popup.js";
 import { addToggle } from "../widgets/sidebar.js";
 
@@ -54,7 +54,7 @@ addToggle({
   },
 });
 
-add_icon(
+addIcon(
   Widget.EventBox({
     class_name: "bluetooth",
     on_primary_click: function (_, e) {

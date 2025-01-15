@@ -17,7 +17,7 @@ export function addRight(widget, before_icons) {
   }
 }
 
-export function add_icon(icon, priority = 0) {
+export function addIcon(icon, priority = 0) {
   icon.toggleClassName("icon", true);
   Object.assign(icon, {
     priority: priority,
@@ -25,7 +25,7 @@ export function add_icon(icon, priority = 0) {
   RightWidgets.icons.push(icon);
 }
 
-export default function build_bar(monitor = 0) {
+export default function buildBar(monitor = 0) {
   return Widget.Window({
     name: `ags.bar.${monitor}`,
     class_name: "bar",

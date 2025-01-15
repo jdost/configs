@@ -1,5 +1,5 @@
 import { GradientIcon } from "../widgets/icons.js";
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 
 const cpuUsage = Variable(0);
 var lastReading = [-1, -1];
@@ -23,7 +23,7 @@ const cpuInterval = Utils.interval(1000, function () {
   });
 });
 
-add_icon(
+addIcon(
   Widget.EventBox({
     class_name: "cpu",
     child: GradientIcon("", "CPU", cpuUsage.bind()),

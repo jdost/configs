@@ -1,5 +1,5 @@
 const mpris = await Service.import("mpris");
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 import { Popup } from "../widgets/popup.js";
 
 const name_icons = {
@@ -244,7 +244,7 @@ const popup = Popup({
   },
 });
 
-add_icon(
+addIcon(
   Widget.EventBox({
     class_name: "mpris",
     on_primary_click: function (_, e) {

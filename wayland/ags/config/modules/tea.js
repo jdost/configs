@@ -1,5 +1,5 @@
 import { calcGradientColor } from "../widgets/icons.js";
-import { add_icon } from "../widgets/bar.js";
+import { addIcon } from "../widgets/bar.js";
 import { Popup } from "../widgets/popup.js";
 
 const target = Variable(200);
@@ -65,7 +65,7 @@ const popup = Popup({
   },
 });
 
-add_icon(
+addIcon(
   Widget.EventBox({
     class_name: "teatimer",
     cursor: "pointer",

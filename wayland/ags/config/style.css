@@ -391,7 +391,7 @@ menu.audio-select menuitem:hover {
 .osd levelbar trough {
     background-color: transparent;
     border: 0;
-    min-width: 15em;
+    min-width: 8em;
 }
 .osd levelbar .filled {
     margin: 5px;

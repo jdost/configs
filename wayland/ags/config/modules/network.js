@@ -7,6 +7,7 @@
 const network = await Service.import("network");
 const PHONE_WIFI_PREFIX = "Pixel_";
 import { addIcon } from "../widgets/bar.js";
+import { addToggle } from "../widgets/sidebar.js";
 
 const wifiStrength = [..."󰤟󰤢󰤥󰤨"];
 const vpnIcons = {
@@ -80,3 +81,16 @@ addIcon(
   }),
   5,
 );
+
+if (network.wifi) {
+  addToggle({
+    icon: network.wifi.bind("enabled").as(function (en) {
+      return en ? "󰖩" : "󰖪";
+    }),
+    tooltip: network.wifi.bind("enabled").as(function (en) {
+      return en ? "Turn off Wifi Radio" : "Turn on Wifi Radio";
+    }),
+    get_state: function () { return network.wifi.enabled; },
+    set_state: function (s) { network.wifi.enabled = s; },
+  });
+}

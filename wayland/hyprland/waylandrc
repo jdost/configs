@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
 systemctl --user import-environment HYPRLAND_INSTANCE_SIGNATURE
-dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE
 
 # vim: ft=bash

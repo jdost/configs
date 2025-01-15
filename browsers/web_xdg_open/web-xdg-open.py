@@ -56,8 +56,9 @@ if not target_browser:
         target_browser = [default_browser]
     else:
         for browser in browsers:
-            if which(browser):
-                target_browser = [which(browser)]
+            browser_path = which(browser)
+            if browser_path is not None:
+                target_browser = [browser_path]
                 break
 
 if len(target_browser) == 0:

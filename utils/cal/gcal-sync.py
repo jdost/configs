@@ -4,15 +4,14 @@ import hashlib
 import json
 import os
 import urllib.request
-
-import icalendar
-
 from contextlib import contextmanager
-from datetime import datetime, timedelta, UTC
 from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, Optional
 from zoneinfo import ZoneInfo
+
+import icalendar
 
 XDG_CONFIG_HOME = Path(
     os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")
@@ -153,6 +152,7 @@ class CalCurseCalendar:
                 (self.DIR / "apts").read_text().strip().split("\n")
             )
         else:
+            apts_file.parent.mkdir(parents=True, exist_ok=True)
             apts_file.touch()
             self.apts = set()
 

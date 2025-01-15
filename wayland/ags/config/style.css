@@ -319,6 +319,9 @@ menu.audio-select menuitem:hover {
     margin-bottom: 0.2em;
     margin-left: 0.1em;
 }
+.notification .body-text {
+    font-size: 0.9em;
+}
 .notification .text {
     min-width: 12.5em;
     margin-left: -0.1em;

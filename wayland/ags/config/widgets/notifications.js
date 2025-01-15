@@ -55,7 +55,7 @@ function build_notification(notification) {
     vexpand: true,
     children: [
       Widget.Label({
-        class_name: "body",
+        class_name: "body-text",
         hexpand: true,
         vexpand: true,
         xalign: 0,

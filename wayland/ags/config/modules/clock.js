@@ -121,8 +121,11 @@ addBlock(function () {
     class_name: "details",
     maxWidthChars: 70,
     truncate: "end",
-    visible: false,
   });
+  // There's a small rendering bug, the visible flag isn't honored on render,
+  // probably because it's draw related, so set it after a small timeout to happen
+  // after any draw event to make it consistent
+  setTimeout(function() { details.visible = false; }, 25);
 
   const now = new Date();
   const cal = Calendar({

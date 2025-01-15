@@ -3,7 +3,7 @@ Description=Wayland clipboard video launcher
 PartOf=wayland.target
 
 [Service]
-ExecStart=wl-paste --primary --watch _clipboard-video
+ExecStart=wl-paste --watch _clipboard-video
 
 [Install]
 WantedBy=wayland.target

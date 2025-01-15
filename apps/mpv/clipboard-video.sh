@@ -76,6 +76,9 @@ else
         | while read -r action; do
             if [[ "$action" == "launch" ]]; then
                 exec $handler
+            else
+                msg "Unknown action: $action"
+                exit 1
             fi
         done
     ) &

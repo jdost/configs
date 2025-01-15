@@ -41,4 +41,5 @@ return {
         {key="-", mods="CTRL", action = wezterm.action.DecreaseFontSize},
     },
     window_background_opacity = 0.65,
+    mux_enable_ssh_agent = false,
 }

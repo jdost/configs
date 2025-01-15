@@ -43,9 +43,14 @@ add_icon(
           if (wired.state === "connected" || wired.state === "activated") {
             icon.label = "";
             self.tooltip_text = `Ethernet - ${wired.state}`;
-          } else if (wifi.state === "connected" || wifi.state === "activated") {
+          } else if (
+            wifi.internet === "connected" ||
+            wifi.state === "connected" ||
+            wifi.state === "activated"
+          ) {
             if (wifi.ssid.startsWith(PHONE_WIFI_PREFIX)) {
               // use different icon?
+              // icon.label = "󰠕";
             }
             icon.label =
               wifiStrength[

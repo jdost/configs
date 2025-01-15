@@ -1,5 +1,6 @@
 const hyprland = await Service.import("hyprland");
-import { add_left } from "../widgets/bar.js";
+import { addLeft } from "../widgets/bar.js";
+import { addToggle } from "../widgets/sidebar.js";
 
 const name_icons = {
   term: "",
@@ -14,7 +15,7 @@ const name_icons = {
 };
 const default_icon = "";
 
-add_left(
+addLeft(
   (function Workspaces() {
     const activeId = hyprland.active.workspace.bind("id");
     var monitorID = "";
@@ -69,3 +70,20 @@ add_left(
     });
   })(),
 );
+
+const animations_enabled = Variable(false);
+function getAnimations() {
+  const enabled = hyprland.message("getoption animations:enabled").startsWith("int: 1");
+  animations_enabled.value = enabled;
+  return enabled;
+};
+addToggle({
+  icon: animations_enabled.bind().as(function (en) {
+    return en ? "󱥰" : "󱥱";
+  }),
+  tooltip: "Toggle WM Animations",
+  get_state: getAnimations,
+  set_state: function (s) {
+    hyprland.messageAsync(`keyword animations:enabled ${s}`).then(getAnimations);
+  },
+});

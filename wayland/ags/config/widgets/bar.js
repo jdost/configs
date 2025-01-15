@@ -5,7 +5,7 @@ let RightWidgets = {
   after: [],
 };
 
-export function add_left(widget) {
+export function addLeft(widget) {
   LeftWidgets.push(widget);
 }
 

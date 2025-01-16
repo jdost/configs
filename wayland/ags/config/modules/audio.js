@@ -241,9 +241,9 @@ addToggle({
     return muted ? "Unmute Microphone" : "Mute Microphone";
   }),
   get_state: function () {
-    return audio.microphone.is_muted;
+    return !audio.microphone.is_muted;
   },
   set_state: function (s) {
-    audio.microphone.is_muted = s;
+    audio.microphone.is_muted = !s;
   },
 });

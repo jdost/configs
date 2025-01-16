@@ -173,16 +173,16 @@ function NotificationWindow(notification) {
 
 addToggle({
   icon: notifications.bind("dnd").as(function (dnd) {
-    return dnd ? "󰂚" : "󰂛";
+    return dnd ? "󰂛" : "󰂚";
   }),
   tooltip: notifications.bind("dnd").as(function (dnd) {
     return dnd ? "Show Notification Popups" : "Suppress Notification Popups";
   }),
   get_state: function () {
-    return notifications.dnd;
+    return !notifications.dnd;
   },
   set_state: function (s) {
-    notifications.dnd = s;
+    notifications.dnd = !s;
   },
 });
 

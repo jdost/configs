@@ -14,6 +14,7 @@ const date = Variable("", {
 });
 
 const MINUTE = 1000 * 60;
+const DAY = 24 * 60 * MINUTE;
 const NOTIFY_BEFORE_SECS = 2 * 60;
 const DEFAULT_REMINDER_TIMEOUT = 15;
 const appointment_cutoffs = [
@@ -47,6 +48,11 @@ function timePP(time_msec) {
   return `${zfill(time.getHours())}:${zfill(time.getMinutes())}`;
 }
 
+function datePP(time_msec) {
+  const time = new Date(time_msec);
+  return `${zfill(time.getMonth())}/${zfill(time.getDate())}/${time.getFullYear()}`;
+}
+
 function durationPP(duration) {
   const m = Math.floor(duration / MINUTE);
   const s = Math.floor(duration / 1000 - m * 60);
@@ -58,11 +64,15 @@ const reminder = (function () {
   var notification = undefined;
 
   function show(timeout_) {
+    if (calcurse.next_appointment === calcurse.MAX_DATE) return;
+
     const timeout = timeout_ || DEFAULT_REMINDER_TIMEOUT * 1000;
-    const body =
-      calcurse.msecUntilNext() > 30 * MINUTE
-        ? `Starts at ${timePP(calcurse.next_appointment)}`
-        : `Starts in ${durationPP(calcurse.msecUntilNext())}`;
+    var body = "";
+    if (calcurse.msecUntilNext() > DAY)
+      body = `Starts on ${datePP(calcurse.next_appointment)}`;
+    else if (calcurse.msecUntilNext() > 30 * MINUTE)
+      body = `Starts at ${timePP(calcurse.next_appointment)}`;
+    else body = `Starts in ${durationPP(calcurse.msecUntilNext())}`;
 
     notification = Utils.notify({
       summary: calcurse.nextAppointmentSummary(),
@@ -125,7 +135,9 @@ addBlock(function () {
   // There's a small rendering bug, the visible flag isn't honored on render,
   // probably because it's draw related, so set it after a small timeout to happen
   // after any draw event to make it consistent
-  setTimeout(function() { details.visible = false; }, 25);
+  setTimeout(function () {
+    details.visible = false;
+  }, 25);
 
   const now = new Date();
   const cal = Calendar({

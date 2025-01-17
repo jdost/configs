@@ -26,8 +26,9 @@ class CalcurseService extends Service {
   static {
     Service.register(
       this,
-      {  // Both the property and event give uint, which is just the underlying
-         // `valueOf` for the Date type, can then be re-built with `new Date(v)`
+      {
+        // Both the property and event give uint, which is just the underlying
+        // `valueOf` for the Date type, can then be re-built with `new Date(v)`
         "new-appointment": ["uint64"],
       },
       {
@@ -41,9 +42,9 @@ class CalcurseService extends Service {
     summary: "Nothing",
   };
   #appointments = [];
-  #countdowns = [];  // Collection of custom variable bindings for countdowns to the next appointment
+  #countdowns = []; // Collection of custom variable bindings for countdowns to the next appointment
   #nextRefresh = undefined;
-  postAppointmentHoldSec = 60 * 10;  // Setting for how long an appointment remains "next" after it starts
+  postAppointmentHoldSec = 60 * 10; // Setting for how long an appointment remains "next" after it starts
 
   get next_appointment() {
     return this.#next.start.valueOf();
@@ -55,6 +56,7 @@ class CalcurseService extends Service {
     // Lookup where home is
     const home = Utils.exec('bash -c "echo $HOME"');
     this.APT_FILE = `${home}/.local/share/calcurse/apts`;
+    this.MAX_DATE = new Date(MAX_DATE_VAL).valueOf(); // Give comparison ref for placeholder
     // If the apts file doesn't exist, mark everything as disabled
     if (this.APT_FILE !== Utils.exec(`ls ${this.APT_FILE}`)) {
       console.log("Calcurse not available, disabling...");
@@ -77,13 +79,15 @@ class CalcurseService extends Service {
     this.refresh();
   }
 
-  msecUntilNext() {  // Helper method for providing the msec countdown value
+  msecUntilNext() {
+    // Helper method for providing the msec countdown value
     return this.next_appointment - new Date().valueOf();
   }
 
-  nextCountdown(frequency) {  // Generates a variable binding for reactivity based
-      // on the msec until the next appointment, meant to simplify logic for things
-      // like alerts around upcoming events
+  nextCountdown(frequency) {
+    // Generates a variable binding for reactivity based
+    // on the msec until the next appointment, meant to simplify logic for things
+    // like alerts around upcoming events
     if (!this.enabled) return Variable(MAX_DATE_VAL);
 
     const appointmentCountdown = Variable(MAX_DATE_VAL);
@@ -95,17 +99,19 @@ class CalcurseService extends Service {
     return appointmentCountdown;
   }
 
-  _clearNextRefresh() {  // next appointment lookup cleaner
+  _clearNextRefresh() {
+    // next appointment lookup cleaner
     if (this.#nextRefresh !== undefined) {
       GLib.source_remove(this.#nextRefresh);
       this.#nextRefresh = undefined;
     }
   }
 
-  #startNextMonitor() {  // Calculates when the current next appointment is expired
-      // and schedules a call to lookup the new next appointment, this takes into
-      // consideration the "post hold" timing, so the next appointment stays next
-      // after it has started.
+  #startNextMonitor() {
+    // Calculates when the current next appointment is expired
+    // and schedules a call to lookup the new next appointment, this takes into
+    // consideration the "post hold" timing, so the next appointment stays next
+    // after it has started.
     if (!this.enabled) return;
 
     this._clearNextRefresh();
@@ -141,7 +147,8 @@ class CalcurseService extends Service {
     return this.#next.summary;
   }
 
-  #formatCCDate(date) {  // Helper for formatting a Date() to the input for calcurse
+  #formatCCDate(date) {
+    // Helper for formatting a Date() to the input for calcurse
     const monthStr =
       date.getMonth() < 10
         ? `0${date.getMonth() + 1}`
@@ -151,9 +158,10 @@ class CalcurseService extends Service {
     return `${monthStr}/${dateStr}/${date.getFullYear()}`;
   }
 
-  parseAppointments(query) {  // Helper for looping over the calcurse query output
-      // And parsing them into appointments, these are just objects with the summary
-      // and start Date for each.
+  parseAppointments(query) {
+    // Helper for looping over the calcurse query output
+    // And parsing them into appointments, these are just objects with the summary
+    // and start Date for each.
     if (query.length === 0) return [];
 
     return query
@@ -175,8 +183,9 @@ class CalcurseService extends Service {
       });
   }
 
-  #refreshAppointments() {  // update the appointments list with all appointments
-      // in calcurse for the current month
+  #refreshAppointments() {
+    // update the appointments list with all appointments
+    // in calcurse for the current month
     if (!this.enabled) return;
 
     const today = new Date();
@@ -185,9 +194,11 @@ class CalcurseService extends Service {
       new Date(today.getFullYear(), today.getMonth(), 1),
     );
     // The end is actually just going to be the first of the next month, which is:
-    if (today.getMonth() === 11) {  // Either the first month of the next year
+    if (today.getMonth() === 11) {
+      // Either the first month of the next year
       var end = this.#formatCCDate(new Date(today.getFullYear() + 1, 0, 1));
-    } else {  // Or the next month if it isn't the end of the year
+    } else {
+      // Or the next month if it isn't the end of the year
       var end = this.#formatCCDate(
         new Date(today.getFullYear(), today.getMonth() + 1, 1),
       );
@@ -202,8 +213,9 @@ class CalcurseService extends Service {
     );
   }
 
-  _updateNext(appointment) {  // Helper to update and emit events when the next
-      // appointment changes
+  _updateNext(appointment) {
+    // Helper to update and emit events when the next
+    // appointment changes
     if (this.#next.start.valueOf() === appointment.start.valueOf()) return;
 
     this.#next.start = appointment.start;
@@ -220,7 +232,8 @@ class CalcurseService extends Service {
     });
   }
 
-  getNext() {  // lookup the next appointment on the calendar
+  getNext() {
+    // lookup the next appointment on the calendar
     if (!this.enabled) return;
 
     const self = this;

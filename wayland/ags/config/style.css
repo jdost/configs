@@ -486,12 +486,12 @@ menu.audio-select menuitem:hover {
     padding: 0.3em 1em;
 }
 .sidebar .toggles .toggle {
-    padding: 0.1em 0.5em;
+    padding: 0 0.4em;
     border: 0.1em solid rgba(255, 255, 255, 0.4);
     border-radius: 0.6em;
     color: rgba(155, 155, 155, 1.0);
     background-color: rgba(255, 255, 255, 0.1);
-    font-size: 1.5em;
+    font-size: 1.7em;
 }
 .sidebar .toggles .toggle:hover,
 .sidebar .toggles .toggle:checked:hover {

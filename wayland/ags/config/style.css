@@ -85,7 +85,7 @@ tooltip * {
     border-radius: 4em;
     margin: 2px;
     padding: 0 0.1em;
-    background-color: rgba(122, 122, 122, 0.6);
+    background-color: rgba(122, 122, 122, 0.3);
     color: #999999;
     transition-timing-function: linear;
 }
@@ -505,4 +505,15 @@ menu.audio-select menuitem:hover {
 }
 .sidebar .notifications-history {
     margin-top: 0.5em;
+}
+.sidebar .mpris {
+    padding: 0.2em 0.4em;
+    margin: 0 0.5em 0.1em;
+    border-radius: 0.5em;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.sidebar .mpris label {
+    font-size: 0.7em;
+    padding: 0.2em;
+    color: rgba(255, 255, 255, 0.8);
 }

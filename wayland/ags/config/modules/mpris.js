@@ -1,15 +1,23 @@
 const mpris = await Service.import("mpris");
 import { addIcon } from "../widgets/bar.js";
 import { Popup } from "../widgets/popup.js";
+import { addBlock } from "../widgets/sidebar.js";
 
-const name_icons = {
+const name_icons_text = {
   spotify: ["󰓇", "rgb(30, 215, 96)"],
   spotifyd: ["󰓇", "rgb(30, 215, 96)"],
   firefox: ["󰈹", "rgb(230, 96, 0)"],
   chromium: ["", "rgb(0, 136, 247)"],
   mpv: ["󰐌", "rgb(200, 100, 255)"],
 };
-const default_icon = "󰝚";
+const name_icons = {
+  spotify: "spotify",
+  spotifyd: "spotify",
+  firefox: "firefox",
+  chromium: "chromium",
+  mpv: "mpv",
+};
+const default_icon_text = "󰝚";
 let tracking_file = "";
 const bus_offset = "org.mpris.MediaPlayer2.".length;
 const NOT_PLAYING_COLOR = "rgb(153, 153, 153)";
@@ -127,14 +135,16 @@ class Player {
     return mpris.getPlayer(this.bus_name);
   }
 
-  icon() {
+  icon(as_icon) {
     const name = this.getPlayer().name;
-    return name_icons[name][0] || default_icon;
+    if (as_icon)
+      return name_icons[name] || default_icon;
+    else return name_icons_text[name][0] || default_icon_text;
   }
 
   color() {
     const name = this.getPlayer().name;
-    return name_icons[name][1] || "rgb(255, 255, 255)";
+    return name_icons_text[name][1] || "rgb(255, 255, 255)";
   }
 
   tooltip() {
@@ -292,7 +302,7 @@ addIcon(
       menu.popup_at_pointer(e);
     },
     child: Widget.Label({
-      label: default_icon,
+      label: default_icon_text,
       css: "color: #999999;",
       setup: function (icon) {
         player_tracker.icon = icon;
@@ -322,3 +332,31 @@ addIcon(
   }),
   5,
 );
+
+addBlock(function () {
+  if (player_tracker.active === undefined) return undefined;
+  if (player_tracker.active.playback_status() !== "playing") return undefined;
+
+  const player = player_tracker.active.getPlayer();
+  return Widget.CenterBox({
+    centerWidget: Widget.Box({
+      class_name: "mpris",
+      homogeneous: false,
+      vpack: "start",
+      hexpand: false,
+      children: [
+        Widget.Icon(player_tracker.active.icon(true)),
+        Widget.Label({
+          label: player.bind('track_artists').as(function (a) {
+            return a.join(", ");
+          }),
+        }),
+        Widget.Label("-"),
+        Widget.Label({
+          truncate: "end",
+          label: player.bind('track_title'),
+        }),
+      ],
+    })
+  });
+});

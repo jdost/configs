@@ -60,7 +60,7 @@ tooltip * {
     margin: 4px 8px 8px;
     padding: 1px 4px;
     border-radius: 1.2em;
-    background-color: rgba(34, 34, 34, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .bar .left {
@@ -85,7 +85,7 @@ tooltip * {
     border-radius: 4em;
     margin: 2px;
     padding: 0 0.1em;
-    background-color: rgba(122, 122, 122, 0.2);
+    background-color: rgba(122, 122, 122, 0.6);
     color: #999999;
     transition-timing-function: linear;
 }
@@ -96,27 +96,26 @@ tooltip * {
 .workspaces .ws-button.monitor-4:first-child {
     margin-left: 12px;
 }
-
 .ws-button:hover,
 .ws-button.occupied {
     background-color: rgba(100, 100, 100, 1.0);
     color: #FFFFFF;
 }
-
+.ws-button.occupied:hover {
+    background-color: rgba(150, 150, 150, 1.0);
+}
 .ws-button.visible.occupied,
-.ws-button.visible.occupied:hover,
-.ws-button.visible,
-.ws-button.visible:hover {
+.ws-button.visible {
     background-color: rgba(200, 200, 200, 1.0);
     color: #000000;
 }
-
 .ws-button.focused {
     background-color: rgba(34, 204, 221, 0.6);
     color: #000000;
 }
-
-.ws-button.focused:hover {
+.ws-button.focused:hover,
+.ws-button.visible.occupied:hover,
+.ws-button.visible:hover {
     background-color: rgba(34, 204, 221, 1.0);
     color: #000000;
 }
@@ -137,7 +136,7 @@ tooltip * {
 }
 
 .right .icons {
-    background-color: rgba(100, 100, 100, 0.7);
+    background-color: rgba(50, 50, 50, 0.7);
     border-radius: 3em;
     min-width: 1.2em;
     margin: 0.3em 0 0.2em 0.6em;

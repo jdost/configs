@@ -446,17 +446,18 @@ menu.audio-select menuitem:hover {
     border-radius: 10px 0 0 10px;
     margin: 0 0 1em;
     min-width: 20em;
+    padding: 1em 0;
 }
 
 .sidebar .calendar-holder {
-    margin: 0.5em 0 0.2em;
+    margin: 0.5em 0;
 }
 .sidebar .calendar {
     border: 0;
-    padding: 0.8em;
-    border-radius: 1em;
-    background: rgba(66, 66, 66, 0.3);
-    margin: 0.4em 0;
+    padding: 0.4em 0.6em;
+    border-radius: 0.7em;
+    background: rgba(66, 66, 66, 0.5);
+    margin: 0 0 0.1em;
 }
 .sidebar .calendar .week button {
     margin: 0 0.1em;
@@ -508,7 +509,7 @@ menu.audio-select menuitem:hover {
 }
 .sidebar .mpris {
     padding: 0.2em 0.4em;
-    margin: 0 0.5em 0.1em;
+    margin: 0 0.5em;
     border-radius: 0.5em;
     background-color: rgba(255, 255, 255, 0.1);
 }

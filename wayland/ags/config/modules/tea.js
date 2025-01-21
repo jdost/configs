@@ -1,20 +1,18 @@
 import { calcGradientColor } from "../widgets/icons.js";
 import { addIcon } from "../widgets/bar.js";
 import { Popup } from "../widgets/popup.js";
+import { Color } from "../widgets/color.js";
 
 const target = Variable(200);
 const active = Variable(0);
-const TARGET_MAX = 600;
+const TARGET_MAX = 300;
 const TARGET_MIN = 30;
 const INTERVAL_PERIOD = 5;
-const DEFAULT_COLOR = "rgb(190, 190, 190)";
-const GRADIENT = [
-  [255, 255, 255],
-  [255, 160, 40],
-];
+const DEFAULT_COLOR = Color(190, 190, 190);
+const GRADIENT = [Color(255, 255, 255), Color(255, 160, 40)];
 const icon = Widget.Label({
   label: "󰶞",
-  css: `color: ${DEFAULT_COLOR}`,
+  css: `color: ${DEFAULT_COLOR.as_rgb()}`,
   tooltip_text: Utils.merge([target.bind(), active.bind()], function (t, a) {
     if (a < 0) return "TeaTimer Finished";
     else if (a > 0) return "TeaTimer Running";
@@ -34,16 +32,19 @@ const popup = Popup({
   name: "teatimer",
   timeout: 3000,
   setup: function (window) {
+    const scale = 10;
     const slider = Widget.Slider({
       hexpand: true,
       drawValue: false,
 
-      min: TARGET_MIN,
-      value: target.bind(),
-      max: TARGET_MAX,
+      min: TARGET_MIN / scale,
+      value: target.bind().as(function (v) {
+        return v / scale;
+      }),
+      max: TARGET_MAX / scale,
 
       onChange: function (s) {
-        target.value = s.value;
+        target.value = Math.floor(s.value) * scale;
         popup.refresh();
       },
     });
@@ -71,6 +72,8 @@ addIcon(
     cursor: "pointer",
     child: icon,
     on_primary_click: function (_) {
+      if (active.value !== 0) return;
+
       let remaining = Math.floor(target.value);
       icon.css = `color: ${calcGradientColor(GRADIENT, 0.0)}`;
       active.value = 1;
@@ -93,7 +96,7 @@ addIcon(
                   onClicked: function (_) {
                     nag.close();
                     active.value = 0;
-                    icon.css = `color: ${DEFAULT_COLOR}`;
+                    icon.css = `color: ${DEFAULT_COLOR.as_rgb()}`;
                   },
                 }),
               ],

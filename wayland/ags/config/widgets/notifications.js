@@ -210,6 +210,10 @@ export default function setup_notifications(monitor = 0) {
     function (_, id) {
       const notification = notifications.getNotification(id);
       if (notification) {
+        if (notification.timeout === 1) {
+          notification.dismiss();
+          return;
+        }
         const notificationPopup = NotificationPopup(notification);
         if (notificationPopup === undefined) return;
         notificationList.children = [

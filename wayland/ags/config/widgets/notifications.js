@@ -29,7 +29,7 @@ function NotificationIcon(notification) {
   });
 }
 
-function build_notification(notification) {
+function build_notification(notification, persistent) {
   const icon = Widget.Box({
     vpack: "start",
     hexpand: false,
@@ -68,6 +68,7 @@ function build_notification(notification) {
     ],
   });
 
+  var box; // Hold a reference to the top level box for destruction purposes
   const actions = Widget.Box({
     class_name: "actions",
     children: notification.actions.map(function (action) {
@@ -85,14 +86,25 @@ function build_notification(notification) {
           //   gtk
           console.log(`Invoking ${action.id} for ${notification.id}`);
           notification.invoke(action.id);
-          notification.dismiss();
+          if (
+            // Resident means that the notification sticks around after actions
+            notification.hints.resident &&
+            notification.hints.resident.get_boolean()
+          ) {
+            return;
+          }
+          // Persistent instances need close, dismiss is for popups
+          if (persistent) {
+            if (box) box.destroy();
+            notification.close();
+          } else notification.dismiss();
         },
         child: Widget.Label(action.label),
       });
     }),
   });
 
-  return Widget.Box({
+  box = Widget.Box({
     class_name: `notification ${notification.urgency}`,
     vertical: true,
     vpack: "start",
@@ -116,23 +128,12 @@ function build_notification(notification) {
       actions,
     ],
   });
+  return box;
 }
 
 function NotificationPopup(notification) {
-  if (
-    notification.hints.transient &&
-    notification.hints.transient.get_boolean() &&
-    notification.actions.length === 0
-  ) {
-    // Remove notification from history if transient and has no actions
-    // We want to keep it around if it has actions, otherwise it signals the handler
-    //   that the ref is closed so it no longer listens for the invocation
-    const non_popup = notifications.notifications.find(function (n) {
-      return n.id === notification.id;
-    });
-    non_popup.close();
-  }
-
+  // If dnd is turned on, skip any popups.  There is a weird scenario here where
+  //   transient notifications just flat out get eaten, but that's probably fine.
   if (notifications.dnd) {
     return undefined;
   }
@@ -146,12 +147,14 @@ function NotificationPopup(notification) {
         notification.dismiss();
       },
       hexpand: true,
-      child: build_notification(notification),
+      child: build_notification(notification, false),
     }),
   });
 }
 
 function NotificationWindow(notification) {
+  // There shouldn't be any transient notifications in here, but if there are, just
+  // skip them, transient means the notification shouldn't persist beyond the popup
   if (
     notification.hints.transient &&
     notification.hints.transient.get_boolean()
@@ -160,7 +163,7 @@ function NotificationWindow(notification) {
     return undefined;
   }
 
-  const popup = build_notification(notification);
+  const popup = build_notification(notification, true);
   return Widget.EventBox({
     hexpand: true,
     on_secondary_click: function (_) {
@@ -210,10 +213,14 @@ export default function setup_notifications(monitor = 0) {
     function (_, id) {
       const notification = notifications.getNotification(id);
       if (notification) {
+        // If the timeout is 1ms, just skip displaying it.  This is useful for any
+        //   scenarios where we want something to live in the persistent list but
+        //   not interrupt the user, like long lived actions
         if (notification.timeout === 1) {
           notification.dismiss();
           return;
         }
+
         const notificationPopup = NotificationPopup(notification);
         if (notificationPopup === undefined) return;
         notificationList.children = [
@@ -235,6 +242,20 @@ export default function setup_notifications(monitor = 0) {
         if (!popup.attribute) return;
         return popup.attribute.id === id;
       });
+      // Get the persistent notification object, if it's marked as transient, it
+      //   shouldn't persist, so close the persistent one once this is dismissed.
+      //   We need to wait for dismissal, otherwise we signal to anything awaiting
+      //   actions that it's closed w/o actions and they don't get invoked
+      const non_popup = notifications.notifications.find(function (n) {
+        return n.id === id;
+      });
+      if (
+        non_popup &&
+        non_popup.hints.transient &&
+        non_popup.hints.transient.get_boolean()
+      )
+        non_popup.close();
+
       if (popup) {
         // We want to animate the removal, but in order to avoid the animation being
         //   triggered twice, we blank the lookup attribute in order to effectively

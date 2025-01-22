@@ -7,12 +7,15 @@ const MAX_DATE_VAL = 100000000 * DAY;
 // appointments vs calcurse's built in headers and spacing and the query format
 // is just the expected output for lines we will parse
 const PREFIX = "**";
+const DELIMITER = "\r";
 // Calcurse formatting:
 //   PREFIX is just used as a marker for the lines to parse
 //   %s is the seconds since epoch for the event's start, we then use this to
 //      directly generate a Date() for richer control/logic
+//   %d is the duration in seconds, we use this to determine if it's a
+//      meeting/appointment vs an event/day long thing
 //   %m is the summary/title for the event
-const QUERY_FORMAT = `${PREFIX}%s %m\n`;
+const QUERY_FORMAT = `${PREFIX}%s${DELIMITER}%d${DELIMITER}%m\n`;
 
 class CalcurseService extends Service {
   /**
@@ -170,12 +173,15 @@ class CalcurseService extends Service {
         if (!line.startsWith(PREFIX)) return undefined;
 
         const start = new Date(
-          Number(line.split(" ", 1)[0].substr(PREFIX.length)) * 1000,
+          Number(line.split(DELIMITER, 1)[0].substr(PREFIX.length)) * 1000,
         );
+        // If the duration is at least a day, ignore it
+        const duration = Number(line.split(DELIMITER, 2)[1]) * 1000; // multiple to msec
+        if (duration >= DAY) return;
 
         return {
           start: start,
-          summary: line.substr(line.indexOf(" ") + 1),
+          summary: line.substr(line.lastIndexOf(DELIMITER) + 1),
         };
       })
       .filter(function (e) {

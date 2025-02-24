@@ -27,8 +27,19 @@ def run_before(dry_run: bool = False) -> None:
 
 
 def run_after(dry_run: bool = False) -> None:
+    results = []
     for hook in after_hooks:
         if dry_run:
             print(f"Would Run: {hook.__name__}")
-        else:
+            continue
+        # We want to eat any failures up front so one broken after hook doesn't
+        # skip all the others, then re-raise a failure
+        try:
             hook()
+        except BaseException as e:
+            print(f"Hook {hook.__name__} failed: {e}")
+            results.append(e)
+
+    if len(results):
+        # Only raising the first, but would be nice to raise all of them?
+        raise results[0]

@@ -1,24 +1,25 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
-ARG VERSION="1.7.7"
-ARG APPIMAGE_RELEASE_URI="https://github.com/obsidianmd/obsidian-releases/releases/download"
-
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
+RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
         fonts-noto-color-emoji \
-        libasound2 \
+        git \
+        libasound2t64 \
         libgbm1 \
         libgtk-3-0 \
         libnss3 \
         libx11-xcb1 \
         wget \
+    && userdel ubuntu \
     && rm -rf /var/lib/apt/lists/* \
         /var/log/* \
         /usr/share/man \
         /usr/share/doc
+
+ARG VERSION="1.8.7"
+ARG APPIMAGE_RELEASE_URI="https://github.com/obsidianmd/obsidian-releases/releases/download"
 
 RUN wget --quiet -O "/tmp/obsidian.appimage" \
         "$APPIMAGE_RELEASE_URI/v$VERSION/Obsidian-$VERSION.AppImage" \

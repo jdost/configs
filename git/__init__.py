@@ -7,7 +7,7 @@ import utils.homebin
 NAME = normalize(__name__)
 
 packages={
-    Pacman("openssh"), Pacman("git"), Pacman("man-db"),
+    Pacman("openssh"), Pacman("git"), Pacman("man-db"), Pacman("git-delta"),
     Apt("git"), Apt("openssh-client")
 }
 files=[

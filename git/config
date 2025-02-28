@@ -1,5 +1,6 @@
 [core]
     editor = vim
+    pager = delta
     excludesfile = ~/.config/git/ignore
 
 [user]
@@ -8,6 +9,15 @@
 
 [init]
     defaultBranch = main
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    line-numbers = true
+    side-by-side = true
+    hunk-header-decoration-style = cyan
+    navigate = true  # use n and N to move between diff sections
 
 [push]
     default = current
@@ -24,7 +34,7 @@
 [merge]
     # Default uses "diff2" showing just "ours" and "theirs"
     # diff3 shows "ours", "theirs", and "original"
-    conflictstyle = diff3
+    conflictstyle = zdiff3
 
 [alias]
     st = status -s

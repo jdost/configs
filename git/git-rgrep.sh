@@ -15,11 +15,13 @@ else
     exit 1
 fi
 
-exec rg \
+rg \
     --ignore-file=$TOPLEVEL/.gitignore \
     --column \
     --line-number \
     --no-heading \
     --color=always \
     --smart-case \
-    "$@"
+    --json \
+    "$@" \
+| delta

@@ -17,6 +17,7 @@ python_tools = [
     "python-lsp-black",
     "python-lsp-ruff",
     "python-lsp-server",
+    "uv",
 ]
 
 virtualenv = VirtualEnv("python-code-tools", *python_tools)
@@ -28,6 +29,8 @@ packages = {
     Pacman("python-wheel"),
     Apt("python3"),
     Apt("python3-pip"),
+    Apt("python3-pipx"),
+    Apt("python3-poetry"),
     Apt("python3-venv"),
     virtualenv,
 }

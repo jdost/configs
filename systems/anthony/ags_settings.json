@@ -1,0 +1,7 @@
+{
+    "widgets": [
+        "hyprland", "audio", "bluetooth", "battery", "brightness",
+        "network", "cpu", "memory", "systray", "clock", "mpris"
+    ],
+    "fontSize": 24
+}

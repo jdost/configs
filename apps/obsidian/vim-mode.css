@@ -1,0 +1,50 @@
+div.status-bar-item.plugin-obsidian-vimrc-support {
+  /* Powerline theme */
+  --text-color-normal: #0F5000;
+  --background-color-normal: #A7DA00;
+
+  --text-color-insert: #0F4A4B;
+  --background-color-insert: #FFFFFF;
+
+  --text-color-visual: #6F0904;
+  --background-color-visual: #FCA700;
+
+  --text-color-replace: #FFFFFF;
+  --background-color-replace: #D6150E;
+}
+
+div.status-bar-item.plugin-obsidian-vimrc-support {
+  order: 9999;
+  margin: 5px -5px 0 5px;
+  padding-right: 1em;
+  padding-left: 1em;
+
+  /* Use Monospace font */
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/* Normal */
+div.status-bar-item.vimrc-support-vim-mode[data-vim-mode="normal"] {
+  color: var(--text-color-normal);
+  background-color: var(--background-color-normal);
+}
+
+/* Insert */
+div.status-bar-item.vimrc-support-vim-mode[data-vim-mode="insert"] {
+  color: var(--text-color-insert);
+  background-color: var(--background-color-insert);
+}
+
+/* Visual */
+div.status-bar-item.vimrc-support-vim-mode[data-vim-mode="visual"] {
+  color: var(--text-color-visual);
+  background-color: var(--background-color-visual);
+}
+
+/* Replace */
+div.status-bar-item.vimrc-support-vim-mode[data-vim-mode="replace"] {
+  color: var(--text-color-replace);
+  background-color: var(--background-color-replace);
+}

@@ -1,0 +1,19 @@
+"Maintain the jj normal mode mapping (keep hitting it)
+inoremap jj <Esc>
+
+"Use system keyboard for yank buffer
+set clipboard=unnamed
+
+"Maintain MD wrapping but have movement follow visual look
+nnoremap j gj
+nnoremap k gk
+nnoremap I g0i
+nnoremap A g$a
+
+"Map Obsidian actions to vim commands
+exmap vsplit obcommand workspace:split-vertical
+exmap split obcommand workspace:split-horizontal
+
+"Visual Mode indents keep selection
+vnoremap > >gv
+vnoremap < <gv

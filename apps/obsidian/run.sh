@@ -15,6 +15,7 @@ NAME=obsidian
 IMAGE=desktop-app/$NAME:$(sha256sum $APP_DIR/Dockerfile | awk '{ print $1 }')
 CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/$NAME
 DATA_DIR=$HOME/.local/share/obsidian
+BACKUP_DIR=$HOME/.cache/obsidian-backups
 DOCKER_FLAGS_BASE=(
     --volume /etc/localtime:/etc/localtime:ro
 )
@@ -67,6 +68,9 @@ fi
 
 [[ ! -d "$CONFIG_DIR" ]] && mkdir "$CONFIG_DIR"
 [[ ! -d "$DATA_DIR" ]] && mkdir "$DATA_DIR"
+if [[ -d "$BACKUP_DIR" ]]; then
+    DOCKER_FLAGS_BASE+=(--volume $BACKUP_DIR:/backups)
+fi
 
 msg "Launching..."
 exec docker run \

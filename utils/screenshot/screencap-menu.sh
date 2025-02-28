@@ -60,17 +60,24 @@ take_screenshot() {
             main $output
         fi
     fi
+
+    populate_clipboard() {
+        if $IS_WAYLAND; then
+            cat $output | wl-copy
+        else
+            echo $output | xclip -in -selection clipboard
+        fi
+    }
+
+    populate_clipboard
+
     notify-send \
-        --app-name=maim \
+        --app-name=screenshot \
+        --icon=$output \
         --expire-time=4000 \
+        --transient \
         "Screenshot taken" \
-        "$(basename $output)
-Copied to clipboard"
-    if $IS_WAYLAND; then
-        echo $output | wl-copy
-    else
-        echo $output | xclip -in -selection clipboard
-    fi
+        "$(basename $output) Copied to clipboard"
 }
 
 selection=$(

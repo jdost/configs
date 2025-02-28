@@ -15,6 +15,7 @@ import rofi.wayland
 import shells.zsh
 import utils.cal
 import utils.cgroups
+import utils.diskmgr
 import utils.docker
 import utils.dropbox.wayland
 import utils.icons.papirus

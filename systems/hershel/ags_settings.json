@@ -1,6 +1,6 @@
 {
     "widgets": [
-        "hyprland", "audio", "cpu", "memory", "bluetooth", "systray", "clock",
-        "mpris", "tea"
+        "hyprland", "audio", "cpu", "memory", "bluetooth", "systray", "mpris",
+        "clock", "tea", "system"
     ]
 }

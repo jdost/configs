@@ -7,6 +7,16 @@ notifications.clearDelay = 15;
 notifications.popupTimeout = 5000;
 
 const DEFAULT_ICON = "dialog-information-symbolic";
+var window;
+
+export function get_monitor() {
+  if (window === undefined) return -1;
+  return window.monitor;
+}
+
+export function set_monitor(m) {
+  window.monitor = m;
+}
 
 function NotificationIcon(notification) {
   if (notification.image) {
@@ -271,7 +281,7 @@ export default function setup_notifications(monitor = 0) {
     "dismissed",
   );
 
-  return Widget.Window({
+  window = Widget.Window({
     name: "ags.notifications",
     class_name: "notification-popups",
     monitor,
@@ -283,4 +293,6 @@ export default function setup_notifications(monitor = 0) {
       child: notificationList,
     }),
   });
+
+  return window;
 }

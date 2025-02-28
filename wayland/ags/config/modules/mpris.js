@@ -17,7 +17,7 @@ const name_icons = {
   chromium: "chromium",
   mpv: "mpv",
 };
-const default_icon_text = "󰝚";
+const default_icon = ["󰝚", "rgb(255, 255, 255)"];
 let tracking_file = "";
 const bus_offset = "org.mpris.MediaPlayer2.".length;
 const NOT_PLAYING_COLOR = "rgb(153, 153, 153)";
@@ -58,8 +58,8 @@ const player_tracker = {
       this.active = latest_non_player;
     } else {
       this.active = undefined;
-      this.icon.label = default_icon;
-      this.icon.css = "color: #999999;";
+      this.icon.label = default_icon[0];
+      this.icon.css = "#999999";
       return;
     }
 
@@ -137,14 +137,13 @@ class Player {
 
   icon(as_icon) {
     const name = this.getPlayer().name;
-    if (as_icon)
-      return name_icons[name] || default_icon;
-    else return name_icons_text[name][0] || default_icon_text;
+    if (as_icon) return name_icons[name] || default_icon;
+    else return name_icons_text[name][0] || default_icon[0];
   }
 
   color() {
     const name = this.getPlayer().name;
-    return name_icons_text[name][1] || "rgb(255, 255, 255)";
+    return name_icons_text[name][1] || default_icon[1];
   }
 
   tooltip() {
@@ -219,6 +218,7 @@ const popup = Popup({
                     class_name: "play-pause",
                     on_clicked: function (_) {
                       player.playPause();
+                      popup.toggle();
                     },
                     visible: player.bind("can_play"),
                     cursor: "pointer",
@@ -302,7 +302,7 @@ addIcon(
       menu.popup_at_pointer(e);
     },
     child: Widget.Label({
-      label: default_icon_text,
+      label: default_icon[0],
       css: "color: #999999;",
       setup: function (icon) {
         player_tracker.icon = icon;
@@ -347,16 +347,16 @@ addBlock(function () {
       children: [
         Widget.Icon(player_tracker.active.icon(true)),
         Widget.Label({
-          label: player.bind('track_artists').as(function (a) {
+          label: player.bind("track_artists").as(function (a) {
             return a.join(", ");
           }),
         }),
         Widget.Label("-"),
         Widget.Label({
           truncate: "end",
-          label: player.bind('track_title'),
+          label: player.bind("track_title"),
         }),
       ],
-    })
+    }),
   });
 });

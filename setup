@@ -6,5 +6,8 @@ if [[ -z "$@" ]]; then
     exec python3 -m cfgtools \
         "systems.$(cat /proc/sys/kernel/hostname | awk '{print tolower($0)}')"
 else
-    exec python3 -m cfgtools "$@"
+    # the two seds are for:
+    #  1. convert /'s into .'s so the fs completion translates into python imports
+    #  2. trim trailing .'s from fs completion appending a trailing / for dirs
+    exec python3 -m cfgtools "$(echo $@ | sed "s#/#.#g" | sed "s#\.\$##")"
 fi

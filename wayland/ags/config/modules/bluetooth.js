@@ -16,7 +16,7 @@ const popup = Popup({
         cursor: "pointer",
         on_clicked: function (x, y) {
           dev.setConnection(!dev.connected);
-          popup_close();
+          popup.close();
         },
         child: Widget.Box({
           vertical: true,

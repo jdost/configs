@@ -9,6 +9,8 @@ if has_key(g:plugs, 'nvim-treesitter')
   " Use treesitter for folding logic
   setlocal foldmethod=expr
   setlocal foldexpr=nvim_treesitter#foldexpr()
+
+  TSInstallIfNot python
 else
   setlocal foldmethod=indent
 endif

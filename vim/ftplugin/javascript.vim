@@ -11,3 +11,11 @@ setlocal omnifunc=javascriptcomplete#CompleteJS
 
 " Abbreviations
 iabbrev fun function
+
+if has_key(g:plugs, 'nvim-treesitter')
+  " Use treesitter for folding logic
+  setlocal foldmethod=expr
+  setlocal foldexpr=nvim_treesitter#foldexpr()
+
+  TSInstallIfNot javascript
+end

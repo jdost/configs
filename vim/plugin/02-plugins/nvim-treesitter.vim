@@ -12,7 +12,27 @@ require('nvim-treesitter.configs').setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+vim.api.nvim_create_user_command(
+  'TSInstallIfNot',
+  function(opts)
+    local lang = opts.fargs[1]
+    local treesitter = require("nvim-treesitter.info")
+    local installed = false
+    for _, language in pairs(treesitter.installed_parsers()) do
+      if language == lang then
+        installed = true
+        break
+      end
+    end
+    if not installed then
+      vim.cmd("TSInstall "..lang)
+    end
+  end,
+  {nargs = 1}
+)
 EOF
+
   if has_key(g:plugs, 'quickmenu.vim')
 
     function! TSInstallCurrent()

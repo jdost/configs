@@ -82,10 +82,16 @@ else
 " }}}
 end
 
+if has('nvim')
+  Plug 'mfussenegger/nvim-lint'
+  Plug 'stevearc/conform.nvim'
+else
+  Plug 'w0rp/ale'
+  Plug 'rhysd/vim-lsp-ale'
+end
+
 "Plug 'jiangmiao/auto-pairs'
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
-Plug 'w0rp/ale'
-Plug 'rhysd/vim-lsp-ale'
 Plug 'liuchengxu/vista.vim'
 "Plug 'scrooloose/syntastic'
 "Plug 'Shougo/neosnippet'
@@ -115,7 +121,7 @@ Plug 'sjl/badwolf'
 " `vim-indent-guides` doesn't work in neovim :(
 if has('nvim-0.5')
   Plug 'lukas-reineke/indent-blankline.nvim'
-  "Plug 'yuntan/neovim-indent-guides'
+  Plug 'yuntan/neovim-indent-guides'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'folke/trouble.nvim'
   Plug 'folke/lsp-colors.nvim'

@@ -2,6 +2,22 @@ if !empty(glob($HOME.'/.local/python-code-tools'))
   let $PATH .= ':'.$HOME.'/.local/python-code-tools/bin'
 endif
 
+if has_key(g:plugs, 'nvim-lint')
+  lua << EOF
+    local lint = require('lint')
+    lint.linters_by_ft['python'] = {'mypy', 'ruff'}
+EOF
+endif
+
+if has_key(g:plugs, 'conform.nvim')
+  lua << EOF
+    local conform = require('conform')
+    conform.formatters_by_ft.python = {
+      'ruff_fix', 'ruff_organize_imports', 'ruff_format'
+    }
+EOF
+endif
+
 if has_key(g:plugs, 'nvim-lspconfig')
   if has_key(g:plugs, 'ncm2')
     lua << EOF

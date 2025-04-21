@@ -534,6 +534,10 @@ async def unmount_cmd(dev_path: str) -> bool:
 
 
 def main():
+    if len(sys.argv) == 1:
+        print("Provide a subcommand, options are:")
+        print("  gen-fstab/fstab, mount/mnt, unmount/unmt/umount")
+        sys.exit(1)
     if sys.argv[1] in {"gen-fstab", "fstab"}:
         gen_fstab()
     elif sys.argv[1] in {"mount", "mnt"}:
@@ -544,6 +548,7 @@ def main():
         asyncio.run(unmount_cmd(sys.argv[2]))
     else:
         print(f"Unknown subcommand: {sys.argv[1]}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

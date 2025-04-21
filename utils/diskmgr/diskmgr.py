@@ -31,7 +31,7 @@ class VolumeGroup:
             return f"LVM VG:{self.name}"
 
     async def is_imported(self) -> bool:
-        proc = await run_cmd("vgs", self.name, as_root=True)
+        proc = await run_cmd("lvs", self.name, as_root=True)
         await proc.wait()
         return proc.returncode == 0
 
@@ -52,15 +52,34 @@ class VolumeGroup:
         return proc.returncode == 0
 
     async def is_activated(self) -> bool:
-        proc = await run_cmd("lvs", f"/dev/{self.name}", as_root=True)
+        proc = await run_cmd(
+            "lvs", "--reportformat", "json", f"/dev/{self.name}", as_root=True
+        )
         await proc.wait()
-        return proc.returncode == 0
+        if proc.returncode != 0:
+            return False
+
+        stdout, _ = await proc.communicate()
+        parsed = json.loads(stdout.decode())
+        assert isinstance(parsed, dict), "Unexpected JSON parsed type"
+
+        assert "report" in parsed
+        assert isinstance(parsed["report"], list)
+        assert len(parsed["report"]) > 0
+
+        lv_listing = parsed["report"][0]
+        assert "lv" in lv_listing
+        assert isinstance(lv_listing["lv"], list)
+
+        # Looks like "lv_attr":"-wi-a-----" or "lv_attr":"-wi-------"
+        attr = lv_listing["lv"][0]["lv_attr"]
+        return attr[4] == "a"
 
     async def activate_vg(self) -> bool:
         if await self.is_activated():
             return True
 
-        proc = await run_cmd("lvchange", "--activate", "y", f"/dev/{self.name}", as_root=True)
+        proc = await run_cmd("lvchange", "--activate", "y", self.name, as_root=True)
         await proc.wait()
         return proc.returncode == 0
 
@@ -68,12 +87,14 @@ class VolumeGroup:
         if not await self.is_activated():
             return True
 
-        proc = await run_cmd("lvchange", "--activate", "n", f"/dev/{self.name}", as_root=True)
+        proc = await run_cmd("lvchange", "--activate", "n", self.name, as_root=True)
         await proc.wait()
         return proc.returncode == 0
 
     async def logical_volumes(self) -> Sequence["LogicalVolume"]:
-        output = await json_output("lvs", "--reportformat", "json", self.name, as_root=True)
+        output = await json_output(
+            "lvs", "--reportformat", "json", self.name, as_root=True
+        )
 
         assert "report" in output
         assert isinstance(output["report"], list)
@@ -83,7 +104,9 @@ class VolumeGroup:
         assert "lv" in lv_listing
         assert isinstance(lv_listing["lv"], list)
 
-        return [LogicalVolume.from_lvreport(self, lv_info) for lv_info in lv_listing["lv"]]
+        return [
+            LogicalVolume.from_lvreport(self, lv_info) for lv_info in lv_listing["lv"]
+        ]
 
 
 @dataclass
@@ -93,9 +116,7 @@ class LogicalVolume:
 
     @staticmethod
     def is_entry(entry: str) -> bool:
-        return bool(
-            re.match(r"^/dev/mapper/([a-zA-Z0-9-]+)-([a-zA-Z0-9-]+)$", entry)
-        )
+        return bool(re.match(r"^/dev/mapper/([a-zA-Z0-9-]+)-([a-zA-Z0-9-]+)$", entry))
 
     @property
     def dev(self) -> str:
@@ -122,17 +143,19 @@ class BlockDevice:
     label: Optional[str]
     uuid: Optional[str]
     path: Path
-    children: Sequence['BlockDevice']
+    children: Sequence["BlockDevice"]
 
     @property
     def has_dev(self) -> bool:
         return bool(self.fstype) or bool(self.children)
 
     @classmethod
-    def from_cmd(cls, output: Dict[str, Any]) -> 'BlockDevice':
+    def from_cmd(cls, output: Dict[str, Any]) -> "BlockDevice":
         for k, t in [("name", str), ("hotplug", bool), ("path", str)]:
             assert k in output, f"{k} key missing from input struct"
-            assert isinstance(output[k], t), f"{k} is the wrong type, expected {t}, got {type(output[k])}"
+            assert isinstance(output[k], t), (
+                f"{k} is the wrong type, expected {t}, got {type(output[k])}"
+            )
 
         if "children" in output:
             assert isinstance(output["children"], list)
@@ -156,8 +179,8 @@ class BlockDevice:
 
 @dataclass
 class UUID:
-    """ Simple wrapper type for UUID based device mounts.
-    """
+    """Simple wrapper type for UUID based device mounts."""
+
     uuid: str
     ENTRY_PREFIX = "UUID="
 
@@ -170,16 +193,17 @@ class UUID:
         return entry.startswith(cls.ENTRY_PREFIX)
 
     @classmethod
-    def from_entry(cls, entry: str) -> 'UUID':
-        return cls(uuid=entry[len(UUID.ENTRY_PREFIX):])
+    def from_entry(cls, entry: str) -> "UUID":
+        return cls(uuid=entry[len(UUID.ENTRY_PREFIX) :])
 
 
 @dataclass
 class Mount:
-    """ Mount is a singular entry in the fstab that is just an entry
+    """Mount is a singular entry in the fstab that is just an entry
     of a device (under `/dev/...`) to a point in the local FS along with
     information for how to mount that device to that point.
     """
+
     source: Union[UUID, LogicalVolume]
     mountpoint: Path
     fstype: str = "ext4"
@@ -191,15 +215,15 @@ class Mount:
         return f"<Mount({self.mountpoint}) source={self.source.dev}>"
 
     def ensure_exists(self) -> None:
-        """ Create the local mountpoint directory locally."""
+        """Create the local mountpoint directory locally."""
         if self.mountpoint.expanduser().exists():
             return
 
         self.mountpoint.expanduser().mkdir(parents=True, exist_ok=True)
 
     def as_entry(self) -> Sequence[str]:
-        """ Column split of the fstab entry:
-            > <source>   <local mount>   <fstype>   <options>   <dump>   <fsck>
+        """Column split of the fstab entry:
+        > <source>   <local mount>   <fstype>   <options>   <dump>   <fsck>
         """
         return [
             # This is the device definition for the source, handled by the
@@ -240,10 +264,11 @@ class Mount:
 
 @dataclass
 class MountGroup:
-    """ MountGroup: A collection of mount entries in the fstab
+    """MountGroup: A collection of mount entries in the fstab
     that correspond to a singular storage device (typically a removable
     storage) of some type.
     """
+
     name: str
     mounts: Set[Mount]
     description: Optional[str] = None
@@ -255,7 +280,6 @@ class MountGroup:
             lines.append(f"#   {self.description}")
 
         return "\n".join(lines)
-
 
     def fstab_entry(self) -> Sequence[str]:
         """The fstab entry is a comment header to describe the group, then
@@ -286,7 +310,9 @@ async def check_sudo() -> None:
     assert uptime_bin is not None, "No idea why you don't have uptime"
 
     test_proc = await asyncio.subprocess.create_subprocess_exec(
-        SUDO, "--non-interactive", uptime_bin,
+        SUDO,
+        "--non-interactive",
+        uptime_bin,
         stdout=asyncio.subprocess.DEVNULL,
         stderr=asyncio.subprocess.DEVNULL,
     )
@@ -300,14 +326,18 @@ async def check_sudo() -> None:
             sys.exit(1)
 
         grant_proc = await asyncio.subprocess.create_subprocess_exec(
-            SUDO, "-A", "--prompt=Need root privileges for commands", uptime_bin,
+            SUDO,
+            "-A",
+            "--prompt=Need root privileges for commands",
+            uptime_bin,
             stdout=asyncio.subprocess.DEVNULL,
             env={"SUDO_ASKPASS": ASKPASS, **os.environ},
         )
     else:
         print("Need root privileges for commands, enter password")
         grant_proc = await asyncio.subprocess.create_subprocess_exec(
-            SUDO, uptime_bin,
+            SUDO,
+            uptime_bin,
             stdout=asyncio.subprocess.DEVNULL,
         )
 
@@ -381,7 +411,9 @@ async def mount(block_device: Union[str, Path]) -> bool:
 
     mount = device_to_mount_mapping[str(block_device)]
     if not mount.mountpoint.exists():
-        print(f"The target mountpoint for {block_device} does not exist: {mount.mountpoint}")
+        print(
+            f"The target mountpoint for {block_device} does not exist: {mount.mountpoint}"
+        )
         return False
 
     # Already a mount point, means it's already mounted so no-op
@@ -389,8 +421,9 @@ async def mount(block_device: Union[str, Path]) -> bool:
         return True
 
     proc = await run_cmd(
-        "/usr/bin/mount", str(mount.mountpoint),
-        as_root=("user" not in set(mount.options))
+        "/usr/bin/mount",
+        str(mount.mountpoint),
+        as_root=("user" not in set(mount.options)),
     )
     await proc.wait()
     return proc.returncode == 0
@@ -404,7 +437,9 @@ async def umount(block_device: Union[str, Path]) -> bool:
 
     mount = device_to_mount_mapping[str(block_device)]
     if not mount.mountpoint.exists():
-        print(f"The target mountpoint for {block_device} does not exist: {mount.mountpoint}")
+        print(
+            f"The target mountpoint for {block_device} does not exist: {mount.mountpoint}"
+        )
         return False
 
     # Not a mount point, probably means it's already unmounted
@@ -412,15 +447,18 @@ async def umount(block_device: Union[str, Path]) -> bool:
         return True
 
     proc = await run_cmd(
-        "/usr/bin/umount", str(mount.mountpoint),
-        as_root=("user" not in set(mount.options))
+        "/usr/bin/umount",
+        str(mount.mountpoint),
+        as_root=("user" not in set(mount.options)),
     )
     await proc.wait()
     return proc.returncode == 0
 
 
 async def get_volumegroup(device: Union[str, Path]) -> Optional[VolumeGroup]:
-    output = await json_output("pvs", "--reportformat", "json", str(device), as_root=True)
+    output = await json_output(
+        "pvs", "--reportformat", "json", str(device), as_root=True
+    )
 
     assert "report" in output
     assert isinstance(output["report"], list)
@@ -449,7 +487,9 @@ def gen_fstab() -> None:
 
             for logical_volume in disk["submounts"]:
                 lv = LogicalVolume(volume_group=vg, name=logical_volume)
-                mounts.append(Mount(source=lv, mountpoint=Path(disk["submounts"][logical_volume])))
+                mounts.append(
+                    Mount(source=lv, mountpoint=Path(disk["submounts"][logical_volume]))
+                )
 
             mount_group = MountGroup(
                 name=disk["device"],
@@ -463,10 +503,7 @@ def gen_fstab() -> None:
 
 
 async def mount_cmd(dev_path: str) -> bool:
-    target = (
-        Path(dev_path) if dev_path.startswith("/dev")
-        else Path(f"/dev/{dev_path}")
-    )
+    target = Path(dev_path) if dev_path.startswith("/dev") else Path(f"/dev/{dev_path}")
 
     devs = await get_block_devices()
     block_device: Optional[BlockDevice] = None
@@ -500,10 +537,7 @@ async def mount_cmd(dev_path: str) -> bool:
 
 
 async def unmount_cmd(dev_path: str) -> bool:
-    target = (
-        Path(dev_path) if dev_path.startswith("/dev")
-        else Path(f"/dev/{dev_path}")
-    )
+    target = Path(dev_path) if dev_path.startswith("/dev") else Path(f"/dev/{dev_path}")
 
     devs = await get_block_devices()
     block_device: Optional[BlockDevice] = None
@@ -549,6 +583,7 @@ def main():
     else:
         print(f"Unknown subcommand: {sys.argv[1]}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

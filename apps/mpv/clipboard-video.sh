@@ -65,7 +65,7 @@ else
         fi
         sleep 0
         notify-send \
-            --app-name=$cmd \
+            --app-name=$icon \
             --icon=$icon \
             --transient \
             --action=launch=Open \

@@ -19,6 +19,14 @@ export function set_monitor(m) {
 }
 
 function NotificationIcon(notification) {
+  // For some reason, the app-name set via `--icon` is coming in as image, so
+  //   detect this and treat it as the `app_entry` property
+  if (notification.image && Utils.lookUpIcon(notification.image)) {
+    return Widget.Box({
+      class_name: "image",
+      child: Widget.Icon(notification.image),
+    });
+  }
   if (notification.image) {
     return Widget.Box({
       class_name: "image",

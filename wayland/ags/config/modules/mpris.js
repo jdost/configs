@@ -25,6 +25,7 @@ Utils.execAsync(["id", "-u"]).then(function (output) {
   tracking_file = `/run/user/${output}/mpris-tracker`;
   Utils.execAsync(["touch", tracking_file]);
 });
+const spotifyd_file = `${App.configDir}/spotifyd_id`;
 
 const player_tracker = {
   players: {},
@@ -59,15 +60,15 @@ const player_tracker = {
     } else {
       this.active = undefined;
       this.icon.label = default_icon[0];
-      this.icon.css = "#999999";
+      this.icon.css = "color: #999999;";
       return;
     }
 
     this.icon.label = this.active.icon();
     this.icon.css =
       this.active.playback_status() === "playing"
-        ? `color: ${playing[0].color()}`
-        : `color: ${NOT_PLAYING_COLOR}`;
+        ? `color: ${playing[0].color()};`
+        : `color: ${NOT_PLAYING_COLOR};`;
     this.icon.tooltip_text = this.active.tooltip();
     if (tracking_file)
       Utils.writeFile(this.active.instance_name, tracking_file);
@@ -263,8 +264,10 @@ addIcon(
     on_secondary_click: function (_, e) {
       var items = [];
       const self = player_tracker; // Alias `this` to avoid conflict in callbacks
+      var has_spotifyd = false;
 
       for (const bus_name in self.players) {
+        if (self.players[bus_name].name() == "spotifyd") has_spotifyd = true;
         items.push(
           Widget.MenuItem({
             class_name: self.players[bus_name] === self.active ? "active" : "",
@@ -279,6 +282,33 @@ addIcon(
               xalign: 0,
               label: self.players[bus_name].name(),
             }),
+          }),
+        );
+      }
+
+      if (!has_spotifyd) {
+        const spotifyd_id = Utils.readFile(spotifyd_file);
+        if (spotifyd_id.length > 0) {
+          items.push(
+            Widget.MenuItem({
+              on_activate: function () {
+                Utils.exec(`spotify_player connect --id ${spotifyd_id}`);
+              },
+              cursor: "pointer",
+              child: Widget.Label({
+                justification: "left",
+                xalign: 0,
+                label: "spotifyd",
+              }),
+            }),
+          );
+        }
+      }
+
+      if (items.length === 0) {
+        items.push(
+          Widget.MenuItem({
+            child: Widget.Label("No clients"),
           }),
         );
       }

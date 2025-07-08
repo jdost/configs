@@ -22,22 +22,27 @@ addLeft(
     const workspaces = hyprland.bind("workspaces").as((workspaces) =>
       workspaces
         .toSorted(function (a, b) {
+          if (a.monitorID == b.monitorID) return a.id - b.id;
           return a.monitorID - b.monitorID;
         })
         .map(function (workspace, index) {
-          const newMonitor =
-            index > 0 ? monitorID !== workspace.monitorID : false;
-          monitorID = workspace.monitorID;
+          // Skip special workspaces
           if (workspace.id < 0) {
             return;
           }
+
+          // Determine if moved to second monitor, inject a margin to differentiate
+          const newMonitor = monitorID !== workspace.monitorID;
+          monitorID = workspace.monitorID;
+
           var button = Widget.Button({
             on_primary_click: () =>
               hyprland.messageAsync(`dispatch workspace ${workspace.id}`),
             cursor: "pointer",
             child: Widget.Label(name_icons[workspace.name] || default_icon),
             class_names: ["ws-button", `monitor-${workspace.monitorID}`],
-            css: newMonitor ? "margin-left: 12px" : "",
+            // Tried `:first-child` on the monitor class, doesn't work for some reason
+            css: (newMonitor && monitorID != 0) ? "margin-left: 12px" : "",
             attribute: workspace.id,
             setup: function (self) {
               self.hook(hyprland, function () {
@@ -73,10 +78,12 @@ addLeft(
 
 const animations_enabled = Variable(false);
 function getAnimations() {
-  const enabled = hyprland.message("getoption animations:enabled").startsWith("int: 1");
+  const enabled = hyprland
+    .message("getoption animations:enabled")
+    .startsWith("int: 1");
   animations_enabled.value = enabled;
   return enabled;
-};
+}
 addToggle({
   icon: animations_enabled.bind().as(function (en) {
     return en ? "󱥰" : "󱥱";
@@ -84,6 +91,8 @@ addToggle({
   tooltip: "Toggle WM Animations",
   get_state: getAnimations,
   set_state: function (s) {
-    hyprland.messageAsync(`keyword animations:enabled ${s}`).then(getAnimations);
+    hyprland
+      .messageAsync(`keyword animations:enabled ${s}`)
+      .then(getAnimations);
   },
 });

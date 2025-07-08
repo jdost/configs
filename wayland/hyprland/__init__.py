@@ -16,7 +16,7 @@ class HyprlandSettings(File):
 
 
 packages = {
-    Pacman("hyprland"), Pacman("xdg-desktop-portal-hyprland"),
+    Pacman("hyprland"), Pacman("xdg-desktop-portal-hyprland"), Pacman("xwaylandvideobridge"),
 }
 files = {
     XDGConfigFile(f"{NAME}/hyprland.conf", "hypr/hyprland.conf"),

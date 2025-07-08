@@ -1,4 +1,6 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
+
+RUN userdel ubuntu
 
 RUN \
     --mount=type=cache,target=/var/cache/apt \
@@ -37,7 +39,7 @@ RUN \
         /usr/share/man \
         /usr/share/doc
 
-ARG VERSION=7.22.0
+ARG VERSION=8.5.0
 
 RUN mkdir -p /opt/calibre \
     && curl \

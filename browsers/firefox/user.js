@@ -1,6 +1,7 @@
 // Personal settings
 user_pref("browser.startup.page", 3);  // Open previous windows and tabs startup
 user_pref("media.autoplay.default", 5);  // Block all autoplay
+user_pref("media.autoplay.blocking_policy", 2);  // Block all autoplay
 
 // Fixes
 //user_pref("ui.context_menus.after_mouseup", true);  // Fix for weird right click behavior

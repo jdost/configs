@@ -19,6 +19,8 @@ endif
 if has_key(g:plugs, 'conform.nvim')
   lua << EOF
     local conform = require('conform')
-    conform.formatters_by_ft.terraform = { 'terraform_fmt' }
+    if vim.fn.executable('terraform') then
+      conform.formatters_by_ft.terraform = { 'terraform_fmt' }
+    end
 EOF
 endif

@@ -15,8 +15,13 @@ else
     exit 1
 fi
 
+IGNORE=""
+if [[ -e $TOPLEVEL/.gitignore ]]; then
+    IGNORE="--ignore-file=$TOPLEVEL/.gitignore"
+fi
+
 rg \
-    --ignore-file=$TOPLEVEL/.gitignore \
+    $IGNORE \
     --column \
     --line-number \
     --no-heading \

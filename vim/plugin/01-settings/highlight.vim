@@ -4,10 +4,20 @@ hi LspDiagnosticsVirtualTextWarning ctermfg=166
 hi LspDiagnosticsVirtualTextInformation ctermfg=243
 hi LspDiagnosticsVirtualTextHint ctermfg=243
 
+hi DiagnosticVirtualTextError ctermfg=124
+hi DiagnosticVirtualTextWarn ctermfg=166
+hi DiagnosticVirtualTextInfo ctermfg=77
+hi DiagnosticVirtualTextHint ctermfg=243
+
 hi LspDiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi LspDiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi LspDiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi LspDiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
+
+hi DiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
 
 hi LspReferenceText ctermfg=211
 hi LspReferenceRead ctermfg=201

@@ -1,6 +1,10 @@
 silent! if has_key(g:plugs, 'nvim-treesitter')
   lua << EOF
 require('nvim-treesitter.configs').setup {
+  -- These are plugins used beyond specific projects
+  ensure_installed = {
+    "markdown", "markdown_inline", "vim"
+  },
   highlight = {
     enable = true,
     custom_captures = {

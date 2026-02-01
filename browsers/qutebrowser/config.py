@@ -5,6 +5,12 @@ for module in config.configdir.glob("modules.d/*.py"):
 # Core
 c.backend = "webengine"
 
+c.qt.args = [
+    "enable-gpu-rasterization",
+    "ignore-gpu-blocklist",
+    "enable-features=AcceleratedVideoDecodeLinuxGL",
+]
+
 # Autosaving
 c.auto_save.interval = 15000
 c.auto_save.session = True
@@ -18,6 +24,8 @@ searchengines = {
     "archpkg": "https://archlinux.org/packages/?q={}",
     "aur": "https://aur.archlinux.org/packages/?O=0&K={}",
     "apt": "https://packages.ubuntu.com/search?keywords={}&searchon=names",
+    "steam": "https://store.steampowered.com/search?term={}",
+    "protondb": "https://www.protondb.com/search?q={}",
 }
 c.url.searchengines = {
     "DEFAULT": searchengines[DEFAULT],

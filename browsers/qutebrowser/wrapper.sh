@@ -18,4 +18,6 @@ if [[ ! -z "${WAYLAND_DISPLAY:-}" ]]; then
     export QT_SCALE_FACTOR_ROUNDING_POLICY=RoundPreferFloor
 fi
 
+#export QT_QPA_PLATFORM=xcb
+
 exec $BIN "$@"

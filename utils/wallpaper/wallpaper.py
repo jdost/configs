@@ -14,7 +14,8 @@ from urllib.parse import urlparse
 from urllib.request import urlopen
 
 CACHED_PROP_KEY = "__cached"
-LOCK_FILE = Path(f"/run/user/{os.geteuid()}/wallpaper.lock")
+XDG_RUNTIME_DIR = f"/run/user/{os.geteuid()}"
+LOCK_FILE = Path(f"{XDG_RUNTIME_DIR}/wallpaper.lock")
 
 
 def is_wayland() -> bool:
@@ -27,7 +28,9 @@ def is_wayland() -> bool:
         assert isinstance(cached_prop, bool)
         return cached_prop
 
-    hyprland_socket_locks = Path(f"/run/user/{os.geteuid()}/hypr/").glob("*/hyprland.lock")
+    hyprland_socket_locks = Path(f"/run/user/{os.geteuid()}/hypr/").glob(
+        "*/hyprland.lock"
+    )
     setattr(is_wayland, CACHED_PROP_KEY, bool(hyprland_socket_locks))
     return bool(hyprland_socket_locks)
 
@@ -82,9 +85,9 @@ class WallpaperSetter(ABC):
 class HyprlandWallpaperSetter(WallpaperSetter):
     _signature: str
     _hyprctl: str
+
     def __init__(self):
-        assert is_wayland(), \
-            "This is meant to be used in a wayland environment."
+        assert is_wayland(), "This is meant to be used in a wayland environment."
         self._signature = self._get_signature()
         hyprctl = shutil.which("hyprctl")
         assert hyprctl is not None
@@ -100,31 +103,41 @@ class HyprlandWallpaperSetter(WallpaperSetter):
         hyprland_socket_locks = list(
             Path(f"/run/user/{os.geteuid()}/hypr/").glob("*/hyprland.lock")
         )
-        assert len(hyprland_socket_locks) == 1, \
-            "There are too many hyprland locks."
+        assert len(hyprland_socket_locks) == 1, "There are too many hyprland locks."
         return hyprland_socket_locks[0].parent.stem
 
     def get_monitors(self) -> Sequence[str]:
-        print(self._signature)
-        monitors = json.loads(subprocess.run(
-            [self._hyprctl, "monitors", "-j"],
-            capture_output=True,
-            env={"HYPRLAND_INSTANCE_SIGNATURE": self._signature},
-        ).stdout)
+        monitors = json.loads(
+            subprocess.run(
+                [self._hyprctl, "monitors", "-j"],
+                capture_output=True,
+                env={
+                    "HYPRLAND_INSTANCE_SIGNATURE": self._signature,
+                    "XDG_RUNTIME_DIR": XDG_RUNTIME_DIR,
+                },
+            ).stdout
+        )
 
         return {monitor["name"] for monitor in monitors}
 
     def set_wallpaper(self, wallpapers: Dict[str, Path]) -> None:
         print("unloading")
-        subprocess.run([self._hyprctl, "hyprpaper", "unload", "all"], env={"HYPRLAND_INSTANCE_SIGNATURE": self._signature})
+        # subprocess.run([self._hyprctl, "hyprpaper", "unload", "all"], env={"HYPRLAND_INSTANCE_SIGNATURE": self._signature})
 
         for monitor, wallpaper in wallpapers.items():
             if wallpaper.is_symlink():
                 wallpaper = wallpaper.resolve()
 
             print(f"Setting {monitor} wallpaper to {wallpaper}")
-            subprocess.run([self._hyprctl, "hyprpaper", "preload", wallpaper], env={"HYPRLAND_INSTANCE_SIGNATURE": self._signature}, stdout=subprocess.DEVNULL)
-            subprocess.run([self._hyprctl, "hyprpaper", "wallpaper", f"{monitor},{wallpaper}"], env={"HYPRLAND_INSTANCE_SIGNATURE": self._signature}, stdout=subprocess.DEVNULL)
+            # subprocess.run([self._hyprctl, "hyprpaper", "preload", wallpaper], env={"HYPRLAND_INSTANCE_SIGNATURE": self._signature}, stdout=subprocess.DEVNULL)
+            subprocess.run(
+                [self._hyprctl, "hyprpaper", "wallpaper", f"{monitor}, {wallpaper}"],
+                env={
+                    "HYPRLAND_INSTANCE_SIGNATURE": self._signature,
+                    "XDG_RUNTIME_DIR": XDG_RUNTIME_DIR,
+                },
+                stdout=subprocess.DEVNULL,
+            )
 
 
 class WallpaperSet:
@@ -135,9 +148,7 @@ class WallpaperSet:
 
     @classmethod
     def folder(cls) -> Path:
-        return Path(
-            os.environ.get("WALLPAPER_FOLDER", cls.DEFAULT_WALLPAPER_LOC)
-        )
+        return Path(os.environ.get("WALLPAPER_FOLDER", cls.DEFAULT_WALLPAPER_LOC))
 
     @property
     def _wallpapers(self) -> Sequence[Path]:
@@ -152,7 +163,7 @@ class WallpaperSet:
         return wallpaper_list
 
     def count(self) -> int:
-        return(len(self._wallpapers))
+        return len(self._wallpapers)
 
     def size(self) -> int:
         return sum([w.stat().st_size for w in self._wallpapers])
@@ -201,7 +212,9 @@ def upload_wallpapers(wallpapers: WallpaperSet) -> None:
         uploads.add(wallpaper)
 
     print(f"Total Retrieved: {len(uploads)}")
-    print(f"     Total Size: {calc_humanreadable_size(sum([w.stat().st_size for w in uploads]))}")
+    print(
+        f"     Total Size: {calc_humanreadable_size(sum([w.stat().st_size for w in uploads]))}"
+    )
 
 
 def get_wallpaper(url: str) -> Optional[Path]:

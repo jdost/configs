@@ -7,6 +7,7 @@ from cfgtools.system.ubuntu import Apt
 NAME = normalize(__name__)
 
 python_tools = [
+    "bandit",
     "black",
     "ruff",
     "isort",
@@ -18,6 +19,7 @@ python_tools = [
     "python-lsp-ruff",
     "python-lsp-server",
     "uv",
+    "vulture",
 ]
 
 virtualenv = VirtualEnv("python-code-tools", *python_tools)
@@ -27,9 +29,9 @@ packages = {
     Pacman("python-pipx"),
     Pacman("python-poetry"),
     Pacman("python-wheel"),
+    Apt("pipx"),
     Apt("python3"),
     Apt("python3-pip"),
-    Apt("python3-pipx"),
     Apt("python3-poetry"),
     Apt("python3-venv"),
     virtualenv,
@@ -54,7 +56,7 @@ def create_update_script() -> None:
 
 set -euo pipefail
 
-exec {virtualenv.location / 'bin/python'} -m pip install --upgrade \
-{' '.join(python_tools)} pip
+exec {virtualenv.location / "bin/python"} -m pip install --upgrade \
+{" ".join(python_tools)} pip
 """)
     update_script.chmod(0o744)

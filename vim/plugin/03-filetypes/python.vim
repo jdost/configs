@@ -5,7 +5,7 @@ endif
 if has_key(g:plugs, 'nvim-lint')
   lua << EOF
     local lint = require('lint')
-    lint.linters_by_ft['python'] = {'mypy', 'ruff'}
+    lint.linters_by_ft['python'] = {'mypy', 'ruff', 'bandit', 'vulture'}
 EOF
 endif
 

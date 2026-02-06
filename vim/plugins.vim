@@ -90,6 +90,12 @@ else
   Plug 'rhysd/vim-lsp-ale'
 end
 
+" LLM {{{
+if has('nvim-0.10') && executable('llm')
+  Plug 'mozanunal/sllm.nvim'
+end
+" }}}
+
 "Plug 'jiangmiao/auto-pairs'
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'liuchengxu/vista.vim'

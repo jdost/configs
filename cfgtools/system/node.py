@@ -1,6 +1,5 @@
 import json
 import subprocess
-
 from typing import Set
 
 from cfgtools.system import SystemPackage
@@ -19,6 +18,8 @@ def installed_pkgs() -> Set[str]:
 
 
 class NodePackage(SystemPackage):
+    """Package provided by npm."""
+
     PRIORITY = 3
 
     def __init__(self, pkg: str):
@@ -30,10 +31,7 @@ class NodePackage(SystemPackage):
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
-            print(
-                "$ npm install --global "
-                f"{' '.join(list(to_be_installed))}"
-            )
+            print(f"$ npm install --global {' '.join(list(to_be_installed))}")
 
     @classmethod
     def apply(cls, *pkgs: "NodePackage") -> None:
@@ -41,6 +39,4 @@ class NodePackage(SystemPackage):
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
             print(f"Installing (npm): {', '.join(list(to_be_installed))}")
-            subprocess.run(
-                ["npm", "install", "--global", *list(to_be_installed)]
-            )
+            subprocess.run(["npm", "install", "--global", *list(to_be_installed)])

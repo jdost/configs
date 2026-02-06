@@ -57,6 +57,8 @@ echo ''
 # Language/tool runtimes
 if which python &>/dev/null; then
     echo -en "  $(pink 'Python:') $(light_grey $(python --version 2>&1 | cut -d' ' -f2-))"
+elif which python3 &>/dev/null; then
+    echo -en "  $(pink 'Python:') $(light_grey $(python3 --version | cut -d' ' -f2-))"
 else
     echo -en "  $(pink 'Python:') $(light_grey 'uninstalled')"
 fi

@@ -29,7 +29,7 @@ set ttyfast
 set lazyredraw
 
 set cursorline
-set colorcolumn=85
+"set colorcolumn=85
 " netrw
 let g:netrw_list_hide= ".git,*\.pyc,*\.png"
 

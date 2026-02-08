@@ -11,7 +11,6 @@ import git
 import gpg
 import languages.python
 import rofi
-import rofi.wayland
 import shells.zsh
 import utils.cal
 import utils.cgroups

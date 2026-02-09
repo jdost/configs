@@ -1,16 +1,14 @@
-from cfgtools.files import DesktopEntry, UserBin, normalize
+from cfgtools.files import normalize
 from cfgtools.hooks import after
-from cfgtools.system.arch import Pacman
-from cfgtools.system.python import VirtualEnv
+from cfgtools.system.arch import AUR
 from cfgtools.system.systemd import UserService, ensure_service
 
-virtualenv = VirtualEnv("streamdeck", "streamdeck-linux-gui")
 NAME = normalize(__name__)
 
-pkgs={Pacman("hidapi"), Pacman("qt6-base")}
-files=[
-    DesktopEntry(f"{NAME}/streamdeck.desktop"),
-    UserBin(virtualenv.location / "bin/streamdeck", "streamdeck"),
+pkgs = {
+    AUR("streamcontroller-git"),
+}
+files = [
     UserService(f"{NAME}/streamdeck.service"),
 ]
 

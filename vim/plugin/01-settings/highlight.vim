@@ -16,7 +16,9 @@ hi LspDiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=under
 
 hi DiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi DiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineWarn guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi DiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineInfo guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi DiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
 
 hi LspReferenceText ctermfg=211

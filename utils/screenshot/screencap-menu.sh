@@ -80,14 +80,19 @@ take_screenshot() {
         "$(basename $output) Copied to clipboard"
 }
 
-selection=$(
-    echo -e $OPTS | \
-    rofi \
-        -no-config \
-        -dmenu \
-        -theme screencap \
-        -theme-str "listview { columns: $NOPTS; } window { width: $(( $NOPTS*100 )); }"
-)
+if [[ -z "${1:-}" ]]; then
+    selection=$(
+        echo -e $OPTS | \
+        rofi \
+            -no-config \
+            -dmenu \
+            -theme screencap \
+            -theme-str "listview { columns: $NOPTS; } window { width: $(( $NOPTS*100 )); }"
+    )
+else
+    selection=${1}
+fi
+
 case $selection in
     "select") take_screenshot "select" ;;
     "window") take_screenshot "window" ;;

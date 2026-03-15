@@ -12,6 +12,8 @@ if has_key(g:plugs, 'vim-tmux-navigator')
   inoremap <silent> <C-K> <Esc>:TmuxNavigateUp<cr>
   inoremap <silent> <C-H> <Esc>:TmuxNavigateLeft<cr>
   inoremap <silent> <C-L> <Esc>:TmuxNavigateRight<cr>
+  " Special mapping, <C-J> is rewritten to NL in vim
+  nnoremap <silent> <NL> :TmuxNavigateDown<cr>
 else  " Fall back to same behavior but just in vim
   nnoremap <silent> <C-J> <C-W><C-J>
   nnoremap <silent> <C-K> <C-W><C-K>

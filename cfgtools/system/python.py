@@ -6,18 +6,27 @@ from cfgtools.system import SystemPackage
 
 
 def installed_pkgs(virtualenv: Optional[Path] = None) -> Set[str]:
-    pybin: Union[str, Path] = (
-        virtualenv / "bin/python" if virtualenv else "python3"
-    )
-    return {
-        req.split("=")[0]
-        for req in subprocess.run(
-            [pybin, "-m", "pip", "freeze"],
-            stdout=subprocess.PIPE,
-        )
+    pybin: Union[str, Path] = virtualenv / "bin/python" if virtualenv else "python3"
+
+    packages: set[str] = set()
+    for req in (
+        subprocess.run([pybin, "-m", "pip", "freeze"], stdout=subprocess.PIPE)
         .stdout.decode("utf-8")
         .split("\n")
-    }
+    ):
+        if "@" in req:
+            name, pkg_uri = req.split("@", 1)
+            if "#" in pkg_uri:
+                pkg, version = pkg_uri.split("#", 1)
+            elif "@" in pkg_uri:
+                pkg, version = pkg_uri.split("@", 1)
+
+            packages.add(pkg.strip())
+        elif "=" in req:
+            pkg, version = req.split("=", 1)
+            packages.add(pkg.strip())
+
+    return packages
 
 
 class VirtualEnv(SystemPackage):
@@ -103,10 +112,7 @@ class PythonPackage(SystemPackage):
         wanted = {pkg.name for pkg in pkgs}
         to_be_installed = wanted - installed_pkgs()
         if to_be_installed:
-            print(
-                "$ python3 -m pip install --user "
-                f"{' '.join(list(to_be_installed))}"
-            )
+            print(f"$ python3 -m pip install --user {' '.join(list(to_be_installed))}")
 
     @classmethod
     def apply(cls, *pkgs: "PythonPackage") -> None:
@@ -115,6 +121,5 @@ class PythonPackage(SystemPackage):
         if to_be_installed:
             print(f"Installing (pip): {', '.join(list(to_be_installed))}")
             subprocess.run(
-                ["python3", "-m", "pip", "install", "--user"]
-                + list(to_be_installed)
+                ["python3", "-m", "pip", "install", "--user"] + list(to_be_installed)
             )

@@ -18,9 +18,9 @@ if not PKG_FOLDER.is_dir():
 
 
 def get_version_from_path(prefix: str, src: Path) -> str:
-    match = re.compile(
-        f"{prefix}-([0-9.-]+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$"
-    ).match(src.name)
+    match = re.compile(f"{prefix}-([0-9.-]+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$").match(
+        src.name
+    )
     if not match:
         return ""
 
@@ -52,11 +52,11 @@ class Package:
         self.path = Path(name).resolve() if self.is_local else None
         self.rebuild = rebuild
         self._aur_data = None
-        self.is_git = self.name.endswith('-git')
+        self.is_git = self.name.endswith("-git")
 
     @classmethod
-    def parse_arg(cls, arg: str) -> 'Package':
-        """ parse the package argument name into the package flags:
+    def parse_arg(cls, arg: str) -> "Package":
+        """parse the package argument name into the package flags:
         normal: `foo`
         use latest package: `foo!`
         build regardless of cache: `foo!!`
@@ -64,12 +64,12 @@ class Package:
         kwargs = {}
         name = arg
 
-        if name.endswith('!'):
+        if name.endswith("!"):
             name = name[:-1]
-            kwargs['latest'] = True
-        if name.endswith('!'):
+            kwargs["latest"] = True
+        if name.endswith("!"):
             name = name[:-1]
-            kwargs['rebuild'] = True
+            kwargs["rebuild"] = True
 
         return cls(name, **kwargs)
 
@@ -80,9 +80,7 @@ class Package:
 
     @property
     def pkg_regex(self):
-        return re.compile(
-            f"^{self.name}-(.*)-(?:x86_64|any).pkg.tar.(?:xz|zst)$"
-        )
+        return re.compile(f"^{self.name}-(.*)-(?:x86_64|any).pkg.tar.(?:xz|zst)$")
 
     @property
     def local_cache(self) -> Sequence[Path]:
@@ -123,9 +121,7 @@ class Package:
         if self.rebuild:
             return True
 
-        available_cache: Sequence[Path] = [
-            *self.local_cache, *self.shared_cache
-        ]
+        available_cache: Sequence[Path] = [*self.local_cache, *self.shared_cache]
         if self.is_git and available_cache:
             return self.latest
 
@@ -135,11 +131,15 @@ class Package:
         if not self.is_local:
             target = self.latest_remote_version
         else:
-            srcinfo = subprocess.run(
-                ["makepkg", "--printsrcinfo", "-p", self.name],
-                stdout=subprocess.PIPE,
-                cwd=self.path.parent if self.path else Path.cwd(),
-            ).stdout.decode("utf-8").split("\n")
+            srcinfo = (
+                subprocess.run(
+                    ["makepkg", "--printsrcinfo", "-p", self.name],
+                    stdout=subprocess.PIPE,
+                    cwd=self.path.parent if self.path else Path.cwd(),
+                )
+                .stdout.decode("utf-8")
+                .split("\n")
+            )
 
             info = {}
             for line in srcinfo:
@@ -161,18 +161,24 @@ class Package:
     def package_path(self) -> Path:
         available_cache = [*self.local_cache, *self.shared_cache]
         parser = identity if self.is_git else parse_version
-        return [path for path in sorted(
-            available_cache,
-            key=lambda p: parser(get_version_from_path(self.name, p)),
-        )][-1]
+        return [
+            path
+            for path in sorted(
+                available_cache,
+                key=lambda p: parser(get_version_from_path(self.name, p)),
+            )
+        ][-1]
 
     @property
     def available_versions(self) -> Sequence[str]:
         available_cache = [*self.local_cache, *self.shared_cache]
-        return [get_version_from_path(self.name, p) for p in sorted(
-            available_cache,
-            key=lambda p: parse_version(get_version_from_path(self.name, p)),
-        )]
+        return [
+            get_version_from_path(self.name, p)
+            for p in sorted(
+                available_cache,
+                key=lambda p: parse_version(get_version_from_path(self.name, p)),
+            )
+        ]
 
 
 def build_image(
@@ -181,21 +187,27 @@ def build_image(
     """The `as_root` is a kind of bootstrapping hack that allows this to run
     if the user is not yet with the docker group.
     """
-    docker_cmd = ["sudo", "/usr/bin/docker"] if as_root \
-        else ["/usr/bin/docker"]
+    docker_cmd = ["sudo", "/usr/bin/docker"] if as_root else ["/usr/bin/docker"]
     build_cmd = docker_cmd + [
         "build",
         "--force-rm",
-        "--build-arg", f"UID={os.environ.get('UID', 1000)}",
-        "--build-arg", f"GID={os.environ.get('GID', 1000)}",
-        "-t", f"{IMAGE_NAME}:latest",
-        "."
+        "--build-arg",
+        f"UID={os.environ.get('UID', 1000)}",
+        "--build-arg",
+        f"GID={os.environ.get('GID', 1000)}",
+        "-t",
+        f"{IMAGE_NAME}:latest",
+        ".",
     ]
 
-    images = subprocess.run(
-        docker_cmd + ["images"],
-        stdout=subprocess.PIPE,
-    ).stdout.decode("utf-8").split("\n")
+    images = (
+        subprocess.run(
+            docker_cmd + ["images"],
+            stdout=subprocess.PIPE,
+        )
+        .stdout.decode("utf-8")
+        .split("\n")
+    )
 
     if force:
         build_cmd.insert(2, "--no-cache")
@@ -245,14 +257,8 @@ Package Syntax:
 """)
 
 
-if __name__  == "__main__":
-    cmd = [
-        "/usr/bin/docker",
-        "run",
-        "--rm",
-        "-it",
-        "-v", f"{PKG_FOLDER}:/pkgs"
-    ]
+if __name__ == "__main__":
+    cmd = ["/usr/bin/docker", "run", "--rm", "-it", "-v", f"{PKG_FOLDER}:/pkgs"]
 
     rebuild = False
     force = False
@@ -288,7 +294,7 @@ if __name__  == "__main__":
     if action == "list":
         for pkg in pkgs:
             print(f"{pkg.name} Versions:")
-            print("    " + '\t'.join(pkg.available_versions))
+            print("    " + "\t".join(pkg.available_versions))
 
         sys.exit(0)
 
@@ -297,17 +303,12 @@ if __name__  == "__main__":
             raise FileNotFoundError(DROPBOX_REPO)
 
         for pkg in pkgs:
-            unsynced_pkgs = (
-                set(p.name for p in pkg.local_cache) -
-                set(p.name for p in pkg.shared_cache)
+            unsynced_pkgs = set(p.name for p in pkg.local_cache) - set(
+                p.name for p in pkg.shared_cache
             )
-            for local_pkg in [
-                    p for p in pkg.local_cache if p.name in unsynced_pkgs
-            ]:
+            for local_pkg in [p for p in pkg.local_cache if p.name in unsynced_pkgs]:
                 print(f"Syncing {local_pkg.name} to shared cache...")
-                (
-                    DROPBOX_REPO / local_pkg.name
-                ).write_bytes(local_pkg.read_bytes())
+                (DROPBOX_REPO / local_pkg.name).write_bytes(local_pkg.read_bytes())
 
         sys.exit(0)
 
@@ -329,21 +330,25 @@ if __name__  == "__main__":
                 volume_exists = True
 
         if not volume_exists:
-            if subprocess.run(
-                ["docker", "volume", "create", PACMAN_CACHE_VOLUME],
-                stdout=subprocess.PIPE,
-            ).returncode != 0:
+            if (
+                subprocess.run(
+                    ["docker", "volume", "create", PACMAN_CACHE_VOLUME],
+                    stdout=subprocess.PIPE,
+                ).returncode
+                != 0
+            ):
                 print("ERROR: The caching volume failed to create.")
                 sys.exit(1)
 
         cmd = cmd + ["-v", f"{PACMAN_CACHE_VOLUME}:/var/cache/pacman"]
         # checks if docker is running and attempts to start it if it isn't
-        if subprocess.run(
-            ["systemctl", "status", "docker"], stdout=subprocess.PIPE
-        ).returncode != 0:
-            if subprocess.run(
-                ["sudo", "systemctl", "start", "docker"]
-            ).returncode != 0:
+        if (
+            subprocess.run(
+                ["systemctl", "status", "docker"], stdout=subprocess.PIPE
+            ).returncode
+            != 0
+        ):
+            if subprocess.run(["sudo", "systemctl", "start", "docker"]).returncode != 0:
                 print(
                     "ERROR: You are attempting to run a docker command "
                     "without a running docker daemon.  Please ensure that is "
@@ -353,9 +358,11 @@ if __name__  == "__main__":
 
         # checks if the user can talk to docker (due to the guid limitation),
         #   if not, then runs all the docker commands are root
-        my_groups = subprocess.run(
-            ["groups"], stdout=subprocess.PIPE
-        ).stdout.decode("utf-8").split(" ")
+        my_groups = (
+            subprocess.run(["groups"], stdout=subprocess.PIPE)
+            .stdout.decode("utf-8")
+            .split(" ")
+        )
         if "docker" not in my_groups:
             cmd = ["sudo"] + cmd
             build_image(rebuild, force, as_root=True)
@@ -372,9 +379,5 @@ if __name__  == "__main__":
     if action != "install":
         sys.exit(0)
 
-    print(
-        f"$ sudo pacman -U {' '.join(str(pkg.package_path) for pkg in pkgs)}"
-    )
-    subprocess.run(
-        ["sudo", "pacman", "-U", *[pkg.package_path for pkg in pkgs]]
-    )
+    print(f"$ sudo pacman -U {' '.join(str(pkg.package_path) for pkg in pkgs)}")
+    subprocess.run(["sudo", "pacman", "-U", *[pkg.package_path for pkg in pkgs]])

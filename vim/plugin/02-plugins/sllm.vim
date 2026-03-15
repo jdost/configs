@@ -2,7 +2,7 @@ if has_key(g:plugs, 'sllm.nvim')
   lua << EOF
     require('sllm').setup({
       default_model = "anthropic/claude-sonnet-4-5",
-      --default_mode = "sllm_read",
+      default_mode = "sllm_read",
       keymaps = false,
     })
 EOF

@@ -101,7 +101,11 @@ Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'liuchengxu/vista.vim'
 "Plug 'scrooloose/syntastic'
 "Plug 'Shougo/neosnippet'
-Plug 'tpope/vim-commentary'
+if has('nvim-0.5')
+  Plug 'numToStr/Comment.nvim'
+else
+  Plug 'tpope/vim-commentary'
+end
 Plug 'editorconfig/editorconfig-vim', empty(glob('./.editorconfig')) ? { 'on': [] } : {}
 Plug 'machakann/vim-highlightedyank'  " highlights yanked blocks
 " }}}

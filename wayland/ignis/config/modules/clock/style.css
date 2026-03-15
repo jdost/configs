@@ -1,0 +1,7 @@
+.right .clock {
+    font-family: monospace;
+    padding: 0 0.4em;
+    letter-spacing: -0.05em;
+    margin: 0.4em 0 0.4em 0.2em;
+    border-radius: 1em;
+}

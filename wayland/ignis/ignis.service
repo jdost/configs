@@ -1,0 +1,10 @@
+[Unit]
+Description=Extensible status bar and notifications
+Before=pipewire-pulse.socket pipewire.socket pipewire-pulse.service pipewire.service
+PartOf=wayland.target
+
+[Service]
+ExecStart=%h/.local/bin/ignis init
+
+[Install]
+WantedBy=wayland.target

@@ -1,0 +1,46 @@
+.workspaces {
+    padding: 1px 4px;
+}
+
+.ws-button {
+    all: unset;
+    font-size: 1.1em;
+    font-family: "Hack Nerd Font Mono";
+    min-width: 1.1em;
+    border-radius: 4em;
+    margin: 2px;
+    padding: 0 0.1em;
+    background-color: rgba(122, 122, 122, 0.3);
+    color: #999999;
+    transition-timing-function: linear;
+}
+
+.workspaces .ws-button.monitor-1:first-child,
+.workspaces .ws-button.monitor-2:first-child,
+.workspaces .ws-button.monitor-3:first-child,
+.workspaces .ws-button.monitor-4:first-child {
+    margin-left: 12px;
+}
+.ws-button:hover,
+.ws-button.occupied {
+    background-color: rgba(100, 100, 100, 1.0);
+    color: #FFFFFF;
+}
+.ws-button.occupied:hover {
+    background-color: rgba(150, 150, 150, 1.0);
+}
+.ws-button.visible.occupied,
+.ws-button.visible {
+    background-color: rgba(200, 200, 200, 1.0);
+    color: #000000;
+}
+.ws-button.focused {
+    background-color: rgba(34, 204, 221, 0.6);
+    color: #000000;
+}
+.ws-button.focused:hover,
+.ws-button.visible.occupied:hover,
+.ws-button.visible:hover {
+    background-color: rgba(34, 204, 221, 1.0);
+    color: #000000;
+}

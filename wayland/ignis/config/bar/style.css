@@ -1,0 +1,31 @@
+.bar .left,
+.bar .right {
+    margin: 4px 8px 8px;
+    padding: 1px 4px;
+    border-radius: 1.2em;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.bar .left {
+    font-size: 1.0em;
+    min-height: 1.5em;
+    padding: 2px;
+}
+
+.bar .right {
+    font-size: 0.8em;
+    padding: 1px 8px;
+}
+
+.right .icons {
+    background-color: rgba(200, 200, 200, 0.25);
+    border-radius: 3em;
+    margin: 0.3em 0 0.2em 0.6em;
+    padding: 0 0.5em;
+    font-size: 1.2em;
+}
+
+.icon.big {
+    font-size: 1.5em;
+    margin: -0.3em 0;
+}

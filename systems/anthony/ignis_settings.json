@@ -1,0 +1,15 @@
+{
+    "modules": [
+        "audio",
+        "battery",
+        "bluetooth",
+        "clock",
+        "cpu",
+        "hyprland",
+        "media",
+        "memory",
+        "network",
+        "systray"
+    ],
+    "font_size": 24
+}

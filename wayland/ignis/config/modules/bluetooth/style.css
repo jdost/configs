@@ -1,0 +1,25 @@
+.icon.bluetooth {
+    color: rgb(153, 153, 153);
+}
+.icon.bluetooth.enabled {
+    color: rgb(255, 255, 255);
+}
+.icon.bluetooth.enabled.connected {
+    color: rgb(85, 170, 255);
+}
+
+.popup.bluetooth box button {
+    border-radius: 5px;
+    background-color: rgba(34, 34, 34, 0.05);
+    margin: 0 1px;
+    padding: 4px;
+    font-size: 0.6em;
+}
+.popup.bluetooth button.connected,
+.popup.bluetooth button:checked {
+    background: rgba(120, 120, 120, 0.8);
+}
+.popup.bluetooth button:hover {
+    background: rgba(185, 185, 185, 0.8);
+    color: rgb(34, 34, 34);
+}

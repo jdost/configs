@@ -1,0 +1,192 @@
+button {
+    all: unset;
+    margin: 0;
+    padding: 0;
+}
+
+menu {
+    background: rgba(0, 0, 0, 0.7);
+    font-size: 0.7em;
+    border-radius: 0.5em;
+    outline-width: 0;
+    border-width: 0;
+    padding: 0;
+}
+menuitem {
+    color: rgb(255, 255, 255);
+    padding: 2px;
+}
+menu menuitem:first-child {
+    border-radius: 0.5em 0.5em 0 0;
+}
+menu menuitem:last-child {
+    border-radius: 0 0 0.5em 0.5em;
+}
+menuitem.active:hover,
+menuitem:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: rgb(0, 0, 0);
+}
+menuitem.active {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: rgb(0, 0, 0);
+}
+
+tooltip {
+    all: unset;
+    border-radius: 1em;
+    background: rgba(212, 212, 212, 0.65);
+    font-size: 0.7em;
+    padding: 4px;
+    margin: 5px;
+}
+
+tooltip * {
+    color: #111111;
+    padding: 0;
+    margin: 0;
+}
+
+.popup > box {
+    background-color: rgba(34, 34, 34, 0.5);
+    border-radius: 15px;
+    padding: 8px;
+    margin: 5px 10px;
+}
+
+#ags\.osd {
+    background-color: transparent;
+    font-size: 2em;
+}
+
+.osd {
+    background-color: transparent;
+    margin-bottom: 1.5em;
+}
+.osd box {
+    border-radius: 1.1em;
+    padding: 0.5em 1em;
+    background-color: rgba(34, 34, 34, 0.6);
+    color: #FFFFFF;
+}
+.osd levelbar,
+.osd levelbar trough {
+    background-color: transparent;
+    border: 0;
+    min-width: 8em;
+}
+.osd levelbar .filled {
+    margin: 5px;
+    min-height: 6px;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+.osd levelbar.muted .filled {
+    background-color: rgba(34, 34, 34, 0.75);
+}
+.osd levelbar .empty {
+    margin: 3px;
+    background-color: rgba(125, 125, 125, 0.6);
+}
+.osd levelbar .empty,
+.osd levelbar .filled {
+    border-radius: 2em;
+    border: 0;
+}
+
+.nag.teatimer {
+    background-color: rgba(196, 196, 196, 0.6);
+    color: rgb(0, 0, 0);
+    border-radius: 1.1em;
+}
+.nag.teatimer box {
+    padding: 2em 2em 1em;
+}
+.nag.teatimer box > label {
+    font-size: 15em;
+    margin: -0.4em 0.1em -0.3em;
+    padding: 0;
+}
+.nag.teatimer button {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    padding: 0.2em;
+    color: #FFFFFF;
+}
+.nag.teatimer button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #000000;
+}
+
+.popup.teatimer box {
+    min-width: 12em;
+}
+
+.sidebar {
+    background-color: transparent;
+}
+.sidebar > revealer .frame {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px 0 0 10px;
+    margin: 0 0 1em;
+    min-width: 20em;
+    padding: 1em 0;
+}
+
+.sidebar .calendar-holder {
+    margin: 0.5em 0;
+}
+.sidebar .calendar {
+    border: 0;
+    padding: 0.4em 0.6em;
+    border-radius: 0.7em;
+    background: rgba(66, 66, 66, 0.5);
+    margin: 0 0 0.1em;
+}
+.sidebar .calendar .week button {
+    margin: 0 0.1em;
+    padding: 0 0.3em;
+    color: rgba(255, 255, 255, 0.8);
+}
+.sidebar .calendar .week button.off-month {
+    color: rgba(255, 255, 255, 0.4);
+}
+.sidebar .calendar .week button.off-month.weekend {
+    background: transparent;
+}
+.sidebar .calendar .week button.weekend {
+    background: rgba(66, 66, 66, 0.5);
+}
+.sidebar .calendar .week button.today,
+.sidebar .calendar .week button.marked {
+    color: rgba(255, 255, 255, 1.0);
+    font-weight: bold;
+}
+.sidebar .calendar-holder .details {
+    font-size: 0.8em;
+    margin: 0 0.4em;
+}
+
+.sidebar .toggles {
+    padding: 0.3em 1em;
+}
+.sidebar .toggles .toggle {
+    padding: 0 0.4em;
+    border: 0.1em solid rgba(255, 255, 255, 0.4);
+    border-radius: 0.6em;
+    color: rgba(155, 155, 155, 1.0);
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 1.7em;
+}
+.sidebar .toggles .toggle:hover,
+.sidebar .toggles .toggle:checked:hover {
+    color: rgba(0, 0, 0, 1.0);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.sidebar .toggles .toggle:checked {
+    color: rgba(0, 0, 0, 1.0);
+    background-color: rgba(0, 185, 255, 0.8);
+    border-color: rgba(0, 185, 255, 0.8);
+}
+.sidebar .notifications-history {
+    margin-top: 0.5em;
+}

@@ -1,0 +1,8 @@
+.icon.network label {
+    font-size: 1.7em;
+    margin: -0.3em 0;
+}
+.icon.network .badge {
+    font-size: 5px;
+    margin: 10px 0 0 10px;
+}

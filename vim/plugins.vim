@@ -118,7 +118,11 @@ Plug 'machakann/vim-highlightedyank'  " highlights yanked blocks
 
 " VCS {{{
 Plug 'tpope/vim-git'
-Plug 'airblade/vim-gitgutter'
+if has('nvim-0.5')
+  Plug 'lewis6991/gitsigns.nvim'
+else
+  Plug 'airblade/vim-gitgutter'
+end
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'rhysd/committia.vim'

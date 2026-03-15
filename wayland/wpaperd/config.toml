@@ -1,0 +1,5 @@
+[default]
+mode = "center"
+path = "~/.local/dropbox/wallpaper/"
+
+[default.transition.fade]

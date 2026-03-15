@@ -131,13 +131,39 @@ class HyprlandWallpaperSetter(WallpaperSetter):
             print(f"Setting {monitor} wallpaper to {wallpaper}")
             # subprocess.run([self._hyprctl, "hyprpaper", "preload", wallpaper], env={"HYPRLAND_INSTANCE_SIGNATURE": self._signature}, stdout=subprocess.DEVNULL)
             subprocess.run(
-                [self._hyprctl, "hyprpaper", "wallpaper", f"{monitor}, {wallpaper}"],
+                [self._hyprctl, "hyprpaper", "wallpaper", f"{monitor},{wallpaper}"],
                 env={
                     "HYPRLAND_INSTANCE_SIGNATURE": self._signature,
                     "XDG_RUNTIME_DIR": XDG_RUNTIME_DIR,
                 },
                 stdout=subprocess.DEVNULL,
             )
+
+
+class WpaperdSetter(WallpaperSetter):
+    def __init__(self):
+        wpaperctl_path = shutil.which("wpaperctl")
+        assert wpaperctl_path is not None
+        self._wpaperctl = wpaperctl_path
+
+    def get_monitors(self) -> Sequence[str]:
+        return HyprlandWallpaperSetter().get_monitors()
+
+    def set_wallpaper(self, wallpapers: Dict[str, Path]) -> None:
+        for monitor, _ in wallpapers.items():
+            # The `set` command won't be available until a 1.3.x release is spun up
+            subprocess.run(
+                [self._wpaperctl, "next", monitor],
+            )
+
+
+def detect_setter() -> WallpaperSetter:
+    if not is_wayland():
+        raise Exception("Does not yet handle non-wayland systems.")
+    if Path(f"{XDG_RUNTIME_DIR}/wpaperd.sock").exists():
+        return WpaperdSetter()
+    # Detect hyprland, check in `/run/user/<uid>/hypr/<instance_signature>/.hyprpaper.sock
+    return HyprlandWallpaperSetter()
 
 
 class WallpaperSet:
@@ -176,7 +202,7 @@ class WallpaperSet:
         return random.choice(self._wallpapers)
 
 
-def update_wallpaper(setter: HyprlandWallpaperSetter, wallpapers: WallpaperSet) -> None:
+def update_wallpaper(setter: WallpaperSetter, wallpapers: WallpaperSet) -> None:
     if is_locked():
         print("Wallpaper changing locked, unlock with `wallpaper unlock`")
         return
@@ -244,7 +270,7 @@ parser.add_argument(
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    setter = HyprlandWallpaperSetter()
+    setter = detect_setter()
     wallpapers = WallpaperSet()
 
     if args.command == "set":

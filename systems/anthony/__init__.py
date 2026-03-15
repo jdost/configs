@@ -29,9 +29,9 @@ import utils.wallpaper
 import vim
 import wayland.gammastep
 import wayland.hyprland as hyprland
-import wayland.hyprland.hyprpaper
 import wayland.ignis as ignis
 import wayland.screenlock
+import wayland.wpaperd
 from cfgtools.hooks import after
 from cfgtools.system import set_default_shell
 from cfgtools.system.arch import Pacman

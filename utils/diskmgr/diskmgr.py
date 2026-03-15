@@ -8,7 +8,7 @@ import shutil
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Collection, Dict, List, Optional, Sequence, Set, Union
+from typing import Any, Collection, Dict, List, Optional, Sequence, Set, Tuple, Union
 
 FSTAB = Path("/etc/fstab")
 LVM_FSTYPE = "LVM2_member"
@@ -16,6 +16,8 @@ SUDO = "/usr/bin/sudo"
 DISKS_DEFINITION = Path.home() / ".local/dropbox/configs/disks.json"
 IS_TERMINAL = os.environ.get("TERM") not in {"linux", None}
 ASKPASS = shutil.which("rofi-askpass")
+
+verbose = True
 
 
 @dataclass
@@ -355,7 +357,8 @@ async def run_cmd(binary, *args, as_root: bool = False) -> asyncio.subprocess.Pr
         await check_sudo()
 
     cmd = [SUDO, executable, *args] if as_root else [executable, *args]
-    print(shlex.join(cmd))
+    if verbose:
+        print(shlex.join(cmd))
     return await asyncio.subprocess.create_subprocess_exec(
         *cmd,
         stdout=asyncio.subprocess.PIPE,
@@ -502,6 +505,25 @@ def gen_fstab() -> None:
         print("")
 
 
+async def mount_device(target: BlockDevice) -> Tuple[bool, str]:
+    defined_device = json.load(DISKS_DEFINITION.open()).get(target.uuid)
+    if defined_device is None:
+        return False, f"The target device isn't a pre-defined target: {target.uuid}"
+
+    if target.fstype == LVM_FSTYPE:
+        # This is an LVM based block device, we need to handle this a bit
+        #   differently
+        vg = await get_volumegroup(target.path)
+        if not vg:
+            return False, f"There is no volume group for {target.path}"
+        await vg.import_vg()
+        await vg.activate_vg()
+        for lv in await vg.logical_volumes():
+            await mount(lv.dev)
+
+    return True, f"Successfully mounted {target.path}"
+
+
 async def mount_cmd(dev_path: str) -> bool:
     target = Path(dev_path) if dev_path.startswith("/dev") else Path(f"/dev/{dev_path}")
 
@@ -516,24 +538,27 @@ async def mount_cmd(dev_path: str) -> bool:
         print(f"No available block device for {target}")
         return sys.exit(1)
 
-    defined_device = json.load(DISKS_DEFINITION.open()).get(block_device.uuid)
-    if defined_device is None:
-        print(f"The target device isn't a pre-defined target: {block_device.uuid}")
+    successful, message = await mount_device(block_device)
+    if not successful:
+        print(message)
         return sys.exit(2)
 
-    if block_device.fstype == LVM_FSTYPE:
+
+async def unmount_device(target: BlockDevice) -> Tuple[bool, str]:
+    if target.fstype == LVM_FSTYPE:
         # This is an LVM based block device, we need to handle this a bit
         #   differently
-        vg = await get_volumegroup(block_device.path)
+        vg = await get_volumegroup(target.path)
         if not vg:
-            print(f"There is no volume group for {block_device.path}")
-            return sys.exit(3)
-        await vg.import_vg()
-        await vg.activate_vg()
-        for lv in await vg.logical_volumes():
-            await mount(lv.dev)
+            return False, f"There is no volume group for {target.path}"
 
-    return True
+        for lv in await vg.logical_volumes():
+            await umount(lv.dev)
+
+        await vg.deactivate_vg()
+        await vg.export_vg()
+
+    return True, f"Successfully unmounted {target.path}"
 
 
 async def unmount_cmd(dev_path: str) -> bool:
@@ -550,21 +575,13 @@ async def unmount_cmd(dev_path: str) -> bool:
         print(f"No available block device for {target}")
         return sys.exit(1)
 
-    if block_device.fstype == LVM_FSTYPE:
-        # This is an LVM based block device, we need to handle this a bit
-        #   differently
-        vg = await get_volumegroup(block_device.path)
-        if not vg:
-            print(f"There is no volume group for {block_device.path}")
-            return sys.exit(3)
+    successful, error = await unmount_device(block_device)
+    if not successful:
+        print(error)
+        return sys.exit(2)
 
-        for lv in await vg.logical_volumes():
-            await umount(lv.dev)
 
-        await vg.deactivate_vg()
-        await vg.export_vg()
 
-    return True
 
 
 def main():

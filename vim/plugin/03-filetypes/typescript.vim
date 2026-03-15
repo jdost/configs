@@ -1,11 +1,11 @@
 if has_key(g:plugs, 'nvim-lspconfig')
   lua << EOF
-  local lspconfig = require('lspconfig')
+  --local lspconfig = require('lspconfig')
   local servers = {'denols', 'tsserver', 'eslint'}
 
   for _, server in ipairs(servers) do
-    if vim.fn.executable(server) == 1 and lspconfig[server] == nil then
-      lspconfig[server].setup {
+    if vim.fn.executable(server) == 1 then
+      vim.lsp.config(server, {
         on_attach = function(client, bufnr)
           vim.api.nvim_exec([[
             augroup lsp_document_highlight
@@ -15,7 +15,7 @@ if has_key(g:plugs, 'nvim-lspconfig')
             set updatetime=4000
           ]], false)
         end,
-      }
+      })
     end
   end
 EOF

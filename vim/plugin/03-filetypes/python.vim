@@ -22,25 +22,25 @@ if has_key(g:plugs, 'nvim-lspconfig')
   if has_key(g:plugs, 'ncm2')
     lua << EOF
       local servers = {'pylsp', 'pyright'}
-      local lspconfig = require('lspconfig')
+      --local lspconfig = require('lspconfig')
       local ncm2 = require('ncm2')
 
       for _, server in ipairs(servers) do
         if vim.fn.executable(server) == 1 and lspconfig[server] == nil then
-          lspconfig[server].setup {
+          vim.lsp.config(server, {
             on_init = ncm2.register_lsp_source
-          }
+          })
         end
       end
 EOF
   else
     lua << EOF
       local servers = {'pylsp', 'pyright'}
-      local lspconfig = require('lspconfig')
+      --local lspconfig = require('lspconfig')
 
       for _, server in ipairs(servers) do
         if vim.fn.executable(server) == 1 then
-          lspconfig[server].setup {
+          vim.lsp.config(server, {
             on_attach = function(client, bufnr)
               vim.api.nvim_exec([[
                 augroup lsp_document_highlight
@@ -51,7 +51,7 @@ EOF
                 set updatetime=1000
               ]], false)
             end,
-          }
+          })
         end
       end
 EOF

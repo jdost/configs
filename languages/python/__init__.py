@@ -1,4 +1,4 @@
-from cfgtools.files import EnvironmentFile, XDGConfigFile, normalize
+from cfgtools.files import EnvironmentFile, UserBin, XDGConfigFile, normalize
 from cfgtools.hooks import after
 from cfgtools.system.arch import Pacman
 from cfgtools.system.python import VirtualEnv
@@ -42,6 +42,7 @@ files = [
     XDGConfigFile(f"{NAME}/python_startup.py", "python/startup.py"),
     XDGConfigFile(f"{NAME}/black.toml", "black/pyproject.toml"),
     XDGConfigFile(f"{NAME}/isort.cfg", "isort.cfg"),
+    UserBin(f"{virtualenv.location}/bin/uv", "uv"),
 ]
 
 

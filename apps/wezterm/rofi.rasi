@@ -1,4 +1,4 @@
 configuration {
     terminal: "wezterm";
-    run-shell-command: "{terminal} start {cmd}";
+    run-shell-command: "{terminal} start --class \"{cmd}\" {cmd}";
 }

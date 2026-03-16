@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=NetworkManager
+GenericName=Configure NetworkManager Connections
+Exec=nmtui
+Icon=preferences-system-network
+Terminal=true

@@ -25,7 +25,7 @@ files = {
     XDGConfigFile(f"{NAME}/hyprland.conf", "hypr/hyprland.conf"),
     HyprlandSettings(f"{NAME}/hyprland.keys.conf", "keys"),
     HyprlandSettings(f"{NAME}/hyprland.sidebars.conf", "sidebars"),
-    HyprlandSettings(f"{NAME}/hyprland.animations.conf", "animations"),
+    HyprlandSettings(f"{NAME}/hyprland.animations.conf", "animations", priority=20),
     WaylandRC(f"{NAME}/waylandrc", "hyprland", priority=1),
     XDGConfigFile(f"{NAME}/toggle-sidebar.sh", "hypr/toggle-sidebar"),
     XDGConfigFile(f"{NAME}/hyprland-workspace.sh", "hypr/hyprland-workspace"),

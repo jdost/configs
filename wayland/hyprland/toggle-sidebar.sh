@@ -11,16 +11,16 @@ setup_window() {
     local target_height=$(echo $current_workspace_info | jq ".height")
     local target_width=$(echo $current_workspace_info | jq ".width")
 
-    hyprctl dispatch resizewindowpixel exact \
-        $(( $target_width / 3 )) \
-        $(( $target_height )),class:$CLASS
+    #hyprctl dispatch resizewindowpixel exact \
+    #    $(( $target_width / 3 )) \
+    #    $(( $target_height - 4 )),class:$CLASS
 
     if [[ "$side" == "right" ]]; then
         hyprctl dispatch movewindowpixel exact \
-            $(( $target_width * 2 / 3 )) 0,class:$CLASS
+            $(( $target_width * 2 / 3 - 2)) 2,class:$CLASS
     else
         hyprctl dispatch movewindowpixel \
-            0 0,class:$CLASS
+            2 2,class:$CLASS
     fi
 }
 
@@ -31,7 +31,7 @@ if ! hyprctl clients | grep "initialClass: $CLASS" &>/dev/null; then
     fi
     # there is not an existing window, so spawn it
     hyprctl dispatch exec "[move $x 0] wezterm --config window_background_opacity=0.4 start --cwd $HOME --class \"$CLASS\""
-    sleep 0.1
+    sleep 0.08
     setup_window
     exit 0
 fi

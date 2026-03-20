@@ -6,6 +6,8 @@ if has_key(g:plugs, 'nvim-lint')
   lua << EOF
     local lint = require('lint')
     lint.linters_by_ft['python'] = {'mypy', 'ruff', 'bandit', 'vulture'}
+    table.insert(lint.linters.vulture.args, 1, '--min-confidence')
+    table.insert(lint.linters.vulture.args, 2, '90')
 EOF
 endif
 

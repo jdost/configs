@@ -3,3 +3,4 @@ from datetime import datetime
 from ignis.utils import Poll
 
 time = Poll(timeout=500, callback=lambda _: datetime.now().strftime("%H:%M:%S"))
+date = Poll(timeout=15_000, callback=lambda _: datetime.now().strftime("%a, %b %d, %Y"))

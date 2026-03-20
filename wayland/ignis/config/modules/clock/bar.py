@@ -1,8 +1,7 @@
+from bar.widget import BarMonitor, BarSide, BarWidget
 from ignis import widgets
 
-from bar.widget import BarMonitor, BarSide, BarWidget
-
-from .services import time
+from .services import date, time
 
 
 class ClockWidget(BarWidget):
@@ -15,3 +14,4 @@ class ClockWidget(BarWidget):
 
     def setup(self, widget: widgets.Label) -> None:
         widget.label = time.bind("output")
+        widget.tooltip_text = date.bind("output")

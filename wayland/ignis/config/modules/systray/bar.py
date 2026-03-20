@@ -1,5 +1,6 @@
 import asyncio
 
+import settings
 from bar.widget import BarSide, BarWidget
 from ignis import widgets
 from ignis.services.system_tray import SystemTrayItem, SystemTrayService
@@ -32,7 +33,9 @@ class TrayIcon(BaseWidget):
     def render_child(self) -> widgets.Box:
         return widgets.Box(
             child=[
-                widgets.Icon(image=self.src.bind("icon"), pixel_size=22),
+                widgets.Icon(
+                    image=self.src.bind("icon"), pixel_size=settings.font_size
+                ),
                 self.src.menu,
             ]
         )

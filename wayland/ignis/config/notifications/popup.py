@@ -44,14 +44,16 @@ class NotificationPopup(BaseWidget):
     def on_right_click(self, *_) -> None:
         self.src.dismiss()
 
-    def render_child(self) -> widgets.Box:
-        return widgets.Box(
-            vexpand=True,
-            child=[
-                ui.Icon(self.src).render(),
-                ui.Body(self.src).render(),
-                ui.ActionButtons(self.src.actions).render()
-                if self.supports_actions
-                else None,
-            ],
-        )
+    def render_children(self) -> list[widgets.Box]:
+        return [
+            widgets.Box(
+                vexpand=True,
+                child=[
+                    ui.Icon(self.src).render(),
+                    ui.Body(self.src).render(),
+                ],
+            ),
+            ui.ActionButtons(self.src.actions).render()
+            if self.supports_actions
+            else None,
+        ]

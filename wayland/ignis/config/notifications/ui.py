@@ -1,8 +1,10 @@
+import re
+
 from ignis import utils, widgets
 from ignis.services.notifications import Notification, NotificationAction
+from utils.widgets import BaseWidget
 
 from utils import cursor
-from utils.widgets import BaseWidget
 
 DEFAULT_ICON = "dialog-information-symbolic"
 
@@ -17,6 +19,24 @@ label_props = {
     *BaseWidget.__build_props__,
 }
 
+MARKDOWN_APPS = {"WebCord"}
+MARKDOWN_ELEMENTS = [
+    (re.compile("\\*\\*([^\\*]+)\\*\\*"), r"<b>\1</b>"),  # **bold text**
+    (
+        re.compile("\\[(.+)\\]\\((.+)\\)"),
+        r"<u>\1</u>",
+    ),  # [a link](to somewhere), we just want the underline for looks
+    (re.compile("\\*([^\\*]+)\\*"), r"<i>\1</i>"),  # *italic text*
+]
+
+
+def markdown_to_pango(src: str) -> str:
+    res = src.replace("<", "&lt:").replace(">", "&gt;")
+    for regex, sub in MARKDOWN_ELEMENTS:
+        res = regex.sub(sub, res)
+
+    return res
+
 
 class Icon(BaseWidget):
     base = widgets.EventBox
@@ -28,7 +48,7 @@ class Icon(BaseWidget):
         super().__init__(*args, **kwargs)
 
     def render(self, *args, **kwargs) -> widgets.Box:
-        if self.src.icon and not utils.get_file_icon_name(self.src.icon):
+        if self.src.icon and self.src.icon.startswith("file://"):
             return super().render(
                 child=[
                     widgets.Box(
@@ -132,7 +152,11 @@ class BodyText(BaseWidget):
     use_markup = True
 
     def __init__(self, notification: Notification, *args, **kwargs):
-        self.label = notification.body
+        self.label = (
+            markdown_to_pango(notification.body)
+            if notification.src.app_name in MARKDOWN_APPS
+            else notification.body
+        )
         super().__init__(*args, **kwargs)
 
 

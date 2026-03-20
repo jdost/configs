@@ -1,10 +1,10 @@
+from bar.widget import BarMonitor, BarSide, BarWidget
 from ignis import widgets
 from ignis.gobject import Binding
-from ignis.services.hyprland import HyprlandService, HyprlandWorkspace
-
-from bar.widget import BarMonitor, BarSide, BarWidget
-from utils import cursor
+from ignis.services.hyprland import HyprlandService, HyprlandWindow, HyprlandWorkspace
 from utils.widgets import BaseWidget
+
+from utils import cursor
 
 hyprland = HyprlandService.get_default()
 
@@ -31,8 +31,11 @@ class WorkspaceButton(BaseWidget):
         is_focused = False
 
         if is_active:
-            is_focused = self.is_focused
-            self.css_classes.append("focused" if is_focused else "visible")
+            self.css_classes.append("focused" if self.is_focused else "visible")
+        elif self.is_focused:
+            self.css_classes.append("focused")
+        elif self.is_visible:
+            self.css_classes.append("visible")
 
         if hyprland.get_windows_on_workspace(workspace.id):
             self.css_classes.append("occupied")
@@ -41,7 +44,17 @@ class WorkspaceButton(BaseWidget):
 
     @property
     def is_focused(self) -> bool:
-        return hyprland.get_monitor_by_name(self.workspace.monitor).focused
+        return (
+            hyprland.active_window.workspace_id == self.workspace.id
+            or hyprland.active_workspace.id == self.workspace.id
+        )
+
+    @property
+    def is_visible(self) -> bool:
+        return (
+            hyprland.get_monitor_by_name(self.workspace.monitor).active_workspace_id
+            == self.workspace.id
+        )
 
     def on_click(self, *_) -> None:
         self.workspace.switch_to()
@@ -61,16 +74,23 @@ class WorkspacesWidget(BarWidget):
     def render_buttons(
         self,
         workspaces: list[HyprlandWorkspace],
+        active_window: HyprlandWindow,
         active_workspace: HyprlandWorkspace,
     ) -> list[widgets.Button]:
         return [
-            WorkspaceButton(workspace, workspace.id == active_workspace.id).render()
+            WorkspaceButton(
+                workspace,
+                (
+                    workspace.id == active_window.workspace_id
+                    or active_workspace.id == workspace.id
+                ),
+            ).render()
             for workspace in workspaces
             if (workspace.monitor_id == self.monitor_id and workspace.id >= 0)
         ]
 
     def render_children(self) -> Binding:
         return hyprland.bind_many(
-            ["workspaces", "active_workspace"],
+            ["workspaces", "active_window", "active_workspace"],
             transform=self.render_buttons,
         )

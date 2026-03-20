@@ -13,7 +13,10 @@ Works by manipulating the python path.
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path.home() / ".local/llm/lib/python3.14/site-packages"))
+# Extract the MAJOR.MINOR python version to interpolate into the path
+python_version = f"python{sys.version.split(' ')[0].rsplit('.', 1)[0]}"
+# Make path high precedence, as it will clash with this configs repo
+sys.path.insert(0, str(Path.home() / f".local/llm/lib/{python_version}/site-packages"))
 
 
 import json

@@ -9,12 +9,16 @@ from cfgtools.utils import add_group
 NAME = normalize(__name__)
 
 system_packages = {
-    Pacman("docker"), Pacman("docker-buildx"), Apt("docker.io")
+    Pacman("docker"),
+    Pacman("docker-buildx"),
+    Pacman("docker-compose"),
+    Apt("docker.io"),
 }
 files = [
     UserBin(f"{NAME}/wrapper.sh", "docker"),
     XDGConfigFile(f"{NAME}/config.json", "docker/config.json"),
 ]
+
 
 @after
 def start_docker_service() -> None:

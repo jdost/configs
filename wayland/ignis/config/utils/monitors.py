@@ -23,13 +23,4 @@ def primary() -> int:
 
 
 def focused() -> int:
-    global _monitors
-
-    if not _monitors:
-        _monitors = hyprland.get_monitors()
-
-    for m in _monitors:
-        if m.focused:
-            return m.id
-
-    return 0  # ??? a monitor *should* be focused
+    return hyprland.active_window.monitor

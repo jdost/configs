@@ -2,14 +2,16 @@ from importlib import import_module
 from pathlib import Path
 
 import ignis.css_manager as css
-from gi.repository import Gtk  # type: ignore
-
 import settings
 from accent import Accent
 from bar import Bar
+from gi.repository import Gtk  # type: ignore
 from notifications import Notifications
+from osd import OSD
 
-Gtk.Settings.get_default().set_property("gtk-icon-theme-name", "Papirus")
+Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
+Gtk.Settings.get_default().set_property("gtk-icon-theme-name", "Papirus-Dark")
+Gtk.Settings.get_default().set_property("gtk-theme-name", "Adwaita")
 
 
 def css_setup() -> None:
@@ -45,6 +47,7 @@ def main() -> None:
     Accent.init()
     Bar.init()
     Notifications.init()
+    OSD.init()
 
 
 main()

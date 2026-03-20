@@ -1,0 +1,33 @@
+.osd {
+    background-color: transparent;
+    margin-bottom: 2em;
+}
+.osd box {
+    border-radius: 1.5em;
+    padding: 0.7em 1em;
+    background-color: rgba(34, 34, 34, 0.6);
+    color: #FFFFFF;
+}
+.osd levelbar,
+.osd levelbar trough {
+    background-color: transparent;
+    border: 0;
+    min-width: 8em;
+}
+.osd levelbar .filled {
+    margin: 5px;
+    min-height: 6px;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+.osd levelbar.muted .filled {
+    background-color: rgba(34, 34, 34, 0.75);
+}
+.osd levelbar .empty {
+    margin: 3px;
+    background-color: rgba(125, 125, 125, 0.6);
+}
+.osd levelbar .empty,
+.osd levelbar .filled {
+    border-radius: 2em;
+    border: 0;
+}

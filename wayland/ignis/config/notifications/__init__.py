@@ -5,9 +5,9 @@ from ignis.services.notifications import (
     Notification,
     NotificationService,
 )
+from utils.style import add_style
 
 from utils import monitors
-from utils.style import add_style
 
 from .popup import NotificationPopup
 
@@ -28,6 +28,7 @@ class Notifications:
             css_classes=["notification-popups"],
             anchor=["top", "right"],
             child=self.popup_widget,
+            visible=False,
         )
 
     async def render_popup(self, notification: Notification) -> None:

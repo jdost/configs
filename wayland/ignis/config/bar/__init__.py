@@ -1,10 +1,10 @@
 from typing import ClassVar, Optional
 
 from ignis import utils, widgets
+from utils.style import add_style
 
 from bar.icon import BarIconsWidget
 from bar.widget import BarMonitor, BarSide, BarWidget
-from utils.style import add_style
 
 
 class Bar:

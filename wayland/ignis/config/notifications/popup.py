@@ -2,7 +2,6 @@ from ignis import widgets
 from ignis.services.notifications import (
     Notification,
 )
-
 from utils.widgets import BaseWidget
 
 from . import ui
@@ -27,18 +26,19 @@ class NotificationPopup(BaseWidget):
     def __init__(self, src: Notification, parent: widgets.Box, *args, **kwargs) -> None:
         self.src = src
         self.parent = parent
-        if self.src.urgency in URGENCY:
-            self.css_classes.append(URGENCY[self.src.urgency])
+        # Copy rather than mutate the class value
+        self.css_classes = [URGENCY.get(self.src.urgency, "normal"), *self.css_classes]
 
-        self.src.connect("dismissed", lambda _: self.destroy())
         super().__init__(*args, **kwargs)
+        self.src.connect("dismissed", lambda _: self.destroy())
 
     @property
     def supports_actions(self) -> bool:
         return self.src.app_name not in {"WebCord"}
 
     def destroy(self) -> None:
-        self.widget.unparent()
+        if hasattr(self, "widget"):
+            self.widget.unparent()
         self.parent.cleanup()
 
     def on_right_click(self, *_) -> None:

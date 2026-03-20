@@ -18,6 +18,8 @@ class BarIcon(BarWidget):
 
         if not hasattr(self, "css_classes"):
             self.css_classes = []
+        else:  # copy since this is often a classvar
+            self.css_classes = [*self.css_classes]
 
         self.css_classes.append(self.name)
         self.css_classes.append("icon")
@@ -35,6 +37,8 @@ class GradientIcon(BarIcon):
     def __init__(self, *args, **kwargs) -> None:
         if not hasattr(self, "css_classes"):
             self.css_classes = []
+        else:  # copy since this is often a classvar
+            self.css_classes = [*self.css_classes]
 
         self.css_classes.append("gradient")
         super().__init__(*args, **kwargs)

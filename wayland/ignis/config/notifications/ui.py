@@ -154,7 +154,7 @@ class BodyText(BaseWidget):
     def __init__(self, notification: Notification, *args, **kwargs):
         self.label = (
             markdown_to_pango(notification.body)
-            if notification.src.app_name in MARKDOWN_APPS
+            if notification.app_name in MARKDOWN_APPS
             else notification.body
         )
         super().__init__(*args, **kwargs)

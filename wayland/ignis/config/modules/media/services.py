@@ -3,6 +3,7 @@ from datetime import datetime
 from ignis.base_service import BaseService
 from ignis.gobject import IgnisProperty
 from ignis.services.mpris import MprisPlayer, MprisService
+from ignis.utils import Poll
 
 mpris = MprisService.get_default()
 
@@ -23,6 +24,7 @@ class PlayerMetadata:
 class PlayerTracker(BaseService):
     _player_status: dict[str, PlayerMetadata]
     _current: MprisPlayer | None
+    _UPDATE_FREQUENCY_MS: int = 10_000
 
     def __init__(self):
         super().__init__()
@@ -36,6 +38,9 @@ class PlayerTracker(BaseService):
         self._current_status = "Stopped"
 
         self._update()
+        self._poll = Poll(
+            timeout=self._UPDATE_FREQUENCY_MS, callback=lambda _: self._update()
+        )
 
     def _bind_player(self, player: MprisPlayer) -> None:
         player.connect("notify::playback-status", lambda _1, _2: self._update())

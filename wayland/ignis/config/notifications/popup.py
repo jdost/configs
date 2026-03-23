@@ -2,6 +2,7 @@ from ignis import widgets
 from ignis.services.notifications import (
     Notification,
 )
+from utils.transitions import SlideDown
 from utils.widgets import BaseWidget
 
 from . import ui
@@ -22,6 +23,8 @@ class NotificationPopup(BaseWidget):
     hexpand = True
     vertical = True
     vexpand = True
+    on_show = SlideDown(350)
+    on_hide = SlideDown(500)
 
     def __init__(self, src: Notification, parent: widgets.Box, *args, **kwargs) -> None:
         self.src = src
@@ -36,9 +39,7 @@ class NotificationPopup(BaseWidget):
     def supports_actions(self) -> bool:
         return self.src.app_name not in {"WebCord"}
 
-    def destroy(self) -> None:
-        if hasattr(self, "widget"):
-            self.widget.unparent()
+    def on_destroy(self) -> None:
         self.parent.cleanup()
 
     def on_right_click(self, *_) -> None:

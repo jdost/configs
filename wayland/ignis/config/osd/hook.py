@@ -1,5 +1,6 @@
 from ignis import widgets
 from ignis.gobject import IgnisGObject, IgnisSignal
+from utils.transitions import CrossFade
 from utils.widgets import BaseWidget
 
 
@@ -9,6 +10,7 @@ class OSDHook(BaseWidget, IgnisGObject):
     name: str
     timeout: int = 2000
     hook: tuple[IgnisGObject, str | list[str]]
+    on_show = CrossFade(350)
 
     base = widgets.Box
     spacing = 15

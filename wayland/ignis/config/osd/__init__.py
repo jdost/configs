@@ -28,8 +28,8 @@ class OSD:
 
     def display_hook(self, hook: OSDHook) -> None:
         if self.active_hook and self.active_hook is not hook:
-            # If there is another active hook being displayed, replace it
-            self.window.child.unrealize()
+            self.active_hook.destroy()
+        if not self.active_hook or self.active_hook is not hook:
             self.active_hook = hook
 
         # If there is a visibility timer, reset it
@@ -40,12 +40,11 @@ class OSD:
             self.window.child = hook.render()
             self.window.visible = True
 
-        self.timeout = utils.Timeout(ms=hook.timeout, target=self.close)
+        self.timeout = utils.Timeout(ms=hook.timeout, target=lambda: self.close())
 
     def close(self) -> None:
         self.active_hook = None
         self.timeout = None
-        self.window.child.unrealize()
         self.window.visible = False
 
     @classmethod

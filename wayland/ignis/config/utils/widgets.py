@@ -1,6 +1,10 @@
 from typing import Callable, Iterable
 
 from ignis import widgets
+from ignis.gobject import IgnisGObject, IgnisSignal
+from ignis.utils import Timeout
+
+from utils.transitions import Transition, enabled
 
 SINGLE_CHILD_WIDGETS = {widgets.Button, widgets.Overlay}
 
@@ -17,7 +21,7 @@ def binding(hook: str) -> Callable[[Callable], Callable]:
     return register
 
 
-class BaseWidget:
+class BaseWidget(IgnisGObject):
     name: str = "unnamed"
 
     base: type[widgets.Widget]
@@ -43,6 +47,31 @@ class BaseWidget:
         "on_click",
         "on_right_click",
     }
+    on_show: Transition | None = None
+    on_hide: Transition | None = None
+
+    @IgnisSignal
+    def destroyed(self) -> None:
+        pass
+
+    def destroy(self) -> None:
+        def cleanup():
+            for tgt in [self.widget, *self.revealers]:
+                if not tgt:
+                    continue
+                tgt.unparent()
+                tgt.unrealize()
+
+            if hasattr(self, "on_destroy"):
+                self.on_destroy()
+            self.emit("destroyed")
+
+        if enabled and self.on_hide:
+            self.revealers[1].reveal_child = False
+            Timeout(ms=self.on_hide.duration, target=cleanup)
+            return
+
+        cleanup()
 
     def render(self, *args, **kwargs: object) -> widgets.Widget:
         if not hasattr(self, "base"):
@@ -90,4 +119,29 @@ class BaseWidget:
                 kwargs["child"] = child if isiterable(child) else [child]
 
         self.widget = self.base(*args, **kwargs)
-        return self.widget
+        target = self.widget
+        self.revealers: list[widgets.Revealer | None] = [None, None]
+
+        if self.on_show:
+            self.revealers[0] = widgets.Revealer(
+                child=target,
+                transition_type=self.on_show.animation,
+                transition_duration=self.on_show.duration,
+                reveal_child=not enabled,
+            )
+
+            def reveal() -> None:
+                self.revealers[0].reveal_child = True
+
+            target = self.revealers[0]
+            Timeout(ms=50, target=reveal)
+        if self.on_hide:
+            self.revealers[1] = widgets.Revealer(
+                child=target,
+                transition_type=self.on_hide.animation,
+                transition_duration=self.on_hide.duration,
+                reveal_child=True,
+            )
+            target = self.revealers[1]
+
+        return target

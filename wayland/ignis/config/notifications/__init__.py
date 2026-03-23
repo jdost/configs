@@ -33,8 +33,9 @@ class Notifications:
 
     async def render_popup(self, notification: Notification) -> None:
         popup = NotificationPopup(notification, self)
-        self.popup_widget.append(popup.render())
         self.window.visible = True
+        w = popup.render()
+        self.popup_widget.append(w)
 
     def cleanup(self) -> None:
         if len(self.popup_widget.child) == 0:

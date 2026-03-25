@@ -6,6 +6,7 @@ from ignis.services.mpris import MprisPlayer, MprisService
 from ignis.utils import Poll
 
 mpris = MprisService.get_default()
+IGNORED_IF_STOPPED = {"qutebrowser"}
 
 
 class PlayerMetadata:
@@ -13,8 +14,10 @@ class PlayerMetadata:
     last_playing: datetime
     last_status: str
     ref: MprisPlayer
+    name: str
 
     def __init__(self, ref: MprisPlayer) -> None:
+        self.name = ref.identity
         self.ref = ref
         self.playing_since = datetime.min
         self.last_playing = datetime.min
@@ -66,10 +69,16 @@ class PlayerTracker(BaseService):
 
         for unused_key in unused_keys:
             del self._player_status[unused_key]
-            del self._bindings[unused_key]
 
         active: PlayerMetadata | None = None
         for metadata in self._player_status.values():
+            # Ignore certain stopped players that just persist forever
+            if (
+                metadata.last_status == "Stopped"
+                and metadata.name in IGNORED_IF_STOPPED
+            ):
+                continue
+
             if active is None:
                 active = metadata
                 continue

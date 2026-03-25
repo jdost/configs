@@ -49,25 +49,43 @@ class BaseWidget(IgnisGObject):
     }
     on_show: Transition | None = None
     on_hide: Transition | None = None
+    widget: None | widgets.Widget
+    revealers: list[widgets.Revealer | None]
+
+    def __init__(self, *args, **kwargs):
+        self.widget = None
+        self.revealers = [None, None]
+        super().__init__(*args, **kwargs)
 
     @IgnisSignal
     def destroyed(self) -> None:
         pass
+
+    def unparent(self) -> None:
+        for tgt in [self.widget, *self.revealers]:
+            if not tgt:
+                continue
+            tgt.unparent()
 
     def destroy(self) -> None:
         def cleanup():
             for tgt in [self.widget, *self.revealers]:
                 if not tgt:
                     continue
-                tgt.unparent()
                 tgt.unrealize()
 
             if hasattr(self, "on_destroy"):
                 self.on_destroy()
+
+            # Clear the refs after calling the on_destroy hook in case other
+            # cleanup is necessary (like unparenting)
+            self.widget = None
+            self.revealers = [None, None]
             self.emit("destroyed")
 
         if enabled and self.on_hide:
-            self.revealers[1].reveal_child = False
+            if self.revealers[1]:
+                self.revealers[1].reveal_child = False
             Timeout(ms=self.on_hide.duration, target=cleanup)
             return
 
@@ -120,7 +138,7 @@ class BaseWidget(IgnisGObject):
 
         self.widget = self.base(*args, **kwargs)
         target = self.widget
-        self.revealers: list[widgets.Revealer | None] = [None, None]
+        self.revealers = [None, None]
 
         if self.on_show:
             self.revealers[0] = widgets.Revealer(
@@ -131,7 +149,8 @@ class BaseWidget(IgnisGObject):
             )
 
             def reveal() -> None:
-                self.revealers[0].reveal_child = True
+                if self.revealers[0]:
+                    self.revealers[0].reveal_child = True
 
             target = self.revealers[0]
             Timeout(ms=50, target=reveal)

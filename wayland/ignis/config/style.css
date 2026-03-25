@@ -47,13 +47,6 @@ tooltip * {
     margin: 0;
 }
 
-.popup > box {
-    background-color: rgba(34, 34, 34, 0.5);
-    border-radius: 15px;
-    padding: 8px;
-    margin: 5px 10px;
-}
-
 .nag.teatimer {
     background-color: rgba(196, 196, 196, 0.6);
     color: rgb(0, 0, 0);

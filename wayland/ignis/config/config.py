@@ -8,6 +8,7 @@ from bar import Bar
 from gi.repository import Gtk  # type: ignore
 from notifications import Notifications
 from osd import OSD
+from popup import Popup
 
 Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
 Gtk.Settings.get_default().set_property("gtk-icon-theme-name", "Papirus-Dark")
@@ -48,6 +49,7 @@ def main() -> None:
     Bar.init()
     Notifications.init()
     OSD.init()
+    Popup.init()
 
 
 main()

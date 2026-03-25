@@ -1,0 +1,6 @@
+box.popup {
+    background-color: rgba(34, 34, 34, 0.5);
+    border-radius: 15px;
+    padding: 0.8em;
+    margin: 0.5em 10px;
+}

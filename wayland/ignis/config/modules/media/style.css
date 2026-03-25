@@ -7,11 +7,11 @@
     color: rgb(153, 153, 153);
 }
 
-.popup.mpris > box {
+box.popup.media {
     min-width: 22em;
     font-size: 0.8em;
 }
-.popup.mpris .cover-art {
+.popup.media .cover-art {
     min-width: 72px;
     min-height: 72px;
     background-size: cover;
@@ -19,15 +19,15 @@
     border-radius: 13px;
     margin-right: 1em;
 }
-.popup.mpris .title {
+.popup.media .track-title {
     font-size: 1.2em;
     margin-left: -5px;
 }
-.popup.mpris .artist {
+.popup.media .artist {
     font-size: 1.1em;
-    color: @insensitive_fg_color;
+    color: rgb(150, 150, 150);
 }
-.popup.mpris button {
+.popup.media button {
     min-height: 1em;
     min-width: 1em;
     padding: .3em;
@@ -35,14 +35,14 @@
     font-size: 1.3em;
     border-radius: 6px;
 }
-.popup.mpris button icon {
+.popup.media button icon {
     font-size: 2em;
     min-height: 2em;
 }
-.popup.mpris button:hover {
+.popup.media button:hover {
     background: rgba(185, 185, 185, 0.2);
 }
-.popup.mpris button.play-pause {
+.popup.media button.play-pause {
     margin: 0 .6em;
 }
 

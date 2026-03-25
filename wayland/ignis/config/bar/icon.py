@@ -4,13 +4,12 @@ from ignis import widgets
 from ignis.gobject import Binding
 
 from bar.widget import BarSide, BarWidget
-from utils import color
+from utils import color, cursor
 
 
 class BarIcon(BarWidget):
     label: str = ""
-    base = widgets.Label
-    __build_props__ = {"label", *BarWidget.__build_props__}
+    base = widgets.Button
 
     def __init__(self, *args, **kwargs) -> None:
         if hasattr(self, "icon"):
@@ -23,7 +22,12 @@ class BarIcon(BarWidget):
 
         self.css_classes.append(self.name)
         self.css_classes.append("icon")
+        if hasattr(self, "on_click"):
+            self.cursor = cursor("pointer")
         super().__init__(*args, **kwargs)
+
+    def render_child(self) -> widgets.Label:
+        return widgets.Label(label=self.label)
 
     @classmethod
     def register(cls) -> None:

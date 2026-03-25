@@ -20,7 +20,7 @@ setup_window() {
             $(( $target_width * 2 / 3 - 2)) 2,class:$CLASS
     else
         hyprctl dispatch movewindowpixel \
-            2 2,class:$CLASS
+            exact 0 2,class:$CLASS
     fi
 }
 

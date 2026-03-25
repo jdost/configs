@@ -110,7 +110,10 @@ class BaseWidget(IgnisGObject):
 
         is_single_child = self.base in SINGLE_CHILD_WIDGETS
 
-        if hasattr(self, "child"):
+        if self.base is widgets.CenterBox:
+            if hasattr(self, "render_child") and callable(self.render_child):
+                kwargs["center_widget"] = self.render_child()
+        elif hasattr(self, "child"):
             if isiterable(self.child) and is_single_child:
                 raise ValueError("Cannot have multiple children")
             elif isiterable(self.child):

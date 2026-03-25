@@ -60,3 +60,7 @@
 .notification .actions .action:last-child {
     margin-right: 0;
 }
+
+.sidebar .notifications-history {
+    margin-top: 0.5em;
+}

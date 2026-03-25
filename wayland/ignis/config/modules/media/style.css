@@ -46,7 +46,7 @@ box.popup.media {
     margin: 0 .6em;
 }
 
-.sidebar .mpris {
+.sidebar .mpris > box {
     padding: 0.2em 0.4em;
     margin: 0 0.5em;
     border-radius: 0.5em;

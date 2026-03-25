@@ -5,3 +5,37 @@
     margin: 0.4em 0 0.4em 0.2em;
     border-radius: 1em;
 }
+
+.sidebar .calendar-holder {
+    margin: 0.5em 0;
+}
+.sidebar .calendar {
+    border: 0;
+    padding: 0.4em 0.6em;
+    border-radius: 0.7em;
+    background: rgba(66, 66, 66, 0.5);
+    margin: 0 0 0.1em;
+}
+.sidebar .calendar .week button {
+    margin: 0 0.1em;
+    padding: 0 0.3em;
+    color: rgba(255, 255, 255, 0.8);
+}
+.sidebar .calendar .week button.off-month {
+    color: rgba(255, 255, 255, 0.4);
+}
+.sidebar .calendar .week button.off-month.weekend {
+    background: transparent;
+}
+.sidebar .calendar .week button.weekend {
+    background: rgba(66, 66, 66, 0.5);
+}
+.sidebar .calendar .week button.today,
+.sidebar .calendar .week button.marked {
+    color: rgba(255, 255, 255, 1.0);
+    font-weight: bold;
+}
+.sidebar .calendar-holder .details {
+    font-size: 0.8em;
+    margin: 0 0.4em;
+}

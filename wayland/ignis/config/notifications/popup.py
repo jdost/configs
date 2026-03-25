@@ -40,6 +40,8 @@ class NotificationPopup(BaseWidget):
         return self.src.app_name not in {"WebCord"}
 
     def on_destroy(self) -> None:
+        # Need to unparent to empty the parent for visibility toggling
+        self.unparent()
         self.parent.cleanup()
 
     def on_right_click(self, *_) -> None:

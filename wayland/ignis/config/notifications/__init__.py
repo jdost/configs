@@ -22,6 +22,8 @@ class Notifications:
             child=[],
         )
 
+        self.active_popups = 0
+
         self.window = widgets.Window(
             namespace=f"ignis.notifications.{self.monitor}",
             monitor=self.monitor,
@@ -35,10 +37,12 @@ class Notifications:
         popup = NotificationPopup(notification, self)
         self.window.visible = True
         w = popup.render()
+        self.active_popups += 1
         self.popup_widget.append(w)
 
     def cleanup(self) -> None:
-        if len(self.popup_widget.child) == 0:
+        self.active_popups -= 1
+        if self.active_popups == 0:
             self.window.visible = False
 
     @classmethod

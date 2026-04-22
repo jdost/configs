@@ -20,7 +20,7 @@ Rectangle {
         font.family: "monospace"
         font.pixelSize: Config.em(0.7)
         x: 6
-        y: 2
+        y: Config.em(0.15)
     }
 
     MouseArea {
@@ -29,10 +29,10 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onEntered: {
-            tooltip.open()
+            tooltip.open();
         }
         onExited: {
-            tooltip.close()
+            tooltip.close();
         }
     }
 
@@ -58,20 +58,23 @@ Rectangle {
         enter: Transition {
             NumberAnimation {
                 property: "opacity"
-                from: 0.0
-                to: 1.0
+                from: 0
+                to: 1
                 duration: 250
             }
+
         }
 
         exit: Transition {
             NumberAnimation {
                 property: "opacity"
-                from: 1.0
-                to: 0.0
+                from: 1
+                to: 0
                 duration: 250
             }
+
         }
+
     }
 
     SystemClock {

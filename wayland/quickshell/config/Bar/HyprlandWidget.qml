@@ -66,14 +66,14 @@ Row {
 
                 return hover ? U.rgba(150, 150, 150, 1) : U.rgba(122, 122, 122, 0.3);
             }
-            implicitHeight: Config.em(1) + 5
-            implicitWidth: Config.em(1.05) + 5
-            radius: 15
+            implicitHeight: Config.em(1.3)
+            implicitWidth: Config.em(1.35)
+            radius: 25
 
             Text {
                 anchors.fill: parent
-                x: 1
-                y: 1
+                x: 2
+                y: 2
                 text: iconLookup(root.modelData.name)
                 color: {
                     if (isFocused || isUrgent || isActive)
@@ -98,7 +98,7 @@ Row {
                     cursorShape: isFocused ? Qt.ArrowCursor : Qt.PointingHandCursor
                     onClicked: {
                         if (isFocused)
-                            return;
+                            return ;
 
                         root.modelData.activate();
                     }

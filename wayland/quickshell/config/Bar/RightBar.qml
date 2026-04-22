@@ -20,15 +20,17 @@ Rectangle {
     implicitWidth: childrenRect.width + 16
 
     Row {
-        readonly property real topPadding: 5
+        readonly property real topPadding: Config.em(0.2)
 
         y: 1
         x: 8
-        height: childrenRect.height + 10
+        height: childrenRect.height + Config.em(0.35)
         width: childrenRect.width
         spacing: Config.em(0.2)
 
-        Spacer { width: Config.em(0.1) }
+        Spacer {
+            width: Config.em(0.1)
+        }
 
         TrayWidget {
         }

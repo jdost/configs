@@ -1,0 +1,15 @@
+{
+    "primaryMonitor": "eDP-1",
+    "scale": 26,
+    "modules": [
+        "audio",
+        "battery",
+        "bluetooth",
+        "clock",
+        "cpu",
+        "hyprland",
+        "memory",
+        "mpris",
+        "network"
+    ]
+}

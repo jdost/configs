@@ -28,7 +28,7 @@ import utils.wallpaper
 import vim
 import wayland.gammastep
 import wayland.hyprland as hyprland
-import wayland.ignis as ignis
+import wayland.quickshell as quickshell
 import wayland.screenlock
 import wayland.wpaperd
 from cfgtools.hooks import after
@@ -51,7 +51,7 @@ pkgs = {
 
 configs = {
     hyprland.HyprlandSettings("systems/anthony/hyprland.conf", "system", priority=90),
-    ignis.IgnisSettings("systems/anthony/ignis_settings.json"),
+    quickshell.QuickshellSettings("systems/anthony/quickshell_settings.json"),
     keyd.KeydConfig("systems/anthony/keyd.conf", "main"),
     rofi.RofiModule("systems/anthony/rofi.rasi", "system"),
 }

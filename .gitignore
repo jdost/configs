@@ -2,4 +2,5 @@ wayland/ags/config/settings.json
 wayland/ags/config/spotifyd_id
 wayland/ags/config/modules/system.js
 wayland/ignis/config/settings.json
+wayland/quickshell/config/settings.json
 cfgtools/system/.aur_cache.json

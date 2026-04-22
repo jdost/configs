@@ -1,0 +1,11 @@
+[Unit]
+Description=Extensible status bar and notifications
+Before=pipewire-pulse.socket pipewire.socket pipewire-pulse.service pipewire.service
+PartOf=wayland.target
+
+[Service]
+Environment="QS_ICON_THEME=Papirus-Dark"
+ExecStart=qs
+
+[Install]
+WantedBy=wayland.target

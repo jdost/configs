@@ -6,22 +6,36 @@ import qs
 
 Row {
     id: container
+
     y: parent.topPadding + 2
     x: 4
     visible: isPrimary
-    width: childrenRect.width + 8
+    width: childrenRect.width + Config.em(0.05)
+
+    Repeater {
+        model: SystemTray.items.values
+
+        TrayIcon {
+            required property SystemTrayItem modelData
+        }
+
+    }
 
     component TrayIcon: Rectangle {
         id: root
 
+        function openMenu(event) {
+            menu.active ? menu.close() : menu.open();
+        }
+
         color: "Transparent"
         height: icon.height
-        width: icon.width
+        width: icon.width + Config.em(0.15)
 
         Image {
             id: icon
-            source: modelData.icon
 
+            source: modelData.icon
             height: Config.em(1)
             smooth: true
             width: Config.em(1)
@@ -31,27 +45,33 @@ Row {
             id: cursor
 
             property bool hovered: false
+
             acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
             hoverEnabled: {
                 if (modelData.tooltipTitle && modelData.tooltipTitle.length > 0)
-                    return true
+                    return true;
+
                 if (modelData.tooltipDescription && modelData.tooltipDescription.length > 0)
-                    return true
-                return false
+                    return true;
+
+                return false;
             }
-
-            onEntered: { hovered = true }
-            onExited: { hovered = false }
-
+            onEntered: {
+                hovered = true;
+            }
+            onExited: {
+                hovered = false;
+            }
             onClicked: function(event) {
                 if (event.button === Qt.LeftButton) {
                     if (modelData.onlyMenu)
-                        return openMenu(event)
-                    return modelData.activate()
+                        return openMenu(event);
+
+                    return modelData.activate();
                 } else if (event.button === Qt.RightButton) {
-                    return openMenu(event)
+                    return openMenu(event);
                 } else {
                     return modelData.secondaryActivate();
                 }
@@ -71,11 +91,12 @@ Row {
                 text: {
                     if (!modelData.tooltipTitle || modelData.tooltipTitle.length === 0)
                         return modelData.tooltipDescription ? modelData.tooltipDescription : "";
+
                     if (modelData.tooltipDescription && modelData.tooltipDescription.length > 0)
                         return `${modelData.tooltipTitle} - ${modelData.tooltipDescription}`;
-                    return modelData.tooltipTitle
-                }
 
+                    return modelData.tooltipTitle;
+                }
                 color: U.rgba(17, 17, 17, 1)
                 font.pixelSize: Config.em(0.7)
             }
@@ -88,43 +109,38 @@ Row {
             enter: Transition {
                 NumberAnimation {
                     property: "opacity"
-                    from: 0.0
-                    to: 1.0
+                    from: 0
+                    to: 1
                     duration: 250
                 }
+
             }
 
             exit: Transition {
                 NumberAnimation {
                     property: "opacity"
-                    from: 1.0
-                    to: 0.0
+                    from: 1
+                    to: 0
                     duration: 250
                 }
-            }
-        }
 
-        function openMenu(event) {
-            menu.active ? menu.close() : menu.open();
+            }
+
         }
 
         QsMenuAnchor {
             id: menu
+
+            menu: modelData.menu
+
             anchor {
                 window: bar
                 item: root
                 edges: Edges.Bottom
             }
 
-            menu: modelData.menu
         }
+
     }
 
-    Repeater {
-        model: SystemTray.items.values
-
-        TrayIcon {
-            required property SystemTrayItem modelData;
-        }
-    }
 }

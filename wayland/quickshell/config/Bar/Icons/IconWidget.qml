@@ -7,7 +7,7 @@ Rectangle {
 
     color: Qt.rgba(200 / 255, 200 / 255, 200 / 255, 0.25)
     radius: Config.em(3)
-    implicitHeight: childrenRect.height + 4
+    implicitHeight: childrenRect.height + Config.em(0.3)
     implicitWidth: childrenRect.width
     visible: isPrimary
     y: parent.topPadding

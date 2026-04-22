@@ -16,7 +16,7 @@ Variants {
 
             color: "transparent"
             exclusiveZone: height
-            implicitHeight: Config.em(2.2)
+            implicitHeight: Config.em(2.5)
             screen: modelData
             WlrLayershell.namespace: "quickshell::bar"
 

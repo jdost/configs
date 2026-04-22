@@ -15,10 +15,13 @@ Item {
         spacing: 0
 
         Repeater {
-            model: [
-                {volume: VolumeService.outputVolume, isMuted: VolumeService.outputIsMuted},
-                {volume: VolumeService.inputVolume, isMuted: VolumeService.inputIsMuted},
-            ]
+            model: [{
+                "volume": VolumeService.outputVolume,
+                "isMuted": VolumeService.outputIsMuted
+            }, {
+                "volume": VolumeService.inputVolume,
+                "isMuted": VolumeService.inputIsMuted
+            }]
 
             delegate: Column {
                 id: container
@@ -30,18 +33,25 @@ Item {
 
                 height: 20
                 spacing: 3
-                topPadding: 5
+                topPadding: Config.em(0.15)
                 width: childrenRect.width + 3
 
                 Repeater {
                     id: levelDots
 
-                    model: [
-                        {max: 1.0, color: U.rgb(0, 255, 0)},
-                        {max: 0.75, color: U.rgb(255, 255, 0)},
-                        {max: 0.5, color: U.rgb(255, 102, 0)},
-                        {max: 0.25, color: U.rgb(255, 0, 0)}
-                    ]
+                    model: [{
+                        "max": 1,
+                        "color": U.rgb(0, 255, 0)
+                    }, {
+                        "max": 0.75,
+                        "color": U.rgb(255, 255, 0)
+                    }, {
+                        "max": 0.5,
+                        "color": U.rgb(255, 102, 0)
+                    }, {
+                        "max": 0.25,
+                        "color": U.rgb(255, 0, 0)
+                    }]
 
                     delegate: Rectangle {
                         required property var modelData
@@ -49,28 +59,38 @@ Item {
                         color: {
                             if (isMuted)
                                 return muteColor;
-                            if ((modelData.max - 0.25) === 0.0 && volume === 0.0)
+
+                            if ((modelData.max - 0.25) === 0 && volume === 0)
                                 return muteColor;
+
                             if (volume <= (modelData.max - 0.25))
                                 return U.rgb(153, 153, 153);
+
                             return modelData.color;
                         }
                         opacity: {
                             if (isMuted)
-                                return 1.0;
+                                return 1;
+
                             if (volume >= modelData.max)
-                                return 1.0;
+                                return 1;
+
                             if (volume <= (modelData.max - 0.25))
-                                return 1.0;
+                                return 1;
+
                             return (volume - (modelData.max - 0.25)) * 4;
                         }
                         height: Config.em(0.12)
                         radius: 10
                         width: Config.em(0.12)
                     }
+
                 }
+
             }
+
         }
+
     }
 
     MouseArea {
@@ -98,6 +118,7 @@ Item {
             text: {
                 if (VolumeService.outputIsMuted)
                     return "Volume: Muted";
+
                 return `Volume: ${(VolumeService.outputVolume * 100).toFixed(2)}%`;
             }
             color: U.rgba(17, 17, 17, 1)
@@ -112,19 +133,23 @@ Item {
         enter: Transition {
             NumberAnimation {
                 property: "opacity"
-                from: 0.0
-                to: 1.0
+                from: 0
+                to: 1
                 duration: 250
             }
+
         }
 
         exit: Transition {
             NumberAnimation {
                 property: "opacity"
-                from: 1.0
-                to: 0.0
+                from: 1
+                to: 0
                 duration: 250
             }
+
         }
+
     }
+
 }

@@ -7,7 +7,7 @@ from utils import dropbox
 
 packages = {
     Pacman("gammastep"),
-    Pacman("libappindicator-gtk3"),
+    Pacman("libappindicator"),
     Pacman("gtk3"),
     Pacman("python-gobject"),  # For systray icon
 }

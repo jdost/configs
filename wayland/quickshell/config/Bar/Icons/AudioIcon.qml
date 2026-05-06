@@ -31,9 +31,9 @@ Item {
                 property bool isMuted: modelData.isMuted
                 readonly property color muteColor: U.rgb(120, 120, 120)
 
-                height: 20
+                height: Config.em(0.8)
                 spacing: 3
-                topPadding: Config.em(0.15)
+                topPadding: Config.em(0.2)
                 width: childrenRect.width + 3
 
                 Repeater {

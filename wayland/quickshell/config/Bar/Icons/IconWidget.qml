@@ -13,8 +13,8 @@ Rectangle {
     y: parent.topPadding
 
     Row {
-        leftPadding: Config.em(0.5)
-        rightPadding: Config.em(0.5)
+        leftPadding: Config.em(0.6)
+        rightPadding: Config.em(0.6)
         spacing: 5
 
         VideoCaptureIcon {

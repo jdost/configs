@@ -6,6 +6,7 @@ Icon {
         "spotify": ["󰓇", U.rgb(30, 215, 96)],
         "Spotifyd": ["󰓇", U.rgb(30, 215, 96)],
         "firefox": ["󰈹", U.rgb(230, 96, 0)],
+        "Mozilla firefox": ["󰈹", U.rgb(230, 96, 0)],
         "chromium": ["", U.rgb(0, 136, 247)],
         "qutebrowser": ["󰖟", U.rgb(166, 223, 255)],
         "mpv": ["󰐌", U.rgb(200, 100, 255)],

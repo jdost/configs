@@ -11,6 +11,7 @@ Item {
     property real size: Config.em(1)
     property string tooltip: ""
     property int topPadding: -2
+    property var onClicked
 
     implicitHeight: Config.em(1)
     implicitWidth: icon.width
@@ -31,16 +32,34 @@ Item {
             anchors.fill: base.tooltip != "" ? icon : null
             hoverEnabled: true
             onEntered: {
-                tooltip.visible = true;
+                if (tooltip.isEnabled)
+                    tooltip.visible = true;
+
             }
             onExited: {
-                tooltip.visible = false;
+                if (tooltip.isEnabled)
+                    tooltip.visible = false;
+
+            }
+            onClicked: {
+                if (base.onClicked)
+                    base.onClicked();
+
             }
         }
 
         ToolTip {
             id: tooltip
 
+            property bool isEnabled: {
+                return base.tooltip.length > 0;
+            }
+
+            onIsEnabledChanged: function() {
+                if (!isEnabled)
+                    tooltip.visible = false;
+
+            }
             delay: 500
             padding: 4
             popupType: Popup.Native
@@ -60,20 +79,23 @@ Item {
             enter: Transition {
                 NumberAnimation {
                     property: "opacity"
-                    from: 0.0
-                    to: 1.0
+                    from: 0
+                    to: 1
                     duration: 250
                 }
+
             }
 
             exit: Transition {
                 NumberAnimation {
                     property: "opacity"
-                    from: 1.0
-                    to: 0.0
+                    from: 1
+                    to: 0
                     duration: 250
                 }
+
             }
+
         }
 
     }

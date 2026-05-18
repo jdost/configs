@@ -1,4 +1,5 @@
 import qs
+import qs.Popups
 import qs.Services
 
 Icon {
@@ -11,6 +12,10 @@ Icon {
         "qutebrowser": ["󰖟", U.rgb(166, 223, 255)],
         "mpv": ["󰐌", U.rgb(200, 100, 255)],
         "DEFAULT": ["󰝚", U.rgb(255, 255, 255)]
+    }
+
+    function onClick() {
+        popup.toggle();
     }
 
     icon: {
@@ -36,6 +41,24 @@ Icon {
     }
     module: "mpris"
     size: Config.em(1.4)
-    tooltip: MprisTracker.currentPlayer ? MprisTracker.currentPlayer.identity : "Nothing"
+    tooltip: {
+        if (popup.shown)
+            return "";
+
+        return MprisTracker.currentPlayer ? MprisTracker.currentPlayer.identity : "Nothing";
+    }
     topPadding: Config.em(0.05)
+    onClicked: function() {
+        if (!MprisTracker.currentPlayer && !popup.shown)
+            return ;
+
+        popup.toggle();
+    }
+
+    MprisPopup {
+        id: popup
+
+        player: MprisTracker.currentPlayer
+    }
+
 }

@@ -4,7 +4,6 @@ Before=pipewire-pulse.socket pipewire.socket pipewire-pulse.service pipewire.ser
 PartOf=wayland.target
 
 [Service]
-Environment="QS_ICON_THEME=Papirus-Dark"
 ExecStart=qs
 
 [Install]

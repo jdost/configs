@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import Quickshell
 import qs
+import qs.Popups
 import qs.Services
 
 Item {
@@ -98,12 +99,22 @@ Item {
 
         anchors.fill: base
         hoverEnabled: true
+        onClicked: {
+            tooltip.visible = popup.shown;
+            popup.toggle();
+        }
         onEntered: {
             tooltip.visible = true;
         }
         onExited: {
             tooltip.visible = false;
         }
+    }
+
+    AudioPopup {
+        id: popup
+
+        timeout: 10000
     }
 
     ToolTip {

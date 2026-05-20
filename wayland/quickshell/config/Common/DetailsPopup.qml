@@ -47,14 +47,25 @@ Scope {
             color: "transparent";
 
             Timer {
+                id: hideTimeout
+
                 interval: popup.timeout
                 repeat: false
-                running: true
+                running: !mouseDetector.containsMouse
 
                 onTriggered: function () {
                     if (popup.shown)
                         popup.toggle();
                 }
+            }
+
+            MouseArea {
+                id: mouseDetector
+                // This isn't great, it get's overlapped with other mouseareas, but it still
+                // does an okay job of blocking timeouts when hovered
+                acceptedButtons: Qt.NoButton
+                anchors.fill: parent
+                hoverEnabled: true
             }
 
             Rectangle {

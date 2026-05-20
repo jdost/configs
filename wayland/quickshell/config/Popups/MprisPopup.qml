@@ -58,8 +58,9 @@ DetailsPopup {
         Row {
             id: controls
 
+            spacing: 10
             x: 72 + ((popup.width - childrenRect.width - 72) / 2)
-            y: Config.em(2.5)
+            y: Config.em(2.7)
 
             ControlButton {
                 id: previousTrack

@@ -1,5 +1,6 @@
 import Quickshell.Bluetooth
 import qs
+import qs.Popups
 
 Icon {
     property bool isEnabled: (Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled)
@@ -33,6 +34,9 @@ Icon {
         return Config.em(1);
     }
     tooltip: {
+        if (popup.shown)
+            return "";
+
         if (!isEnabled)
             return "Controller: Off";
 
@@ -47,4 +51,14 @@ Icon {
 
         return -Config.em(0.15);
     }
+    onClicked: function() {
+        popup.toggle();
+    }
+
+    BluetoothPopup {
+        id: popup
+
+        timeout: 15000
+    }
+
 }

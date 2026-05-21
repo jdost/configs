@@ -22,6 +22,7 @@ Icon {
             return "";
         return `Connected: ${NetworkService.wifiSSID}`;
     }
+    topPadding: Config.em(0.05)
 
     // This is a smaller icon in the bottom right that is used to give more overlayed information
     // on connectivity, things like VPN being connected or the connectivity check results being limited

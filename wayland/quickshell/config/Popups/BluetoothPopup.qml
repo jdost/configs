@@ -9,7 +9,7 @@ import qs.Common
 DetailsPopup {
     id: root
 
-    property int iconSize: 20
+    property int iconSize: Config.em(1.5)
 
     width: Config.em(15)
     height: container.height
@@ -85,6 +85,10 @@ DetailsPopup {
 
                 Button {
                     function onClicked() {
+                        // Enable the controller if trying to connect
+                        if (!Bluetooth.defaultAdapter.enabled)
+                            Bluetooth.defaultAdapter.enabled = true
+
                         if (modelData.connected)
                             modelData.disconnect();
                         else

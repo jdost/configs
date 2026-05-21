@@ -46,8 +46,8 @@ Icon {
         if (battery.timeToEmpty)
             return `Discharging: ${readableTime(battery.timeToEmpty)} remaining`;
         if (battery.timeToFull)
-            return `Charging: ${readableTime(batter.timeToFull)} until full`;
+            return `Charging: ${readableTime(battery.timeToFull)} until full`;
         return "Unknown";
     }
-    topPadding: -4
+    topPadding: -Config.em(0.1)
 }

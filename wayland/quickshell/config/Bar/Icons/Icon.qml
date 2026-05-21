@@ -42,18 +42,18 @@ Item {
 
             }
             onClicked: {
-                if (base.onClicked)
+                if (base.onClicked) {
                     base.onClicked();
-
+                    // Toggle tooltip on click
+                    tooltip.isEnabled = tooltip.isEnabled ? false : base.tooltip.length > 0;
+                }
             }
         }
 
         ToolTip {
             id: tooltip
 
-            property bool isEnabled: {
-                return base.tooltip.length > 0;
-            }
+            property bool isEnabled: base.tooltip.length > 0
 
             onIsEnabledChanged: function() {
                 if (!isEnabled)

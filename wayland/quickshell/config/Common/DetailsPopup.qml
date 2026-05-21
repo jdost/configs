@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Wayland
 import qs
 
 Scope {
@@ -17,7 +18,6 @@ Scope {
     property int width: Config.em(18);
 
     function toggle() {
-        console.log("toggled");
         if (shown) {
             loader.y = loader.slideUpPos;
         } else {
@@ -40,11 +40,12 @@ Scope {
                 right: true
             }
 
+            color: "transparent";
             implicitHeight: popup.height + popup.padding*2;
             implicitWidth: popup.width + popup.padding*2;
-            margins.top: Config.em(0.3);
             margins.right: Config.em(0.5);
-            color: "transparent";
+            margins.top: Config.em(0.3);
+            WlrLayershell.namespace: "quickshell::popup"
 
             Timer {
                 id: hideTimeout
@@ -74,7 +75,7 @@ Scope {
                 radius: Config.em(0.75)
                 implicitHeight: popup.padding*2 + popup.height;
                 implicitWidth: popup.padding*2 + popup.width;
-                color: U.rgba(100, 100, 100, 0.4)
+                color: U.rgba(50, 50, 50, 0.4)
                 y: loader.y;
 
                 onYChanged: function () {

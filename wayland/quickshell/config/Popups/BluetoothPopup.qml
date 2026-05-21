@@ -11,18 +11,18 @@ DetailsPopup {
 
     property int iconSize: 20
 
-    width: Config.em(12)
+    width: Config.em(15)
     height: container.height
 
     Column {
         id: container
 
-        spacing: 5
+        spacing: 8
 
         RowLayout {
             id: controller
 
-            spacing: 4
+            spacing: 6
             width: root.width
 
             DeviceIcon {
@@ -32,7 +32,7 @@ DetailsPopup {
             Text {
                 Layout.fillWidth: true
                 color: U.rgba(220, 220, 220, 0.9)
-                font.pixelSize: Config.em(0.8)
+                font.pixelSize: Config.em(1)
                 text: `Controller: ${Bluetooth.defaultAdapter.name}`
             }
 
@@ -79,7 +79,7 @@ DetailsPopup {
                 Text {
                     Layout.fillWidth: true
                     color: U.rgba(220, 220, 220, 0.9)
-                    font.pixelSize: Config.em(0.8)
+                    font.pixelSize: Config.em(1)
                     text: modelData.name
                 }
 
@@ -124,7 +124,7 @@ DetailsPopup {
         Text {
             id: contents
 
-            font.pixelSize: Config.em(0.7)
+            font.pixelSize: Config.em(0.9)
             color: U.rgba(255, 255, 255, 1)
             text: base.text
             x: 4

@@ -144,22 +144,28 @@ DetailsPopup {
             }
 
             background: Rectangle {
-                color: U.rgba(166, 166, 166, 1)
+                color: slider.hovered ? U.rgba(200, 200, 200, 1) : U.rgba(200, 200, 200, 0.5)
                 height: Config.em(0.6)
                 radius: Config.em(0.3)
                 y: Config.em(0.6)
 
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 150
+                    }
+                }
+
                 Rectangle {
                     color: {
                         if (control.device.audio.muted)
-                            return U.rgba(12, 12, 12, 1)
+                            return slider.hovered ? U.rgba(90, 90, 90, 1) : U.rgba(40, 40, 40, 1)
 
                         return slider.hovered ? U.rgba(24, 186, 210, 1.0) : U.rgba(24, 120, 130, 1.0)
                     }
-                    height: slider.hovered ? Config.em(0.8) : parent.height
-                    radius: parent.radius
+                    height: slider.hovered ? Config.em(1.0) : parent.height + 2
+                    radius: parent.radius * 2
                     width: parent.width * slider.visualPosition
-                    y: slider.hovered ? -Config.em(0.1) : 0
+                    y: slider.hovered ? -Config.em(0.2) : -1
 
                     Behavior on color {
                         ColorAnimation {
@@ -196,12 +202,12 @@ DetailsPopup {
         }
 
         Text {
-            color: control.device.audio.muted ? U.rgba(240, 240, 240, 1) : U.rgba(22, 22, 22, 1)
-            font.pixelSize: Config.em(0.5)
+            color: control.device.audio.muted ? U.rgba(240, 240, 240, 1) : U.rgba(44, 44, 44, 1)
+            font.pixelSize: Config.em(0.7)
             font.weight: control.isPrimary ? 700 : 400
             text: control.device.nickname ? control.device.nickname : (control.device.description ? control.device.description : control.device.name)
             x: Config.em(2.1)
-            y: Config.em(0.5)
+            y: Config.em(0.4)
 
             Behavior on color {
                 ColorAnimation {

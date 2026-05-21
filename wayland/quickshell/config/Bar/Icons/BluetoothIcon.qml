@@ -34,9 +34,6 @@ Icon {
         return Config.em(1);
     }
     tooltip: {
-        if (popup.shown)
-            return "";
-
         if (!isEnabled)
             return "Controller: Off";
 

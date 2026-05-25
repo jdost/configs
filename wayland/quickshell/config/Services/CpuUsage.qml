@@ -11,11 +11,11 @@ Singleton {
 
     property real total: 1
 	property real used: 0
-    property real usedPercent: used / total
+    property real usedPercent: 0
 
-    property real previousTotal: 1
-    property real previousUsed: 0
-
+    property list<real> perCoreTotal: [];
+    property list<real> perCoreUsed: [];
+    property list<real> perCorePercent: [];
 
 	Timer {
 	    interval: cpu.interval
@@ -24,23 +24,53 @@ Singleton {
 
 	    onTriggered: {
             stat.reload();
-            const rawStat = stat.text();
+            const rawStats = stat.text().split("\n");
 
-            const stats = rawStat.split("\n")[0].split(" ");
-            const user = Number(stats[2]);
-            const nice = Number(stats[3]);
-            const system = Number(stats[4]);
-            const idle = Number(stats[5]);
-            const iowait = Number(stats[6]);
-            const steal = Number(stats[9]);
+            function calcUsage(line) {
+                const stats = line.split(" ")
+                const baseIndex = stats[0] === "cpu" ? 2 : 1;
+                const user = Number(stats[baseIndex]);
+                const nice = Number(stats[baseIndex + 1]);
+                const system = Number(stats[baseIndex + 2]);
+                const idle = Number(stats[baseIndex + 3]);
+                const iowait = Number(stats[baseIndex + 4]);
+                const steal = Number(stats[baseIndex + 7]);
 
-            const fullUsed = user + nice + system + iowait + steal;
-            const fullTotal = fullUsed + idle;
+                const usedSum = user + nice + system + iowait + steal;
+                const totalSum = usedSum + idle;
+                return [usedSum, totalSum]
+            }
 
-            used = fullUsed - previousUsed;
-            total = fullTotal - previousTotal;
-            previousUsed = fullUsed;
-            previousTotal = fullTotal;
+            var calcValues = calcUsage(rawStats[0])
+            const fullUsed = calcValues[0];
+            const fullTotal = calcValues[1];
+            const prevUsed = used
+            const prevTotal = total
+
+            usedPercent = (fullUsed - prevUsed) / (fullTotal - prevTotal)
+            used = fullUsed
+            total = fullTotal
+
+            var line = 1;
+            while (rawStats[line].startsWith("cpu")) {
+                const core = line - 1;
+                if (core >= perCoreTotal.length) {
+                    perCoreTotal[core] = 1;
+                    perCoreUsed[core] = 0;
+                    perCorePercent[core] = 0.0;
+                }
+                var calcValues = calcUsage(rawStats[line]);
+                const coreUsed = calcValues[0]
+                const coreTotal = calcValues[1]
+                const prevUsed = perCoreUsed[core]
+                const prevTotal = perCoreTotal[core]
+
+                perCorePercent[core] = (coreUsed - prevUsed) / (coreTotal - prevTotal);
+                perCoreUsed[core] = coreUsed
+                perCoreTotal[core] = coreTotal
+
+                line++;
+            }
         }
 	}
 

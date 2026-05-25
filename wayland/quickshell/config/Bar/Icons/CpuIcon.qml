@@ -15,7 +15,5 @@ Icon {
 
     CpuPopup {
         id: popup
-
-        timeout: 150000
     }
 }

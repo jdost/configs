@@ -69,12 +69,14 @@ DetailsPopup {
                 x: index*width;
 
                 Behavior on height {
+                    enabled: Config.animations
                     NumberAnimation {
                         duration: 200;
                     }
                 }
 
                 Behavior on y {
+                    enabled: Config.animations
                     NumberAnimation {
                         duration: 200;
                     }

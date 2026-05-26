@@ -175,6 +175,7 @@ Scope {
                             }
 
                             Behavior on implicitWidth {
+                                enabled: Config.animations
                                 NumberAnimation {
                                     duration: 150
                                 }

@@ -1,6 +1,7 @@
 import QtQml
 import QtQuick
 import QtQuick.Shapes
+import qs
 
 Shape {
     id: base
@@ -51,6 +52,7 @@ Shape {
         strokeWidth: base.thickness
 
         Behavior on strokeColor {
+            enabled: Config.animations
             ColorAnimation {
                 duration: 250;
             }
@@ -65,6 +67,7 @@ Shape {
             sweepAngle: base.value / base.max * 360 * base.direction
 
             Behavior on sweepAngle {
+                enabled: Config.animations
                 NumberAnimation {
                     duration: 250;
                 }

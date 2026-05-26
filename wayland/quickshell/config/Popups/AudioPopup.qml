@@ -150,6 +150,7 @@ DetailsPopup {
                 y: Config.em(0.6)
 
                 Behavior on color {
+                    enabled: Config.animations
                     ColorAnimation {
                         duration: 150
                     }
@@ -168,16 +169,19 @@ DetailsPopup {
                     y: slider.hovered ? -Config.em(0.2) : -1
 
                     Behavior on color {
+                        enabled: Config.animations
                         ColorAnimation {
                             duration: 150
                         }
                     }
                     Behavior on height {
+                        enabled: Config.animations
                         NumberAnimation {
                             duration: 150
                         }
                     }
                     Behavior on y {
+                        enabled: Config.animations
                         NumberAnimation {
                             duration: 150
                         }
@@ -210,6 +214,7 @@ DetailsPopup {
             y: Config.em(0.4)
 
             Behavior on color {
+                enabled: Config.animations
                 ColorAnimation {
                     duration: 100
                 }

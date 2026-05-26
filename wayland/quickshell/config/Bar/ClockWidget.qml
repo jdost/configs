@@ -56,6 +56,7 @@ Rectangle {
         }
 
         enter: Transition {
+            enabled: Config.animations
             NumberAnimation {
                 property: "opacity"
                 from: 0
@@ -66,6 +67,7 @@ Rectangle {
         }
 
         exit: Transition {
+            enabled: Config.animations
             NumberAnimation {
                 property: "opacity"
                 from: 1

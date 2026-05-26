@@ -10,6 +10,7 @@ Singleton {
     property list<string> modules: []
     property int scale: 24
     property string primaryMonitor
+    property bool animations: true
 
     function enabled(target: string) : bool {
         return modules.indexOf(target) != -1;

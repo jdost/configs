@@ -77,6 +77,7 @@ Item {
             }
 
             enter: Transition {
+                enabled: Config.animations
                 NumberAnimation {
                     property: "opacity"
                     from: 0
@@ -87,6 +88,7 @@ Item {
             }
 
             exit: Transition {
+                enabled: Config.animations
                 NumberAnimation {
                     property: "opacity"
                     from: 1

@@ -113,6 +113,7 @@ Row {
             }
 
             Behavior on color {
+                enabled: Config.animations
                 ColorAnimation {
                     target: root
                     duration: 200

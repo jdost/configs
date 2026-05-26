@@ -107,6 +107,7 @@ Row {
             }
 
             enter: Transition {
+                enabled: Config.animations
                 NumberAnimation {
                     property: "opacity"
                     from: 0
@@ -117,6 +118,7 @@ Row {
             }
 
             exit: Transition {
+                enabled: Config.animations
                 NumberAnimation {
                     property: "opacity"
                     from: 1

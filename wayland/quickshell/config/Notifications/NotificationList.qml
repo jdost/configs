@@ -94,6 +94,7 @@ Variants {
                 }
 
                 add: Transition {
+                    enabled: Config.animations
                     NumberAnimation {
                         property: "x"
                         from: 400
@@ -104,6 +105,7 @@ Variants {
                 }
 
                 remove: Transition {
+                    enabled: Config.animations
                     ParallelAnimation {
                         onFinished: {
                             if (notifications.count === 0)
@@ -128,6 +130,7 @@ Variants {
                 }
 
                 displaced: Transition {
+                    enabled: Config.animations
                     NumberAnimation {
                         property: "y"
                         duration: 1400

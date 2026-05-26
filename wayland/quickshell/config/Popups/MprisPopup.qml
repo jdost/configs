@@ -142,6 +142,7 @@ DetailsPopup {
             }
 
             Behavior on color {
+                enabled: Config.animations
                 ColorAnimation {
                     duration: 150
                 }

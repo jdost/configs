@@ -85,6 +85,7 @@ Scope {
                 }
 
                 Behavior on y {
+                    enabled: Config.animations
                     SmoothedAnimation {
                         velocity: 450;
                     }

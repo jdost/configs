@@ -7,16 +7,16 @@ import qs
 Scope {
     id: root
 
-    property bool shown: false;
-    readonly property int width: Config.em(18);
+    property bool shown: false
+    readonly property int width: Config.em(18)
 
     function toggle(screen) {
         if (shown) {
-            loader.x = width
+            loader.x = width;
         } else {
-            loader.active = true
-            loader.screen = screen
-            loader.x = 0
+            loader.active = true;
+            loader.screen = screen;
+            loader.x = 0;
         }
         shown = !shown;
     }
@@ -30,19 +30,19 @@ Scope {
         PanelWindow {
             id: sidebar
 
-            anchors {
-                top: true
-                right: true
-                bottom: true
-            }
-
             color: "transparent"
             exclusionMode: ExclusionMode.Ignore
             implicitWidth: root.width
             margins.bottom: Config.em(0.3)
             margins.top: Config.em(2.3)
-            screen: screen
+            screen: loader.screen
             WlrLayershell.namespace: "quickshell::sidebar"
+
+            anchors {
+                top: true
+                right: true
+                bottom: true
+            }
 
             Rectangle {
                 id: background
@@ -53,20 +53,25 @@ Scope {
                 implicitHeight: sidebar.height
                 topLeftRadius: Config.em(0.75)
                 x: loader.x
-
-                onXChanged: function () {
-                    if (x === root.width && !root.shown) {
+                onXChanged: function() {
+                    if (x === root.width && !root.shown)
                         loader.active = false;
-                    }
+
                 }
 
                 Behavior on x {
                     enabled: Config.animations
+
                     SmoothedAnimation {
-                        velocity: 400;
+                        velocity: 400
                     }
+
                 }
+
             }
+
         }
+
     }
+
 }

@@ -11,7 +11,7 @@ DetailsPopup {
 
     height: container.height
     width: Config.em(14)
-    property list<PwNode> programs: []
+    property list<var> programs: []
 
     PwObjectTracker {
         objects: programs
@@ -65,6 +65,13 @@ DetailsPopup {
 
         property PwNode device
         property bool isPrimary: false
+        property bool isActive: {
+            return Pipewire.linkGroups.values.filter((g) => g.source === device || g.target === device).reduce(function (v, g) {
+                if (v)
+                    return true;
+                return g.state === PwLinkState.Active;
+            }, false);
+        }
 
         color: "transparent"
         implicitHeight: muteButton.height
@@ -73,6 +80,7 @@ DetailsPopup {
 
         Component.onCompleted: {
             root.programs.push(device)
+            Pipewire.linkGroups.values.filter((g) => (g.source === device || g.target === device)).forEach((g) => root.programs.push(g))
         }
 
         Rectangle {
@@ -160,8 +168,10 @@ DetailsPopup {
                     color: {
                         if (control.device.audio.muted)
                             return slider.hovered ? U.rgba(90, 90, 90, 1) : U.rgba(40, 40, 40, 1)
+                        if (control.isActive)
+                            return slider.hovered ? U.rgba(27, 255, 27, 1.0) : U.rgba(27, 255, 27, 0.6)
 
-                        return slider.hovered ? U.rgba(24, 186, 210, 1.0) : U.rgba(24, 120, 130, 1.0)
+                        return slider.hovered ? U.rgba(24, 220, 255, 1.0) : U.rgba(24, 120, 130, 1.0)
                     }
                     height: slider.hovered ? Config.em(1.0) : parent.height + 2
                     radius: parent.radius * 2

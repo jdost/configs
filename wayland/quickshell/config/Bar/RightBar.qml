@@ -9,6 +9,7 @@ Rectangle {
     id: right
 
     property int monitor: 0
+    property var screen
 
     Layout.alignment: Qt.AlignRight
     Layout.bottomMargin: 8
@@ -39,6 +40,7 @@ Rectangle {
         }
 
         ClockWidget {
+            screen: right.screen
         }
 
     }

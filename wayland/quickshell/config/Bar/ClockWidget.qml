@@ -2,9 +2,12 @@ import QtQuick
 import QtQuick.Controls
 import Quickshell
 import qs
+import qs.Sidebar
 
 Rectangle {
     id: root
+
+    property var screen
 
     color: "transparent"
     implicitWidth: display.width + 12
@@ -28,6 +31,9 @@ Rectangle {
 
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: {
+            sidebar.toggle(screen)
+        }
         onEntered: {
             tooltip.open();
         }
@@ -84,5 +90,4 @@ Rectangle {
 
         precision: SystemClock.Seconds
     }
-
 }

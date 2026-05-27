@@ -40,6 +40,7 @@ Variants {
                 }
 
                 RightBar {
+                    screen: modelData
                 }
 
             }

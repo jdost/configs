@@ -11,6 +11,7 @@ import "OSD"
 import QtQuick
 import Quickshell
 import "Services"
+import "Sidebar"
 
 ShellRoot {
     id: root
@@ -22,6 +23,10 @@ ShellRoot {
     }
 
     OSD {
+    }
+
+    SidebarPanel {
+        id: sidebar
     }
 
 }

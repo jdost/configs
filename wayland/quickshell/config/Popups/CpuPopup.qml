@@ -146,8 +146,9 @@ DetailsPopup {
 
             stdout: StdioCollector {
                 onStreamFinished: {
-                    this.text.split("\n").slice(0, 5).forEach(function (line, index) {
-                        const result = line.split(" ").filter((e) => e.length > 0);
+                    this.text.split("\n").slice(0, 6).map(function (line, index) {
+                        return line.split(" ").filter((e) => e.length > 0);
+                    }).filter((e) => e[2] !== "ps").slice(0, 5).forEach(function (result, index) {
                         if (index >= processes.procList) {
                             processes.procList.push(result);
                         } else {

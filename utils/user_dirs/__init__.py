@@ -1,5 +1,4 @@
 import subprocess
-
 from pathlib import Path
 
 from cfgtools.files import XDGConfigFile, normalize
@@ -10,9 +9,7 @@ from cfgtools.system.systemd import ensure_service
 NAME = normalize(__name__)
 
 packages = {Pacman("xdg-user-dirs")}
-files = [
-    XDGConfigFile(f"{NAME}/dirs", "user-dirs.dirs")
-]
+files = [XDGConfigFile(f"{NAME}/dirs", "user-dirs.dirs")]
 
 
 @after
@@ -22,9 +19,7 @@ def ensure_user_dirs_exist() -> None:
             if line.startswith("#"):
                 continue
 
-            dirname = line.split("=")[1]\
-                .strip('"\n')\
-                .replace("$HOME", str(Path.home()))
+            dirname = line.split("=")[1].strip('"\n').replace("$HOME", str(Path.home()))
 
             location = Path(dirname)
             if not location.exists():
@@ -32,4 +27,4 @@ def ensure_user_dirs_exist() -> None:
 
     # this *can't* run first otherwise it will remove the symlink and replace
     #   with a bad default file
-    ensure_service("xdg-user-dirs-update", user=True)
+    ensure_service("xdg-user-dirs", user=True)

@@ -8,5 +8,5 @@ pkgs = {Pacman("ydotool")}
 files = {
     UserBin(f"{NAME}/daemon.sh", "macro-daemon"),
     UserBin(f"{NAME}/toggle.sh", "toggle-kmacro"),
-    HyprlandSettings(f"{NAME}/hyprland.conf", "keyboard-macro"),
+    HyprlandSettings(f"{NAME}/hyprland.lua", "keyboard-macro"),
 }

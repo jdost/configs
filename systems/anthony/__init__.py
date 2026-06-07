@@ -50,7 +50,7 @@ pkgs = {
 }
 
 configs = {
-    hyprland.HyprlandSettings("systems/anthony/hyprland.conf", "system", priority=90),
+    hyprland.HyprlandSettings("systems/anthony/hyprland.lua", "system", priority=90),
     quickshell.QuickshellSettings("systems/anthony/quickshell_settings.json"),
     keyd.KeydConfig("systems/anthony/keyd.conf", "main"),
     rofi.RofiModule("systems/anthony/rofi.rasi", "system"),

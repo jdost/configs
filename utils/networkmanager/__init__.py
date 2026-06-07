@@ -7,5 +7,5 @@ NAME = normalize(__name__)
 system_packages = {Pacman("networkmanager")}
 files = [
     DesktopEntry(f"{NAME}/networkmanager.desktop"),
-    HyprlandSettings(f"{NAME}/hyprland.conf", "nmtui"),
+    HyprlandSettings(f"{NAME}/hyprland.lua", "nmtui"),
 ]

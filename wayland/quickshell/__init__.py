@@ -20,7 +20,7 @@ packages = {Pacman("quickshell")}
 files = {
     XDGConfigFile(f"{NAME}/config", "quickshell"),
     UserService(f"{NAME}/quickshell.service", "quickshell.service"),
-    HyprlandSettings(f"{NAME}/hyprland.conf", "quickshell"),
+    HyprlandSettings(f"{NAME}/hyprland.lua", "quickshell"),
 }
 
 

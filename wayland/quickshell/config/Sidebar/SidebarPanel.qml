@@ -53,10 +53,9 @@ Scope {
                 implicitHeight: sidebar.height
                 topLeftRadius: Config.em(0.75)
                 x: loader.x
-                onXChanged: function() {
+                onXChanged: function () {
                     if (x === root.width && !root.shown)
                         loader.active = false;
-
                 }
 
                 Behavior on x {
@@ -65,13 +64,10 @@ Scope {
                     SmoothedAnimation {
                         velocity: 400
                     }
-
                 }
 
+                NotificationHistory {}
             }
-
         }
-
     }
-
 }

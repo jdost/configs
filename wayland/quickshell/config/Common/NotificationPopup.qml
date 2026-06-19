@@ -51,26 +51,26 @@ Rectangle {
             Text {
                 id: summary
 
+                anchors.leftMargin: Config.em(0.1)
                 clip: true
+                color: U.rgba(250, 250, 250, 1)
+                font.bold: true
+                font.pixelSize: Config.em(0.9)
                 text: modelData.summary
                 textFormat: isMarkdown ? Text.MarkdownText : Text.StyledText
                 width: content.width
-                anchors.leftMargin: Config.em(0.1)
-                color: U.rgba(250, 250, 250, 1)
-                font.pixelSize: Config.em(0.9)
-                font.bold: true
             }
 
             Text {
                 id: body
 
+                color: U.rgba(250, 250, 250, 1)
+                font.pixelSize: Config.em(0.8)
                 maximumLineCount: 8
                 text: modelData.body
                 textFormat: isMarkdown ? Text.MarkdownText : Text.StyledText
                 width: content.width
                 wrapMode: Text.Wrap
-                color: U.rgba(250, 250, 250, 1)
-                font.pixelSize: Config.em(0.8)
             }
 
             Rectangle {

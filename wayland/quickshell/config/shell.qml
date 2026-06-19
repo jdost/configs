@@ -20,6 +20,7 @@ ShellRoot {
     }
 
     NotificationList {
+        id: notificationPopups
     }
 
     OSD {

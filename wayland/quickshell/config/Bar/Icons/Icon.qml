@@ -10,6 +10,7 @@ Item {
     property string module: ""
     property real size: Config.em(1)
     property string tooltip: ""
+    property bool tooltipEnabled: base.tooltip.length > 0
     property int topPadding: -2
     property var onClicked
 
@@ -34,18 +35,14 @@ Item {
             onEntered: {
                 if (tooltip.isEnabled)
                     tooltip.visible = true;
-
             }
             onExited: {
                 if (tooltip.isEnabled)
                     tooltip.visible = false;
-
             }
             onClicked: {
                 if (base.onClicked) {
                     base.onClicked();
-                    // Toggle tooltip on click
-                    tooltip.isEnabled = tooltip.isEnabled ? false : base.tooltip.length > 0;
                 }
             }
         }
@@ -53,12 +50,11 @@ Item {
         ToolTip {
             id: tooltip
 
-            property bool isEnabled: base.tooltip.length > 0
+            property bool isEnabled: base.tooltipEnabled
 
-            onIsEnabledChanged: function() {
+            onIsEnabledChanged: function () {
                 if (!isEnabled)
                     tooltip.visible = false;
-
             }
             delay: 500
             padding: 4
@@ -84,7 +80,6 @@ Item {
                     to: 1
                     duration: 250
                 }
-
             }
 
             exit: Transition {
@@ -95,11 +90,7 @@ Item {
                     to: 0
                     duration: 250
                 }
-
             }
-
         }
-
     }
-
 }

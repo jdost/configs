@@ -41,11 +41,12 @@ Icon {
     }
     module: "mpris"
     size: Config.em(1.4)
+    tooltipEnabled: !popup.shown
     tooltip: MprisTracker.currentPlayer ? MprisTracker.currentPlayer.identity : "Nothing"
     topPadding: Config.em(0.05)
-    onClicked: function() {
+    onClicked: function () {
         if (!MprisTracker.currentPlayer && !popup.shown)
-            return ;
+            return;
 
         popup.toggle();
     }
@@ -55,5 +56,4 @@ Icon {
 
         player: MprisTracker.currentPlayer
     }
-
 }

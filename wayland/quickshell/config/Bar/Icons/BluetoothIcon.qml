@@ -4,7 +4,7 @@ import qs.Popups
 
 Icon {
     property bool isEnabled: (Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled)
-    property bool isConnected: Bluetooth.devices.values.filter((d) => {
+    property bool isConnected: Bluetooth.devices.values.filter(d => {
         return d.connected;
     }).length > 0
 
@@ -33,12 +33,13 @@ Icon {
 
         return Config.em(1);
     }
+    tooltipEnabled: !popup.shown
     tooltip: {
         if (!isEnabled)
             return "Controller: Off";
 
         if (isConnected)
-            return `Connected: ${Bluetooth.devices.values.filter((d) => d.connected).length} device(s)`;
+            return `Connected: ${Bluetooth.devices.values.filter(d => d.connected).length} device(s)`;
 
         return "Controller: On";
     }
@@ -48,7 +49,7 @@ Icon {
 
         return -Config.em(0.15);
     }
-    onClicked: function() {
+    onClicked: function () {
         popup.toggle();
     }
 
@@ -57,5 +58,4 @@ Icon {
 
         timeout: 15000
     }
-
 }

@@ -1,7 +1,7 @@
+pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris
-pragma Singleton
 
 Singleton {
     id: mprisTracker
@@ -15,14 +15,18 @@ Singleton {
         var lastPlaying;
         const current = new Date().valueOf();
         if (playerStatuses === undefined)
-            playerStatuses = {
-        };
+            playerStatuses = {};
 
         var toDelete = Object.keys(playerStatuses);
-        Mpris.players.values.forEach(function(player) {
+        for (const i in Mpris.players.values) {
+            const player = Mpris.players.values[i];
+            if (playerStatuses[player.identity] && playerStatuses[player.identity].ref === null)
+                continue;
+
             const toDeleteIndex = toDelete.indexOf(player.identity);
-            if (toDeleteIndex !== -1)
-                toDelete.splice(toDeleteIndex);
+            if (toDeleteIndex !== -1) {
+                toDelete.splice(toDeleteIndex, 1);
+            }
 
             if (playerStatuses[player.identity] === undefined || playerStatuses[player.identity].ref !== player) {
                 playerStatuses[player.identity] = {
@@ -43,32 +47,33 @@ Singleton {
                     playerStatuses[player.identity].lastStatus = player.playbackState;
                 }
             }
-            toDelete.forEach(function(key) {
-                delete playerStatuses[key];
-            });
-            var active = null;
-            for (const k in playerStatuses) {
-                const player = playerStatuses[k];
-                if (player.lastStatus === MprisPlaybackState.Playing) {
-                    if (active === null)
-                        active = player;
-                    else if (active.lastPlaying < player.lastPlaying)
-                        active = player;
-                } else if (active === null)
+        }
+
+        for (const i in toDelete) {
+            console.log(`Deleting ${toDelete[i]}...`);
+            delete playerStatuses[toDelete[i]];
+        }
+        var active = null;
+        for (const k in playerStatuses) {
+            const player = playerStatuses[k];
+            if (player.lastStatus === MprisPlaybackState.Playing) {
+                if (active === null)
                     active = player;
-                else if (active.lastStatus === MprisPlaybackState.Playing)
-                    continue;
                 else if (active.lastPlaying < player.lastPlaying)
                     active = player;
-            }
-            if (!active)
-                console.log("No active player");
-            else
-                console.log(`Active player: ${active.name}`);
-            if (active)
-                currentPlayer = active.ref;
-
-        });
+            } else if (active === null)
+                active = player;
+            else if (active.lastStatus === MprisPlaybackState.Playing)
+                continue;
+            else if (active.lastPlaying < player.lastPlaying)
+                active = player;
+        }
+        if (!active)
+            console.log("No active player");
+        else
+            console.log(`Active player: ${active.name}`);
+        if (active)
+            currentPlayer = active.ref;
     }
 
     Component.onCompleted: {
@@ -82,5 +87,4 @@ Singleton {
 
         target: Mpris.players
     }
-
 }

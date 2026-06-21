@@ -8,6 +8,7 @@ Scope {
     id: root
 
     property bool shown: false
+    property ShellScreen screen
     readonly property int width: Config.em(18)
 
     function toggle(screen) {
@@ -15,7 +16,7 @@ Scope {
             loader.x = width;
         } else {
             loader.active = true;
-            loader.screen = screen;
+            root.screen = screen;
             loader.x = 0;
         }
         shown = !shown;
@@ -25,7 +26,6 @@ Scope {
         id: loader
 
         property int x: width
-        property var screen
 
         PanelWindow {
             id: sidebar
@@ -35,7 +35,7 @@ Scope {
             implicitWidth: root.width
             margins.bottom: Config.em(0.3)
             margins.top: Config.em(2.3)
-            screen: loader.screen
+            screen: root.screen
             WlrLayershell.namespace: "quickshell::sidebar"
 
             anchors {

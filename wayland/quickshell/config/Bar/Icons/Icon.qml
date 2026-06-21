@@ -32,6 +32,12 @@ Item {
 
             anchors.fill: base.tooltip != "" ? icon : null
             hoverEnabled: true
+
+            onClicked: {
+                if (base.onClicked) {
+                    base.onClicked();
+                }
+            }
             onEntered: {
                 if (tooltip.isEnabled)
                     tooltip.visible = true;
@@ -40,11 +46,6 @@ Item {
                 if (tooltip.isEnabled)
                     tooltip.visible = false;
             }
-            onClicked: {
-                if (base.onClicked) {
-                    base.onClicked();
-                }
-            }
         }
 
         ToolTip {
@@ -52,24 +53,26 @@ Item {
 
             property bool isEnabled: base.tooltipEnabled
 
-            onIsEnabledChanged: function () {
-                if (!isEnabled)
-                    tooltip.visible = false;
-            }
+            anchors.centerIn: icon
             delay: 500
             padding: 4
             popupType: Popup.Native
             y: Config.em(1.5)
 
+            onIsEnabledChanged: function () {
+                if (!isEnabled)
+                    tooltip.visible = false;
+            }
+
             contentItem: Text {
-                text: base.tooltip
                 color: U.rgba(17, 17, 17, 1)
                 font.pixelSize: Config.em(0.7)
+                text: base.tooltip
             }
 
             background: Rectangle {
-                radius: 15
                 color: U.rgba(212, 212, 212, 0.65)
+                radius: 15
             }
 
             enter: Transition {

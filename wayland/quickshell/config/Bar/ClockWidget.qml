@@ -7,7 +7,7 @@ import qs.Sidebar
 Rectangle {
     id: root
 
-    property var screen
+    property ShellScreen screen
 
     color: "transparent"
     implicitWidth: display.width + 12
@@ -32,7 +32,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            sidebar.toggle(screen)
+            sidebar.toggle(root.screen);
         }
         onEntered: {
             tooltip.open();
@@ -69,7 +69,6 @@ Rectangle {
                 to: 1
                 duration: 250
             }
-
         }
 
         exit: Transition {
@@ -80,9 +79,7 @@ Rectangle {
                 to: 0
                 duration: 250
             }
-
         }
-
     }
 
     SystemClock {

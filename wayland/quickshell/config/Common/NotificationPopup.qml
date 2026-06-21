@@ -31,10 +31,8 @@ Rectangle {
             source: {
                 if (modelData.image)
                     return modelData.image;
-
                 if (modelData.appIcon)
                     return Quickshell.iconPath(modelData.appIcon);
-
                 return Quickshell.iconPath("dialog-information-symbolic");
             }
             y: 5
@@ -53,7 +51,7 @@ Rectangle {
 
                 anchors.leftMargin: Config.em(0.1)
                 clip: true
-                color: U.rgba(250, 250, 250, 1)
+                color: U.rgba(250, 250, 250, 1.0)
                 font.bold: true
                 font.pixelSize: Config.em(0.9)
                 text: modelData.summary
@@ -66,6 +64,7 @@ Rectangle {
 
                 color: U.rgba(250, 250, 250, 1)
                 font.pixelSize: Config.em(0.8)
+                linkColor: U.rgba(120, 120, 255, 1)
                 maximumLineCount: 8
                 text: modelData.body
                 textFormat: isMarkdown ? Text.MarkdownText : Text.StyledText
@@ -79,7 +78,6 @@ Rectangle {
                 visible: {
                     if (modelData.appName === "WebCord")
                         return false;
-
                     return modelData.actions.count > 0;
                 }
                 height: visible ? Config.em(1.6) + 10 : 0
@@ -127,17 +125,10 @@ Rectangle {
                                 onEntered: button.hover = true
                                 onExited: button.hover = false
                             }
-
                         }
-
                     }
-
                 }
-
             }
-
         }
-
     }
-
 }

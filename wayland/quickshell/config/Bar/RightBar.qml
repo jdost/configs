@@ -9,7 +9,7 @@ Rectangle {
     id: right
 
     property int monitor: 0
-    property var screen
+    property ShellScreen screen
 
     Layout.alignment: Qt.AlignRight
     Layout.bottomMargin: 8
@@ -33,16 +33,12 @@ Rectangle {
             width: Config.em(0.1)
         }
 
-        TrayWidget {
-        }
+        TrayWidget {}
 
-        IconWidget {
-        }
+        IconWidget {}
 
         ClockWidget {
             screen: right.screen
         }
-
     }
-
 }

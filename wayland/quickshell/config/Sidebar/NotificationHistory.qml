@@ -162,10 +162,6 @@ Rectangle {
         }
         spacing: 10
 
-        Component.onCompleted: {
-            console.log(NotificationService.current.length);
-        }
-
         Repeater {
             model: NotificationService.current.length
 

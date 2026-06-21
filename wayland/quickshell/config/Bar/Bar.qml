@@ -12,7 +12,7 @@ Variants {
             id: bar
 
             readonly property bool isPrimary: (Config.primaryMonitor === undefined || modelData.name === Config.primaryMonitor)
-            required property var modelData
+            required property ShellScreen modelData
 
             color: "transparent"
             exclusiveZone: height
@@ -36,17 +36,12 @@ Variants {
                     right: parent.right
                 }
 
-                LeftBar {
-                }
+                LeftBar {}
 
                 RightBar {
                     screen: modelData
                 }
-
             }
-
         }
-
     }
-
 }

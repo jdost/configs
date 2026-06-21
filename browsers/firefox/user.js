@@ -22,7 +22,7 @@ user_pref("dom.webnotifications.enabled", false);
 user_pref("dom.enable_performance", false);
 user_pref("dom.enable_user_timing", false);
 // Disable Web Audio API
-//user_pref("dom.webaudio.enabled", false);  // Disabled, discord webapp fails to load
+user_pref("dom.webaudio.enabled", false);  // Disabled, discord webapp fails to load
 // Limit geo API
 user_pref("geo.enabled", false);
 user_pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");

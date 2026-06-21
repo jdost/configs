@@ -1,0 +1,13 @@
+{
+    "primaryMonitor": "HDMI-A-1",
+    "scale": 18,
+    "modules": [
+        "audio",
+        "bluetooth",
+        "clock",
+        "cpu",
+        "hyprland",
+        "memory",
+        "mpris"
+    ]
+}

@@ -1,7 +1,6 @@
-import rofi.wayland
-
 import apps.android_messages
 import apps.calibre
+import apps.mpv
 import apps.obsidian
 import apps.streamlink
 import apps.wezterm
@@ -15,7 +14,10 @@ import git
 import gpg
 import languages.nodejs
 import languages.python
+import music.spotify
+import rofi
 import shells.zsh
+import utils.cal
 import utils.cgroups
 import utils.docker
 import utils.dropbox.wayland
@@ -30,33 +32,38 @@ import utils.tmux
 import utils.user_dirs
 import utils.wallpaper
 import vim
-import wayland.ags as ags
 import wayland.hyprland as hyprland
+import wayland.quickshell as quickshell
+import wayland.wpaperd
 from cfgtools.files import XDGConfigFile
 from cfgtools.hooks import after
 from cfgtools.system import set_default_shell
 from cfgtools.system.arch import Pacman
+from cfgtools.system.python import VirtualEnv
 from cfgtools.system.systemd import ensure_service
 from cfgtools.utils import hide_xdg_entry
 
 set_default_shell(shells.zsh.BIN)
 web_xdg_open.set_default("qutebrowser")
+
+kasa_venv = VirtualEnv("kasa", "python-kasa")
+
 configs = {
     hyprland.HyprlandSettings("systems/hershel/hyprland.lua", "system", priority=90),
-    ags.AgsSettings("systems/hershel/ags_settings.json"),
-    # The 'system' module for ags is special, it's gitignored and meant to be just whatever
-    #  small tweaks I may have for a system, in this case it's a button to move the
-    #  notifications between monitors
-    XDGConfigFile("systems/hershel/ags_module.js", "ags/modules/system.js"),
+    quickshell.QuickshellSettings("systems/hershel/quickshell_settings.json"),
 }
 pkgs = {
+    # Photography
     Pacman("darktable"),
     Pacman("shotwell"),
-    Pacman("luminancehdr"),  # Photography
-    Pacman("cifs-utils"),  # SMB mount
-    Pacman("imv"),  # Image Viewer
+    Pacman("luminancehdr"),
+    # SMB mount
+    Pacman("cifs-utils"),
+    # Image Viewer
+    Pacman("imv"),
+    # Bluetooth
     Pacman("gnome-bluetooth-3.0"),
-    Pacman("bluez-utils"),  # Bluetooth
+    Pacman("bluez-utils"),
 }
 
 
@@ -65,13 +72,19 @@ def hide_unwanted_xdg_entries() -> None:
     """Try and move these as close to the source as possible, only system specific
     packages should be addressed in here."""
     for entry in [
+        # avahi
         "avahi-discover",
         "bssh",
-        "bvnc",  # avahi
+        "bvnc",
         "qv4l2",
-        "qvidcap",  # v4l/obs
-        "lstopo",  # hwloc, transient from darktable
-        "electron32",  # electron, transient from webcord
+        # v4l/obs
+        "qvidcap",
+        # hwloc, transient from darktable
+        "lstopo",
+        # gmic, transient from darktable
+        "gmic_qt",
+        # electron, transient from webcord
+        "electron35",
     ]:
         hide_xdg_entry(entry)
 

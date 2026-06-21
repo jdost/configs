@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-SPOTIFYD_CACHE=$HOME/.cache/spotifyd
+SPOTIFYD_CACHE=$HOME/.cache/spotifyd/zeroconf/
 SPOTIFY_PLAYER_CACHE=$HOME/.cache/spotify-player/
 SPOTIFY_PLAYER=$(which spotify_player)
 

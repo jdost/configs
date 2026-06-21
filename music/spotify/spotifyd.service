@@ -2,6 +2,7 @@
 Description=spotify daemon
 
 [Service]
+Type=exec
 ExecStart=%h/.local/bin/_spotifyd-wrapper
-Restart=on-failure
-RestartSec=5
+Restart=always
+RestartSec=1s

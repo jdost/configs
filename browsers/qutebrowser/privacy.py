@@ -9,6 +9,8 @@ c.content.blocking.adblock.lists = [
     "https://github.com/uBlockOrigin/uAssets/raw/refs/heads/master/filters/legacy.txt",
     "https://github.com/uBlockOrigin/uAssets/raw/refs/heads/master/filters/privacy.txt",
     "https://github.com/uBlockOrigin/uAssets/raw/refs/heads/master/filters/filters.txt",
+    # Anti Adblock Killer
+    "https://raw.githubusercontent.com/bogachenkove/fuckfuckadblock/refs/heads/master/fuckfuckadblock.txt",
 ]
 c.content.blocking.enabled = True
 c.content.blocking.method = "auto"

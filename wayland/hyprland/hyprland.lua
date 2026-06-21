@@ -157,32 +157,6 @@ hl.window_rule({
     match = { class = "pinentry-*" },
     stay_focused = true,
 })
--- Workspace Routing
-hl.window_rule({
-    name = "Firefox->Web",
-    match = { class = "firefox" },
-    workspace = "web",
-})
-hl.window_rule({
-    name = "Qutebrowser->Web",
-    match = { class = "org.qutebrower.qutebrower" },
-    workspace = "web",
-})
-hl.window_rule({
-    name = "Discord->chat",
-    match = { class = "WebCord" },
-    workspace = "chat",
-})
-hl.window_rule({
-    name = "Obsidian->notes",
-    match = { class = "obsidian" },
-    workspace = "notes",
-})
-hl.window_rule({
-    name = "PrismLauncher->games",
-    match = { class = "org.prismlaunch.PrismLauncher" },
-    workspace = "games",
-})
 -- Load additional configs
 mainMod = "SUPER"
 require("modules")

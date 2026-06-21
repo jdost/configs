@@ -10,35 +10,35 @@ hl.config({
 })
 -- Monitors
 local mainMonitor = "desc:ASUSTek COMPUTER INC PA278QV M4LMQS061475"
-hl.monitor({
-    output = mainMonitor,
-    mode = "preferred",
-    position = "0x0",
-    scale = 1
-})
 local secondaryMonitor = "desc:Dell Inc. DELL U2415 CFV9N84T0N3U"
-hl.monitor({
-    output = secondaryMonitor,
-    mode = "preferred",
-    position = "2560x-400",
-    scale = 1,
-    transform = 3
-})
+local monitors = {
+    {
+        output = mainMonitor,
+        mode = "preferred",
+        position = "0x0",
+        scale = 1
+    },
+    {
+        output = secondaryMonitor,
+        mode = "preferred",
+        position = "2560x-400",
+        scale = 1,
+        transform = 3
+    }
+}
+for i, monitor in pairs(monitors) do
+    hl.monitor(monitor)
+end
 -- Workspaces
-hl.workspace_rule({ workspace = "1", default_name = "term", persistent = true, monitor = mainMonitor })
-hl.workspace_rule({ workspace = "2", default_name = "web", persistent = true, monitor = mainMonitor })
-hl.workspace_rule({ workspace = "3", default_name = "code", monitor = mainMonitor })
-hl.workspace_rule({ workspace = "4", default_name = "games", monitor = mainMonitor })
-hl.workspace_rule({ workspace = "5", default_name = "scratch", monitor = mainMonitor })
-hl.workspace_rule({ workspace = "6", default_name = "notes", monitor = secondaryMonitor, gaps_out = 40, layout_opts = { orientation = "top" } })
-hl.workspace_rule({ workspace = "7", default_name = "video", monitor = secondaryMonitor, gaps_out = 40, layout_opts = { orientation = "top" } })
-hl.workspace_rule({ workspace = "8", default_name = "chat", monitor = secondaryMonitor, gaps_out = 40, layout_opts = { orientation = "top" } })
--- Prepopulate the persistent workspaces on launch
-hl.on("hyprland.start", function ()
-    hl.dispatch(hl.dsp.focus({ workspace = "1" }))
-    hl.dispatch(hl.dsp.focus({ workspace = "2" }))
-    hl.dispatch(hl.dsp.focus({ workspace = "1" }))
-end)
+setupWorkspaces(monitors, {
+    { name = "term", persistent = true, layout = "scrolling" },
+    { name = "web", persistent = true, layout = "monocle" },
+    { name = "games" },
+    -- Second monitor
+    { name = "notes", monitor = 2 },
+    { name = "video", monitor = 2 },
+    { name = "chat", layout = "monocle", monitor = 2 }
+})
 -- Keys
 hl.bind(
     mainMod .. " + e",
@@ -65,36 +65,6 @@ hl.window_rule({
     name = "Scrcpy",
     match = { class = "scrcpy" },
     tile = true
-})
-hl.window_rule({
-    name = "PrismLauncher->Games",
-    match = { initial_class = "org.prismlauncher.PrismLauncher" },
-    workspace = "4"
-})
-hl.window_rule({
-    name = "Steam->Games",
-    match = { initial_class = "steam" },
-    workspace = "4"
-})
-hl.window_rule({
-    name = "Obsidian->Chat",
-    match = { class = "obsidian" },
-    workspace = "6"
-})
-hl.window_rule({
-    name = "Firefox->Video",
-    match = { class = "firefox" },
-    workspace = "7"
-})
-hl.window_rule({
-    name = "mpv->Video",
-    match = { class = "mpv" },
-    workspace = "7"
-})
-hl.window_rule({
-    name = "Webcord->Chat",
-    match = { class = "WebCord" },
-    workspace = "8"
 })
 hl.window_rule({
     name = "Webcord Fixes",

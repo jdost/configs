@@ -50,6 +50,7 @@ packages = {
 }
 files = {
     XDGConfigFile(f"{NAME}/hyprland.lua", "hypr/hyprland.lua"),
+    HyprlandSettings(f"{NAME}/hyprland.workspaces.lua", "workspaces", priority=1),
     HyprlandSettings(f"{NAME}/hyprland.keys.lua", "keys"),
     HyprlandSettings(f"{NAME}/hyprland.sidebars.lua", "sidebars"),
     HyprlandSettings(f"{NAME}/hyprland.animations.lua", "animations", priority=20),

@@ -58,12 +58,26 @@ hl.bind(
 -- Focus change
 hl.bind(
     mainMod .. " + Tab",
-    hl.dsp.window.cycle_next(),
+    function ()
+        local workspace = hl.get_active_workspace()
+        if workspace.tiled_layout == "monocle" then
+            hl.dispatch(hl.dsp.layout("cyclenext"))
+        else
+            hl.dispatch(hl.dsp.window.cycle_next())
+        end
+    end,
     { description = "Cycle to next window" }
 )
 hl.bind(
     mainMod .. " + SHIFT + Tab",
-    hl.dsp.window.cycle_next(),
+    function ()
+        local workspace = hl.get_active_workspace()
+        if workspace.tiled_layout == "monocle" then
+            hl.dispatch(hl.dsp.layout("cycleprev"))
+        else
+            hl.dispatch(hl.dsp.window.cycle_next({ next = false }))
+        end
+    end,
     { description = "Cycle to previous window" }
 )
 -- Directional Bindings
@@ -96,16 +110,16 @@ for i = 1, 4 do
     local descriptionDir = (resizeDims[i][1] == 0) and "vertically" or "horizontally"
     hl.bind(
         mainMod .. " + ALT + " .. key,
-        hl.dsp.window.resize({ x = resizeDims[i][1], y = resizeDims[i][2] }),
+        hl.dsp.window.resize({ x = resizeDims[i][1], y = resizeDims[i][2], relative = true }),
         { description = descriptionOp .. " window " .. descriptionDir, repeating = true }
     )
 end
 -- Workspaces shifting
-for i = 1, 5 do
+for i = 1, workspaceCount do
     hl.bind(
         mainMod .. " + " .. (i % 10),
         function ()
-            local calculatedId = hl.get_active_monitor().id * 5 + i
+            local calculatedId = hl.get_active_monitor().id * workspaceCount + i
             hl.dispatch(hl.dsp.focus({ workspace = calculatedId }))
         end,
         { description = "Switch to workspace " .. i }
@@ -113,7 +127,7 @@ for i = 1, 5 do
     hl.bind(
         mainMod .. " + SHIFT + " .. (i % 10),
         function ()
-            local calculatedId = hl.get_active_monitor().id * 5 + i
+            local calculatedId = hl.get_active_monitor().id * workspaceCount + i
             hl.dispatch(hl.dsp.window.move({ workspace = calculatedId }))
         end,
         { description = "Window: Send to workspace " .. i }

@@ -30,9 +30,9 @@ DetailsPopup {
         Repeater {
 
             model: ScriptModel {
-                values: Pipewire.linkGroups.values.filter(function(group) {
+                values: Pipewire.linkGroups.values.filter(function (group) {
                     return group.target === Pipewire.defaultAudioSink;
-                }).map(function(group) {
+                }).map(function (group) {
                     return group.source;
                 })
             }
@@ -42,7 +42,6 @@ DetailsPopup {
 
                 device: modelData
             }
-
         }
 
         Rectangle {
@@ -57,7 +56,6 @@ DetailsPopup {
             device: Pipewire.defaultAudioSource
             isPrimary: true
         }
-
     }
 
     component VolumeControl: Rectangle {
@@ -66,7 +64,7 @@ DetailsPopup {
         property PwNode device
         property bool isPrimary: false
         property bool isActive: {
-            return Pipewire.linkGroups.values.filter((g) => g.source === device || g.target === device).reduce(function (v, g) {
+            return Pipewire.linkGroups.values.filter(g => g.source === device || g.target === device).reduce(function (v, g) {
                 if (v)
                     return true;
                 return g.state === PwLinkState.Active;
@@ -76,18 +74,18 @@ DetailsPopup {
         color: "transparent"
         implicitHeight: muteButton.height
         implicitWidth: root.width
-        visible: device.audio != null
+        visible: device !== null && device.audio != null
 
         Component.onCompleted: {
-            root.programs.push(device)
-            Pipewire.linkGroups.values.filter((g) => (g.source === device || g.target === device)).forEach((g) => root.programs.push(g))
+            root.programs.push(device);
+            Pipewire.linkGroups.values.filter(g => (g.source === device || g.target === device)).forEach(g => root.programs.push(g));
         }
 
         Rectangle {
             id: muteButton
 
             property bool hover: false
-            property bool isMuted: control.device.audio ? control.device.audio.muted : false
+            property bool isMuted: (control.device && control.device.audio) ? control.device.audio.muted : false
 
             color: hover ? U.rgba(100, 100, 100, 0.8) : U.rgba(100, 100, 100, 0.4)
             height: Config.em(1.7)
@@ -105,6 +103,9 @@ DetailsPopup {
                 }
                 font.pixelSize: Config.em(1.6)
                 text: {
+                    if (control.device === null)
+                        return "";
+
                     if (control.device.isSink && muteButton.isMuted)
                         return muteButton.hover ? "󰕾" : "󰸈";
 
@@ -134,7 +135,6 @@ DetailsPopup {
                     muteButton.hover = false;
                 }
             }
-
         }
 
         Slider {
@@ -143,7 +143,7 @@ DetailsPopup {
             from: 0
             hoverEnabled: true
             to: 1.5
-            value: control.device.audio.volume
+            value: control.device ? control.device.audio.volume : 0
             width: control.width - x
             x: Config.em(1.9)
 
@@ -166,12 +166,14 @@ DetailsPopup {
 
                 Rectangle {
                     color: {
+                        if (control.device === null)
+                            return "";
                         if (control.device.audio.muted)
-                            return slider.hovered ? U.rgba(90, 90, 90, 1) : U.rgba(40, 40, 40, 1)
+                            return slider.hovered ? U.rgba(90, 90, 90, 1) : U.rgba(40, 40, 40, 1);
                         if (control.isActive)
-                            return slider.hovered ? U.rgba(27, 255, 27, 1.0) : U.rgba(27, 255, 27, 0.6)
+                            return slider.hovered ? U.rgba(27, 255, 27, 1.0) : U.rgba(27, 255, 27, 0.6);
 
-                        return slider.hovered ? U.rgba(24, 220, 255, 1.0) : U.rgba(24, 120, 130, 1.0)
+                        return slider.hovered ? U.rgba(24, 220, 255, 1.0) : U.rgba(24, 120, 130, 1.0);
                     }
                     height: slider.hovered ? Config.em(1.0) : parent.height + 2
                     radius: parent.radius * 2
@@ -216,10 +218,18 @@ DetailsPopup {
         }
 
         Text {
-            color: control.device.audio.muted ? U.rgba(240, 240, 240, 1) : U.rgba(44, 44, 44, 1)
+            color: (control.device && control.device.audio.muted) ? U.rgba(240, 240, 240, 1) : U.rgba(44, 44, 44, 1)
             font.pixelSize: Config.em(0.7)
             font.weight: control.isPrimary ? 700 : 400
-            text: control.device.nickname ? control.device.nickname : (control.device.description ? control.device.description : control.device.name)
+            text: {
+                if (control.device === null)
+                    return "";
+                if (control.device.nickname)
+                    return control.device.nickname;
+                if (control.device.description)
+                    return control.device.description;
+                return control.device.name;
+            }
             x: Config.em(2.1)
             y: Config.em(0.4)
 
@@ -230,7 +240,5 @@ DetailsPopup {
                 }
             }
         }
-
     }
-
 }

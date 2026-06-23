@@ -33,7 +33,7 @@ DetailsPopup {
                 Layout.fillWidth: true
                 color: U.rgba(220, 220, 220, 0.9)
                 font.pixelSize: Config.em(1)
-                text: `Controller: ${Bluetooth.defaultAdapter.name}`
+                text: Bluetooth.defaultAdapter ? `Controller: ${Bluetooth.defaultAdapter.name}` : ""
             }
 
             Button {
@@ -41,9 +41,8 @@ DetailsPopup {
                     Bluetooth.defaultAdapter.enabled = !Bluetooth.defaultAdapter.enabled;
                 }
 
-                text: Bluetooth.defaultAdapter.enabled ? "Disable" : "Enable"
+                text: (Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled) ? "Disable" : "Enable"
             }
-
         }
 
         Rectangle {
@@ -58,7 +57,6 @@ DetailsPopup {
                 x: 10
                 y: 2
             }
-
         }
 
         Repeater {
@@ -87,7 +85,7 @@ DetailsPopup {
                     function onClicked() {
                         // Enable the controller if trying to connect
                         if (!Bluetooth.defaultAdapter.enabled)
-                            Bluetooth.defaultAdapter.enabled = true
+                            Bluetooth.defaultAdapter.enabled = true;
 
                         if (modelData.connected)
                             modelData.disconnect();
@@ -97,11 +95,8 @@ DetailsPopup {
 
                     text: modelData.connected ? "Disconnect" : "Connect"
                 }
-
             }
-
         }
-
     }
 
     component DeviceIcon: IconImage {
@@ -149,7 +144,5 @@ DetailsPopup {
                 base.hover = false;
             }
         }
-
     }
-
 }

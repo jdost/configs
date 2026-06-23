@@ -158,7 +158,7 @@ Rectangle {
             fill: parent
             leftMargin: Config.em(0.4)
             rightMargin: Config.em(0.4)
-            topMargin: Config.em(1.2)
+            topMargin: Config.em(1.8)
         }
         spacing: 10
 
@@ -185,7 +185,7 @@ Rectangle {
 
                     MouseArea {
                         acceptedButtons: Qt.RightButton
-                        anchors.fill: parent
+                        anchors.fill: base
                         onClicked: {
                             container.notification.dismiss();
                         }

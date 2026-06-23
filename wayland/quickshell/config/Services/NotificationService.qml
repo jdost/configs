@@ -125,6 +125,8 @@ Singleton {
 
     function dismissAll(): void {
         while (current.length > 0) {
+            if (current[0] == null)
+                current.splice(0, 1);
             if (current[0].closedReason !== -1)
                 continue;
             if (current[0].lastGeneration) {

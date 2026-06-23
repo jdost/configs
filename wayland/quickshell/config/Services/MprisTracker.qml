@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Mpris
 
 Singleton {
@@ -8,6 +9,8 @@ Singleton {
 
     property MprisPlayer currentPlayer: null
     property var playerStatuses
+    property string userId
+    readonly property int busOffset: "org.mpris.MediaPlayer2.".length
 
     function updatePlayerStates() {
         var playing = [];
@@ -72,6 +75,8 @@ Singleton {
             console.log("No active player");
         else
             console.log(`Active player: ${active.name}`);
+
+        playingTracker.update();
         if (active)
             currentPlayer = active.ref;
     }
@@ -86,5 +91,44 @@ Singleton {
         }
 
         target: Mpris.players
+    }
+
+    Process {
+        command: ["id", "-u"]
+        running: true
+
+        stdout: StdioCollector {
+            onStreamFinished: mprisTracker.userId = this.text.trim()
+        }
+
+        // This is a hacky way to initialize the contents after the user id is discovered
+        onExited: function (code, _) {
+            playingTracker.update();
+        }
+    }
+
+    Process {
+        id: playingTrackerInit
+        command: ["touch", playingTracker.path]
+        running: false
+    }
+
+    FileView {
+        id: playingTracker
+        path: userId ? `/run/user/${userId}/mpris-tracker` : ""
+
+        onLoadFailed: function (e) {
+            playingTrackerInit.running = true;
+        }
+
+        function update() {
+            if (!playingTracker.path)
+                return;
+            if (!currentPlayer)
+                return;
+
+            var name = currentPlayer.dbusName;
+            setText(name.substr(busOffset, name.length - busOffset));
+        }
     }
 }

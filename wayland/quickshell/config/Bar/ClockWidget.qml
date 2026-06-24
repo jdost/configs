@@ -1,17 +1,36 @@
 import QtQuick
 import QtQuick.Controls
 import Quickshell
+import Quickshell.Io
 import qs
+import qs.Services
 import qs.Sidebar
 
 Rectangle {
     id: root
 
     property ShellScreen screen
+    readonly property int minute: 1000 * 60
 
-    color: "transparent"
+    color: {
+        if (!CalcurseService.enabled)
+            return "transparent";
+        if (CalcurseService.nextAppointment === undefined)
+            return "transparent";
+
+        var timeUntil = CalcurseService.nextAppointment.valueOf() - (clock.date.valueOf());
+        if (timeUntil > (20 * minute))
+            return "transparent";
+        if (timeUntil > (10 * minute))
+            return U.rgba(255, 255, 0, 0.4);
+        if (timeUntil > (5 * minute))
+            return U.rgba(255, 153, 0, 0.4);
+        if (timeUntil > 0)
+            return U.rgba(255, 0, 0, 0.4);
+        return U.rgba(85, 170, 255, 0.4);
+    }
     implicitWidth: display.width + 12
-    implicitHeight: display.height + 4
+    implicitHeight: display.height + Config.em(0.3)
     radius: 15
     y: parent.topPadding
 
@@ -29,10 +48,27 @@ Rectangle {
     MouseArea {
         id: mouse
 
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: {
-            sidebar.toggle(root.screen);
+        onClicked: mouse => {
+            if (mouse.button === Qt.LeftButton)
+                sidebar.toggle(root.screen);
+            else if (mouse.button === Qt.RightButton) {
+                if (!CalcurseService.enabled)
+                    return;
+
+                var timeUntil = CalcurseService.nextAppointment.valueOf() - (clock.date.valueOf());
+                var body = "Started";
+                if (timeUntil > (60 * 60 * 1000))
+                    body = `Starts in ${Math.floor(timeUntil / (60 * 60 * 1000))} hours`;
+                else if (timeUntil > (60 * 1000))
+                    body = `Starts in ${Math.floor(timeUntil / (60 * 1000))} minutes`;
+                else if (timeUntil > 0)
+                    body = `Starts in ${Math.floor(timeUntil / 1000)} seconds`;
+
+                reminder.exec(["notify-send", "--icon=calendar", "--transient", "--expire-time=5000", CalcurseService.nextAppointmentName, body]);
+            }
         }
         onEntered: {
             tooltip.open();
@@ -40,6 +76,13 @@ Rectangle {
         onExited: {
             tooltip.close();
         }
+    }
+
+    // Notification "Process" that get's set via `exec`
+    Process {
+        id: reminder
+
+        running: false
     }
 
     ToolTip {

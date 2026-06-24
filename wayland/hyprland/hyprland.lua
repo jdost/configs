@@ -87,6 +87,14 @@ hl.config({
         new_on_top = true,
     },
 })
+hl.config({
+    scrolling = {
+        fullscreen_on_one_column = true,
+        column_width = 0.6,
+        explicit_column_widths = "0.333, 0.5, 0.6, 0.666, 0.9, 1.0",
+        focus_fit_method = 1, -- Fit, 0 is Center, but doesn't have smart behavior
+    },
+})
 -- X11 Compatibility
 hl.config({
     xwayland = {

@@ -16,7 +16,14 @@ hl.bind(
 )
 hl.bind(
     mainMod .. " + Space",
-    hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }),
+    function ()
+        local workspace = hl.get_active_workspace()
+        if workspace.tiled_layout == "scrolling" then
+            -- Do nothing, want to, I guess, Toggle between 1.0 and default col widths?
+        else
+            hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
+        end
+    end,
     { description = "Toggle window fullscreen" }
 )
 hl.bind(
@@ -110,7 +117,22 @@ for i = 1, 4 do
     local descriptionDir = (resizeDims[i][1] == 0) and "vertically" or "horizontally"
     hl.bind(
         mainMod .. " + ALT + " .. key,
-        hl.dsp.window.resize({ x = resizeDims[i][1], y = resizeDims[i][2], relative = true }),
+        function ()
+            local workspace = hl.get_active_workspace()
+            if workspace.tiled_layout == "scrolling" then
+                if resizeDims[i][2] ~= 0 then
+                    -- In column resizing is normal
+                    hl.dispatch(hl.dsp.window.resize({ x = resizeDims[i][1], y = resizeDims[i][2], relative = true }))
+                -- For scrolling, horizontal resizing is a column resize, but we just use preset column widths
+                elseif resizeDims[i][1] < 0 then
+                    hl.dispatch(hl.dsp.layout("colresize -conf"))
+                else
+                    hl.dispatch(hl.dsp.layout("colresize +conf"))
+                end
+            else
+                hl.dispatch(hl.dsp.window.resize({ x = resizeDims[i][1], y = resizeDims[i][2], relative = true }))
+            end
+        end,
         { description = descriptionOp .. " window " .. descriptionDir, repeating = true }
     )
 end
@@ -133,15 +155,29 @@ for i = 1, workspaceCount do
         { description = "Window: Send to workspace " .. i }
     )
 end
--- Layout:Master
+-- Layout Manipulation
 hl.bind(
     mainMod .. " + Equal",
-    hl.dsp.layout("addmaster"),
+    function ()
+        local workspace = hl.get_active_workspace()
+        if workspace.tiled_layout == "scrolling" then
+            hl.dispatch(hl.dsp.layout("consume_or_expel next"))
+        elseif workspace.tiled_layout == "master" then
+            hl.dispatch(hl.dsp.layout("addmaster"))
+        end
+    end,
     { description = "Add window to primary pane" }
 )
 hl.bind(
     mainMod .. " + Minus",
-    hl.dsp.layout("removemaster"),
+    function ()
+        local workspace = hl.get_active_workspace()
+        if workspace.tiled_layout == "scrolling" then
+            hl.dispatch(hl.dsp.layout("consume_or_expel prev"))
+        elseif workspace.tiled_layout == "master" then
+            hl.dispatch(hl.dsp.layout("removemaster"))
+        end
+    end,
     { description = "Remove window from primary pane" }
 )
 -- Media/Special keys

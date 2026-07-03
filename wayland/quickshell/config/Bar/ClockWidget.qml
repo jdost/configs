@@ -27,12 +27,22 @@ Rectangle {
             return U.rgba(255, 153, 0, 0.4);
         if (timeUntil > 0)
             return U.rgba(255, 0, 0, 0.4);
+        if (timeUntil < (-5 * minute))
+            return "transparent";
         return U.rgba(85, 170, 255, 0.4);
     }
     implicitWidth: display.width + 12
     implicitHeight: display.height + Config.em(0.3)
     radius: 15
     y: parent.topPadding
+
+    Behavior on color {
+        enabled: Config.animations
+        ColorAnimation {
+            target: root
+            duration: 200
+        }
+    }
 
     Text {
         id: display
@@ -59,6 +69,9 @@ Rectangle {
                     return;
 
                 var timeUntil = CalcurseService.nextAppointment.valueOf() - (clock.date.valueOf());
+                if (timeUntil > (7 * 24 * 60 * 60 * 1000))
+                    return;
+
                 var body = "Started";
                 if (timeUntil > (60 * 60 * 1000))
                     body = `Starts in ${Math.floor(timeUntil / (60 * 60 * 1000))} hours`;

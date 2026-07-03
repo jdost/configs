@@ -11,6 +11,7 @@ Singleton {
     property var playerStatuses
     property string userId
     readonly property int busOffset: "org.mpris.MediaPlayer2.".length
+    readonly property var pausedFilter: ["qutebrowser"]
 
     function updatePlayerStates() {
         var playing = [];
@@ -66,6 +67,8 @@ Singleton {
                     active = player;
             } else if (active === null)
                 active = player;
+            else if (pausedFilter.indexOf(k) !== -1)
+                continue;
             else if (active.lastStatus === MprisPlaybackState.Playing)
                 continue;
             else if (active.lastPlaying < player.lastPlaying)
@@ -76,9 +79,10 @@ Singleton {
         else
             console.log(`Active player: ${active.name}`);
 
-        playingTracker.update();
-        if (active)
+        if (active) {
             currentPlayer = active.ref;
+            playingTracker.update();
+        }
     }
 
     Component.onCompleted: {

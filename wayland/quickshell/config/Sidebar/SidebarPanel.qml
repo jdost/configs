@@ -66,7 +66,18 @@ Scope {
                     }
                 }
 
-                NotificationHistory {}
+                ColumnLayout {
+                    width: root.width
+
+                    Calendar {
+                        Layout.preferredWidth: root.width
+                    }
+
+                    NotificationHistory {
+                        Layout.fillHeight: true
+                        Layout.preferredWidth: root.width
+                    }
+                }
             }
         }
     }

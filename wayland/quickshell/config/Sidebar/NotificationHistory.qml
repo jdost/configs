@@ -10,7 +10,6 @@ import qs.Services
 Rectangle {
     id: root
 
-    anchors.fill: parent
     color: "transparent"
 
     Row {
@@ -181,6 +180,7 @@ Rectangle {
 
                     color: U.rgba(120, 120, 120, 0.1)
                     modelData: container.notification
+                    visible: container.notification !== null
                     width: container.implicitWidth
 
                     MouseArea {

@@ -12,7 +12,8 @@ local workspaceRoutes = {
     },
     ["games"] = {
         ["PrismLauncher"] = "org.prismlaunch.PrismLauncher",
-        ["Steam"] = "steam"
+        ["Steam"] = "steam",
+        ["Vita3k"] = "vita3k"
     },
     ["video"] = {
         ["Firefox"] = "firefox",
@@ -31,7 +32,7 @@ function setupWorkspaces(monitors, workspaces)
         local id = monitorWorkspaces[targetMonitor.output]
         monitorWorkspaces[targetMonitor.output] = monitorWorkspaces[targetMonitor.output] + 1
         local layoutOpts = {}
-        if ((targetMonitor.transform or 1) % 2 == 1) then
+        if ((targetMonitor.transform or 0) % 2 == 1) then
             layoutOpts = { orientation = "top" }
         end
         hl.workspace_rule({

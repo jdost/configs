@@ -165,6 +165,12 @@ hl.window_rule({
     match = { class = "pinentry-*" },
     stay_focused = true,
 })
+-- Float Vita3k Settings
+hl.window_rule({
+    name  = "Float Vita3k's setting window",
+    match = { class = "vita3k", title = "Settings" },
+    float = true
+})
 -- Load additional configs
 mainMod = "SUPER"
 require("modules")

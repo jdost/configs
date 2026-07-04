@@ -67,9 +67,14 @@ Scope {
                 }
 
                 ColumnLayout {
+                    y: Config.em(1)
                     width: root.width
 
                     Calendar {
+                        Layout.preferredWidth: root.width
+                    }
+
+                    ToggleWidget {
                         Layout.preferredWidth: root.width
                     }
 

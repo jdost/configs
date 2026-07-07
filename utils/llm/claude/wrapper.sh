@@ -21,6 +21,7 @@ else
   echo "Not inside a git repository" >&2
   RUN_DIR=$( pwd )
 fi
+MOUNT_DIR=$( echo $RUN_DIR | md5sum - | cut -d' ' -f1)
 
 msg() {
     echo "$*"
@@ -104,8 +105,10 @@ exec docker run \
     --rm \
     --interactive \
     --tty \
-    --name $NAME \
+    --name $NAME-$MOUNT_DIR \
+    --hostname $NAME \
     "${DOCKER_MOUNT_FLAGS[@]}" \
-    --volume ${RUN_DIR}:/code$MOUNT_SUFFIX \
+    --volume ${RUN_DIR}:/code/$MOUNT_DIR$MOUNT_SUFFIX \
+    --workdir /code/$MOUNT_DIR \
     $IMAGE \
     /usr/local/bin/claude "$PARSED_ARGS"

@@ -22,7 +22,7 @@ RUN userdel ubuntu \
    && groupadd -g $GID claude \
    && useradd -d /home/claude -s /bin/bash -m claude -u $UID -g $GID
 
-ARG VERSION=2.1.9
+ARG VERSION=2.1.170
 ARG ARCHITECTURE=x64
 
 RUN curl -o /usr/local/bin/claude \

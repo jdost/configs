@@ -25,6 +25,9 @@
 [pull]
     ff = only
 
+[remote]
+    prune = true
+
 [help]
     autocorrect = immediate
 

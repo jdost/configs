@@ -176,7 +176,9 @@ if has('nvim') && !has('nvim-0.5')
   Plug 'numirias/semshi', { 'for': 'python', 'do': ':UpdateRemotePlugins' }
 end
 " --- GoLang
-Plug 'fatih/vim-go', { 'for': 'go' }
+if executable('gopls')
+  Plug 'fatih/vim-go', { 'for': 'go' }
+end
 " --- Rust
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " --- Elxir

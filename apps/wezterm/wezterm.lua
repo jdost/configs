@@ -28,7 +28,7 @@ local function starts_with(str, prefix)
 end
 local is_macos = starts_with(wezterm.home_dir, "/Users")
 
-font_iosevka = wezterm.font("IosevkTerm NerdFont", {bold=false})
+font_iosevka = wezterm.font("IosevkaTerm Nerd Font Mono", {bold=false})
 font_nerd = wezterm.font("Hack Nerd Font", {bold=false})
 font = (is_macos and font_nerd or font_iosevka)
 font_size = (is_macos and 12.0 or 11.0)

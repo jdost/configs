@@ -18,9 +18,10 @@ if not PKG_FOLDER.is_dir():
 
 
 def get_version_from_path(prefix: str, src: Path) -> str:
-    match = re.compile(f"{prefix}-([0-9.-]+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$").match(
-        src.name
-    )
+    match = re.compile(
+        f"{prefix}-[rv]{{0,1}}([a-z0-9.-]+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$"
+    ).match(src.name)
+    print(prefix, src.name)
     if not match:
         return ""
 
@@ -39,7 +40,14 @@ def parse_version(version_str: str) -> Sequence[int]:
     except ValueError:
         print(f"Version Parsing Error: {version_str!r}")
         raise
-    return [int(n) for n in version.split(".") + [patch]]
+
+    def convert_version(n: str) -> int:
+        try:
+            return int(n)
+        except ValueError:
+            return int(n, 16)
+
+    return [convert_version(n) for n in version.split(".") + [patch]]
 
 
 class Package:

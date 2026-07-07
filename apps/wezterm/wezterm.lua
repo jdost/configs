@@ -23,15 +23,27 @@ colors = {
     },
 }
 
+local function starts_with(str, prefix)
+    return str:sub(1, #prefix) == prefix
+end
+local is_macos = starts_with(wezterm.home_dir, "/Users")
+
+font_iosevka = wezterm.font("IosevkTerm NerdFont", {bold=false})
+font_nerd = wezterm.font("Hack Nerd Font", {bold=false})
+font = (is_macos and font_nerd or font_iosevka)
+font_size = (is_macos and 12.0 or 11.0)
+
 return {
-    bold_brightens_ansi_colors = true,
+    bold_brightens_ansi_colors = "BrightOnly",
+    front_end = "WebGpu",
     enable_wayland = true,
     check_for_updates = false,
     colors = colors,
-    enable_tab_bar = false,
+    enable_tab_bar = is_macos,
     exit_behavior = "Close",
-    font = wezterm.font("IosevkaTerm Nerd Font Mono", {bold=false}),
-    font_size = 11.0,
+    font = font,
+    font_size = font_size,
+    hide_tab_bar_if_only_one_tab = true,
     keys = {
         {key="x", mods="CTRL", action=wezterm.action{CopyTo="Clipboard"}},
         {key="x", mods="CTRL|SHIFT", action=wezterm.action{CopyTo="PrimarySelection"}},
@@ -39,7 +51,12 @@ return {
         {key="v", mods="CTRL|SHIFT", action=wezterm.action{PasteFrom="PrimarySelection"}},
         {key="=", mods="CTRL", action = wezterm.action.IncreaseFontSize},
         {key="-", mods="CTRL", action = wezterm.action.DecreaseFontSize},
+        -- Tab Controls
+        {key="l", mods="ALT", action = wezterm.action.ActivateTabRelative(1)},
+        {key="h", mods="ALT", action = wezterm.action.ActivateTabRelative(-1)},
+        {key="n", mods="CTRL|SHIFT", action = wezterm.action.SpawnTab("DefaultDomain")},
     },
+    macos_window_background_blur = 15,
+    use_fancy_tab_bar = true,
     window_background_opacity = 0.65,
-    mux_enable_ssh_agent = false,
 }

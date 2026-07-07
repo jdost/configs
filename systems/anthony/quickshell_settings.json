@@ -5,6 +5,7 @@
         "audio",
         "battery",
         "bluetooth",
+        "brightness",
         "clock",
         "cpu",
         "hyprland",

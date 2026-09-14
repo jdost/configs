@@ -3,7 +3,12 @@
 set -euo pipefail
 
 args=$*
-title=${1:-$(tty | cut -d/ -f3-)}
+if [[ -z "${SSH_CLIENT:-}" ]]; then
+    default_title=$(tty | cut -d/ -f3-)
+else
+    default_title="$(cat /proc/sys/kernel/hostname):$(tty | cut -d/ -f3-)"
+fi
+title=${1:-$default_title}
 
 if [[ -z "${TMUX:-}" ]]; then
     exec echo -ne "\033]0;$title\007"

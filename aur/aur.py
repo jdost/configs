@@ -19,7 +19,7 @@ if not PKG_FOLDER.is_dir():
 
 def get_version_from_path(prefix: str, src: Path) -> str:
     match = re.compile(
-        f"{prefix}-[rv]{{0,1}}([a-z0-9.-]+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$"
+        f"{prefix}-[rv]{{0,1}}([a-z0-9.:-]+)-(?:x86_64|any).pkg.tar.(?:xz|zst)$"
     ).match(src.name)
     print(prefix, src.name)
     if not match:

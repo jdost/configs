@@ -32,14 +32,20 @@ RUN \
         libxtst6 \
         locales \
         tar \
+        tzdata \
         xdg-utils \
         xz-utils \
+    && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+    && locale-gen \
     && rm -rf /var/lib/apt/lists/* \
         /var/log/* \
         /usr/share/man \
         /usr/share/doc
 
-ARG VERSION=8.5.0
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+ARG VERSION=9.14.0
 
 RUN mkdir -p /opt/calibre \
     && curl \

@@ -75,5 +75,6 @@ exec docker run \
     --volume $CONFIG_DIR:/home/calibre/.config/calibre \
     --volume $DATA_DIR:/home/calibre/"Calibre Library" \
     --volume $TRANSFER_DIR:/home/calibre/transfer \
+    --publish 9090:9090 \
     "${DOCKER_FLAGS_X[@]}" \
     $IMAGE

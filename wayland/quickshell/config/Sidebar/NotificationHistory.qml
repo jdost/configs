@@ -180,7 +180,7 @@ Rectangle {
 
                     color: U.rgba(120, 120, 120, 0.1)
                     modelData: container.notification
-                    visible: container.notification !== null
+                    visible: container.notification !== null || container.notification !== undefined
                     width: container.implicitWidth
 
                     MouseArea {

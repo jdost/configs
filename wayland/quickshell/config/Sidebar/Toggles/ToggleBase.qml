@@ -9,7 +9,11 @@ Rectangle {
     property bool hovered: false
     required property var onClicked
 
-    border.color: enabled ? U.rgba(0, 185, 155, 0.8) : U.rgba(255, 255, 255, 0.4)
+    border.color: {
+        if (hovered)
+            return enabled ? U.rgba(0, 185, 155, 0.8) : U.rgba(255, 255, 255, 0.8);
+        return enabled ? U.rgba(0, 185, 155, 0) : U.rgba(255, 255, 255, 0.4);
+    }
     border.width: 3
     color: {
         if (hovered)
@@ -21,7 +25,7 @@ Rectangle {
     width: Config.em(2.4)
 
     Behavior on color {
-        enabled: Config.animations
+        enabled: false //Config.animations
         ColorAnimation {
             target: root
             duration: 200

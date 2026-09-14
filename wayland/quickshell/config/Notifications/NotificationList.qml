@@ -46,7 +46,7 @@ Variants {
             Connections {
                 function onCountChanged() {
                     if (inbox.count === 0)
-                        return ;
+                        return;
 
                     isEmpty = false;
                     var payload = inbox.get(0);
@@ -101,7 +101,6 @@ Variants {
                         to: 0
                         duration: 400
                     }
-
                 }
 
                 remove: Transition {
@@ -110,7 +109,6 @@ Variants {
                         onFinished: {
                             if (notifications.count === 0)
                                 isEmpty = true;
-
                         }
 
                         NumberAnimation {
@@ -124,9 +122,7 @@ Variants {
                             to: 0
                             duration: 300
                         }
-
                     }
-
                 }
 
                 displaced: Transition {
@@ -135,7 +131,6 @@ Variants {
                         property: "y"
                         duration: 1400
                     }
-
                 }
 
                 delegate: Rectangle {
@@ -155,19 +150,23 @@ Variants {
                         modelData: model
                         width: container.implicitWidth
                         color: U.rgba(120, 120, 120, 0.3)
+
+                        MouseArea {
+                            acceptedButtons: Qt.RightButton
+                            anchors.fill: parent
+                            onClicked: mouse => {
+                                if (mouse.button == Qt.RightButton)
+                                    NotificationService.expirePopup(model.id, true);
+                            }
+                        }
                     }
-
                 }
-
             }
 
             // An empty click mask prevents the window from blocking mouse events.
             mask: Region {
                 item: listView
             }
-
         }
-
     }
-
 }

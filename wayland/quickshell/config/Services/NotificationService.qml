@@ -101,12 +101,14 @@ Singleton {
         action.invoke();
     }
 
-    function expirePopup(notificationId: int): void {
+    function expirePopup(notificationId: int, explicit: bool): void {
         const target = current.find(n => n ? n.id === notificationId : false);
         if (!target)
             return;
 
-        if (target.transient)
+        if (explicit == true)
+            target.dismiss();
+        else if (target.transient)
             target.expire();
         else {
             // Expiration should be cleaned up from the outputs, but not the history
@@ -123,9 +125,17 @@ Singleton {
         target.isExpired = true;
     }
 
+    function dismissPopup(notificationId: int): void {
+        const target = current.find(n => n ? n.id === notificationId : false);
+        if (!target)
+            return;
+
+        target.dismiss();
+    }
+
     function dismissAll(): void {
         while (current.length > 0) {
-            if (current[0] == null)
+            if (current[0] == null || current[0] == undefined)
                 current.splice(0, 1);
             if (current[0].closedReason !== -1)
                 continue;

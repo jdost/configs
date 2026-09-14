@@ -1,4 +1,9 @@
 " LspHighlighting {{{
+hi DiagnosticVirtualTextError ctermfg=124
+hi DiagnosticVirtualTextWarn ctermfg=166
+hi DiagnosticVirtualTextInfo ctermfg=70
+hi DiagnosticVirtualTextHint ctermfg=243
+
 hi LspDiagnosticsVirtualTextError ctermfg=160
 hi LspDiagnosticsVirtualTextWarning ctermfg=166
 hi LspDiagnosticsVirtualTextInformation ctermfg=243
@@ -19,6 +24,11 @@ hi DiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=under
 hi DiagnosticsUnderlineWarn guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi DiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi DiagnosticsUnderlineInfo guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
+
+hi DiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi DiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
 hi DiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
 
 hi LspReferenceText ctermfg=211

@@ -4,7 +4,7 @@ if has_key(g:plugs, 'nvim-lspconfig')
   local servers = {'gopls'}
 
   for _, server in ipairs(servers) do
-    if vim.fn.executable(server) == 1 and lspconfig[server] == nil then
+    if vim.fn.executable(server) == 1 then
       vim.lsp.config(server, {
         on_attach = function(client, bufnr)
           vim.api.nvim_exec([[

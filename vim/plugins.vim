@@ -40,11 +40,12 @@ Plug 'wellle/targets.vim'  " Additional text objects
 Plug 'tweekmonster/startuptime.vim', { 'on': 'StartupTime' }
 if has('nvim') && ( executable('gcc') || executable('clang') )
   if has('nvim-0.9')
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate' }
+    " master is the old version, main is incompatible so may need to wait for updates
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'branch': 'master' }
   elseif has('nvim-0.5')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'branch': '0.5-compat' }
   endif
-  Plug 'gorbit99/codewindow.nvim'
+  Plug 'taylrfnt/codewindow.nvim'
 endif
 " }}}
 
@@ -192,7 +193,6 @@ Plug 'dkarter/bullets.vim', { 'for': ['markdown', 'gitcommit'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'jparise/vim-graphql', { 'for': ['gql', 'graphql'] }
 " --- Configs and such
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'lervag/vimtex', { 'for': ['tex', 'bib'] }

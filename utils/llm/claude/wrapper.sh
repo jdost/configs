@@ -111,4 +111,4 @@ exec docker run \
     --volume ${RUN_DIR}:/code/$MOUNT_DIR$MOUNT_SUFFIX \
     --workdir /code/$MOUNT_DIR \
     $IMAGE \
-    /usr/local/bin/claude "$PARSED_ARGS"
+    /usr/local/bin/claude $PARSED_ARGS

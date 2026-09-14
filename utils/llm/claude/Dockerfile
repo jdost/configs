@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS read_only
+FROM ubuntu:26.04 AS read_only
 
 RUN \
     --mount=type=cache,target=/var/cache/apt \
@@ -22,7 +22,7 @@ RUN userdel ubuntu \
    && groupadd -g $GID claude \
    && useradd -d /home/claude -s /bin/bash -m claude -u $UID -g $GID
 
-ARG VERSION=2.1.170
+ARG VERSION=2.1.270
 ARG ARCHITECTURE=x64
 
 RUN curl -o /usr/local/bin/claude \

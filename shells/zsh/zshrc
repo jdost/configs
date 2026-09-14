@@ -46,7 +46,14 @@ fi # }}}
 
 # set initial title using TTY, only if interactive
 if [[ -o interactive ]]; then
-   which settitle &>/dev/null && settitle || /bin/true
+   # Don't set title if in a tmux w/ more than 1 pane, i.e. keep the original name
+   if [[ -n "$TMUX" ]]; then
+      if [[ "$(tmux display-message -p -t "$TMUX_PANE" '#{window_panes}')" = "1" ]]; then
+         which settitle &>/dev/null && settitle || /bin/true
+      fi
+   else
+      which settitle &>/dev/null && settitle || /bin/true
+   fi
    which term-info &>/dev/null && term-info || /bin/true
 fi
 

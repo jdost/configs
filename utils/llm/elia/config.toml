@@ -1,0 +1,36 @@
+default_model = "anthropic/claude-fable-5"
+system_prompt = "You are a helpful assistant that attempts to keep responses concise and useful."
+
+theme = "monokai"
+message_code_theme = "monokai"
+builtin_models = []
+
+[[models]]
+name = "anthropic/claude-fable-5"
+display_name = "Fable"
+product = "Claude"
+provider = "anthropic"
+
+[[models]]
+name = "anthropic/claude-sonnet-4-5"
+display_name = "Sonnet"
+product = "Claude"
+provider = "anthropic"
+
+[[models]]
+name = "gpt-5"
+display_name = "ChatGPT - General"
+product = "ChatGPT"
+provider = "openai"
+
+[[models]]
+name = "gpt-5-mini"
+display_name = "ChatGPT - Fast"
+product = "ChatGPT"
+provider = "openai"
+
+[[models]]
+name = "gpt-4o"
+display_name = "ChatGPT - Context"
+product = "ChatGPT"
+provider = "openai"

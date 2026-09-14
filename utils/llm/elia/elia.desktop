@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=elia-chat
+GenericName=LLM Chat manager
+Exec=elia
+Icon=org.kde.neochat
+Terminal=true

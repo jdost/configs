@@ -11,9 +11,11 @@ local workspaceRoutes = {
         ["Obsidian"] = "obsidian"
     },
     ["games"] = {
-        ["PrismLauncher"] = "org.prismlaunch.PrismLauncher",
+        ["PrismLauncher"] = "org.prismlauncher.PrismLauncher",
         ["Steam"] = "steam",
-        ["Vita3k"] = "vita3k"
+        ["Vita3k"] = "vita3k",
+        ["Minecraft"] = "Minecraft.*",
+        ["Moonlight"] = "com.moonlight_stream.Moonlight"
     },
     ["video"] = {
         ["Firefox"] = "firefox",

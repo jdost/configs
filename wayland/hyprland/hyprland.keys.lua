@@ -69,6 +69,8 @@ hl.bind(
         local workspace = hl.get_active_workspace()
         if workspace.tiled_layout == "monocle" then
             hl.dispatch(hl.dsp.layout("cyclenext"))
+        elseif workspace.tiled_layout == "scrolling" then
+            hl.dispatch(hl.dsp.layout("focus r"))
         else
             hl.dispatch(hl.dsp.window.cycle_next())
         end
@@ -81,6 +83,8 @@ hl.bind(
         local workspace = hl.get_active_workspace()
         if workspace.tiled_layout == "monocle" then
             hl.dispatch(hl.dsp.layout("cycleprev"))
+        elseif workspace.tiled_layout == "scrolling" then
+            hl.dispatch(hl.dsp.layout("focus l"))
         else
             hl.dispatch(hl.dsp.window.cycle_next({ next = false }))
         end

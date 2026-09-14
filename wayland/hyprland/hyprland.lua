@@ -1,6 +1,6 @@
 hl.config({
   debug = {
-      disable_logs = false,
+      disable_logs = true,
   }
 })
 -- Monitors
@@ -90,8 +90,8 @@ hl.config({
 hl.config({
     scrolling = {
         fullscreen_on_one_column = true,
-        column_width = 0.6,
-        explicit_column_widths = "0.333, 0.5, 0.6, 0.666, 0.9, 1.0",
+        column_width = 0.5,
+        explicit_column_widths = "0.2, 0.333, 0.5, 0.666, 0.9, 1.0",
         focus_fit_method = 1, -- Fit, 0 is Center, but doesn't have smart behavior
     },
 })
@@ -174,5 +174,3 @@ hl.window_rule({
 -- Load additional configs
 mainMod = "SUPER"
 require("modules")
-
-hl.bind(mainMod .. " + Q", hl.dsp.exit())
